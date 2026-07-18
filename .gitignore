@@ -1,0 +1,83 @@
+# Python environments and caches
+.venv*/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.mplconfig/
+
+# Credentials and local editor state
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+.idea/
+.vscode/
+
+# Experiment outputs and model state
+runs/
+model/
+assets/
+outputs/
+*.log
+*.pid
+nohup.out
+
+# Large or generated data. Keep only the curated expression libraries.
+data/*
+!data/latent_variable_expressions.csv
+!data/latent_variable_expressions_single_q.csv
+!data/latent_variable_expressions_single_q_report.json
+!data/latent_variable_expressions_xrange10.csv
+/latent_variable_expressions*.csv
+train.csv
+test.csv
+train_with_q.csv
+test_with_q.csv
+*_with_q.csv
+*.zip
+*.tar
+*.tar.gz
+*.mat
+*.h5
+*.hdf5
+*.pt
+*.pth
+*.pkl
+
+# External research code and symbolic-regression stage are intentionally local.
+external/
+sr_sota/
+lvs/core/symbolic.py
+lvs/utils/dag_symbolic_udfs.py
+lvs/backends/nn_sklearn.py
+lvs/utils/expr_sampler.py
+lvs/utils/label_optimizer.py
+symbolic_dagpartition.py
+dag_symbolic_udfs.py
+q_optimize_nn.py
+expr_sampler.py
+optimize_label.py
+scripts/*symbolic*
+scripts/*dag*
+scripts/expr_sampler.py
+scripts/optimize_label.py
+
+# Paper build products and downloaded templates
+paper/
+archives/
+
+# Local reports and draft notes; keep only the stable method documentation.
+/*.md
+!/README.md
+!/MAIN_WORKFLOW_LOSS_INNOVATION.md
+!/LATENT_Q_INTRO_MOTIVATION_THEORY_RELATED_WORK.md
+!/LATENT_Q_NEURAL_NETWORK_BACKGROUND_AND_THEORY_FOR_STUDENT.md
+
+# One-off migration artifacts
+restructure.py
+restructure.sh*
+run_nn.py
