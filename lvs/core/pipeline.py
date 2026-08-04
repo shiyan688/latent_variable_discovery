@@ -537,7 +537,12 @@ def train_latent_q_model(
         grid_size=validated_config.latent_curve_continuity_grid_size,
     )
 
-    optimizer = optim.Adam(list(model.parameters()) + list(embedding.parameters()), lr=validated_config.lr)
+    mds_init_q = _mds_sqratio(label_curve_distance_tensor, validated_config.q_dim)
+    embedding.weight.data.copy_(mds_init_q)
+    for p in embedding.parameters():
+        p.requires_grad = False
+
+    optimizer = optim.Adam(list(model.parameters()), lr=validated_config.lr)
     orth_adversary: Optional[nn.Module] = None
     orth_adversary_optimizer: Optional[optim.Optimizer] = None
     orth_adversary_targets: Optional[torch.Tensor] = None
@@ -1548,11 +1553,8 @@ def _compute_label_curve_distance_matrix(
             sorted_y = summed / counts.clamp_min(EPSILON)
         profiles.append(_interp1d_torch(grid, sorted_x, sorted_y))
     profile_matrix = torch.stack(profiles, dim=0)
-    profile_matrix = profile_matrix - profile_matrix.mean(dim=1, keepdim=True)
-    scale = profile_matrix.pow(2).mean(dim=1, keepdim=True).sqrt().clamp_min(EPSILON)
-    profile_matrix = profile_matrix / scale
-    distances = torch.cdist(profile_matrix, profile_matrix, p=2)
-    return _normalize_distance_matrix(distances).detach()
+    distances = torch.cdist(profile_matrix, profile_matrix, p=1)
+    return distances.detach()
 
 
 def _interp1d_torch(grid: torch.Tensor, x_values: torch.Tensor, y_values: torch.Tensor) -> torch.Tensor:
@@ -1570,6 +1572,31 @@ def _interp1d_torch(grid: torch.Tensor, x_values: torch.Tensor, y_values: torch.
         y_values[0],
         torch.where(grid >= x_values[-1], y_values[-1], interpolated),
     )
+
+
+def _mds_sqratio(distances: torch.Tensor, q_dim: int) -> torch.Tensor:
+    n = distances.shape[0]
+    if n <= q_dim:
+        return torch.randn(n, q_dim, dtype=distances.dtype, device=distances.device) * 0.1
+    high_dim, low_dim = n, q_dim
+    nhd = (distances / high_dim).clamp_min(EPSILON)
+    q = torch.randn(n, q_dim, dtype=distances.dtype, device=distances.device) * 0.1
+    q.requires_grad_(True)
+    opt = optim.Adam([q], lr=0.05)
+    sch = optim.lr_scheduler.CosineAnnealingLR(opt, T_max=2000)
+    for ep in range(2000):
+        opt.zero_grad()
+        qd = q.unsqueeze(0) - q.unsqueeze(1)
+        ld = qd.abs().sum(-1)
+        nld = (ld / low_dim).clamp_min(EPSILON)
+        r1 = nhd / nld
+        r2 = nld / nhd
+        loss = (r1.pow(2) + r2.pow(2)).mean()
+        loss.backward()
+        torch.nn.utils.clip_grad_norm_([q], max_norm=1.0)
+        opt.step(); sch.step()
+    q = q.detach()
+    return (q - q.mean(0, keepdim=True)) / q.std(0, keepdim=True).clamp_min(EPSILON)
 
 
 def _latent_curve_continuity_penalty(q_values: torch.Tensor, curve_distances: torch.Tensor) -> torch.Tensor:
