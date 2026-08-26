@@ -104,14 +104,18 @@ def _expression_motifs(expression: str) -> dict[str, object]:
     }
 
 
-def _audit_and_diagnostics(root: Path, frame: pd.DataFrame, manifest: dict) -> tuple[dict, pd.DataFrame]:
+def _audit_and_diagnostics(
+    root: Path,
+    q_root: Path,
+    frame: pd.DataFrame,
+    manifest: dict,
+) -> tuple[dict, pd.DataFrame]:
     result_paths = sorted(root.glob("**/result.json"))
     prediction_paths = sorted(root.glob("**/predictions.csv"))
     pareto_paths = sorted(root.glob("**/pareto_front.csv"))
     scaler_paths = sorted(root.glob("**/input_scaler.csv"))
     status_lines = [line for line in (root / "status.jsonl").read_text().splitlines() if line]
     status = _read_json(root / "status.json")
-    q_root = Path(manifest["config"]["q_root"])
     records = runner._prepared_records(q_root)
 
     expected_keys = {
@@ -277,14 +281,24 @@ def main() -> None:
         type=Path,
         default=PROJECT_ROOT / "runs" / "nasa_battery_reviewer_clean_inner_symbolic_20260825",
     )
+    parser.add_argument(
+        "--q-root",
+        type=Path,
+        help="Override the upstream inner-q artifact root recorded in the manifest.",
+    )
     args = parser.parse_args()
     root = args.root.resolve()
     manifest = _read_json(root / "manifest.json")
+    manifest_q_root = Path(manifest["config"]["q_root"])
+    q_root = args.q_root or manifest_q_root
+    if not q_root.is_absolute():
+        q_root = PROJECT_ROOT / q_root
+    q_root = q_root.resolve()
     frame = pd.read_csv(root / "results.csv")
     if len(frame) != 90 or (frame["status"] != "success").any():
         raise ValueError("expected 90 successful rows")
 
-    integrity, diagnostics = _audit_and_diagnostics(root, frame, manifest)
+    integrity, diagnostics = _audit_and_diagnostics(root, q_root, frame, manifest)
     (root / "integrity_audit.json").write_text(json.dumps(integrity, indent=2))
     diagnostics.to_csv(root / "cell_diagnostics.csv", index=False)
 

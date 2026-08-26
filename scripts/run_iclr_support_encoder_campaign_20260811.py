@@ -8,6 +8,7 @@ import json
 import os
 import signal
 import subprocess
+import sys
 import time
 from dataclasses import asdict, dataclass
 from datetime import datetime, timezone
@@ -15,7 +16,7 @@ from pathlib import Path
 from typing import Any, TextIO
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
-PYTHON = PROJECT_ROOT / ".venv-lvs-gpu" / "bin" / "python"
+PYTHON = Path(sys.executable)
 DEFAULT_ROOT = PROJECT_ROOT / "runs" / "iclr_support_encoder_pilot_20260811"
 DATASETS = (
     (

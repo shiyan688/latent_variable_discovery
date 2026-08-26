@@ -8,7 +8,7 @@ y_hat = f_theta(x, q_label)
 
 其中 `q_label` 是每个训练组的低维连续描述符。对未见组，模型参数保持冻结，仅用该组的一部分校准样本估计 `q`，再在严格不重叠的样本上评估。因此 `label` 只用于索引或校准隐变量，不作为数值显变量输入模型。
 
-当前公开版本止于 Torch/KAN 隐变量学习、校准与评估。符号回归代码、第三方 DAGPartition/PySR 环境及实验结果暂不包含。
+当前研究分支包含 Torch/KAN 隐变量学习、校准与评估，主要实验控制器，以及 reviewer-clean NASA Stage C 的紧凑汇总证据。大型原始数据、训练 checkpoint、逐 cell 预测和第三方运行环境不进入 Git；它们是显式外部输入，具体边界见“跨机器复现”一节。
 
 ## 方法概览
 
@@ -59,7 +59,7 @@ python -m pip install --upgrade pip
 
 # 示例：适用于支持 CUDA 12.8 wheel 的驱动；其他机器按 PyTorch 官方选择器调整。
 pip install torch --index-url https://download.pytorch.org/whl/cu128
-pip install -e .
+pip install -e '.[dev,experiments]'
 
 python -c "import torch; print(torch.__version__, torch.cuda.is_available(), torch.version.cuda)"
 ```
@@ -68,6 +68,49 @@ python -c "import torch; print(torch.__version__, torch.cuda.is_available(), tor
 
 ```bash
 pip install -e '.[kan]'
+```
+
+NASA 数据准备、PDEBench 与其他实验脚本需要 `experiments` 依赖；Stage C 符号回归还需要 PySR 1.5.10 及其 Julia 环境：
+
+```bash
+pip install -e '.[experiments,symbolic]'
+python -c "import pysr; print(pysr.__version__)"
+```
+
+所有 Python campaign 控制器都使用启动它们的 `sys.executable`，不会绑定某个固定虚拟环境目录。因此应先激活目标环境，再用该环境的 `python` 启动控制器。
+
+## 跨机器复现
+
+| 内容 | Git 是否包含 | 新机器上的操作 |
+|---|---|---|
+| 核心包、合成表达式定义、测试 | 是 | 安装依赖后可直接运行 |
+| Stage C 汇总表、公式诊断和 gate 判定 | 是 | 可直接阅读和复核汇总数字 |
+| NASA/PDEBench/其他真实原始数据 | 否 | 按数据来源准备到本地，并通过脚本参数或仓库相对路径提供 |
+| 上游 inner-q 产物、checkpoint、逐 cell 预测/Pareto front | 否 | 从实验归档恢复，或先运行对应上游阶段 |
+| PySR/Julia 运行时 | 否 | 安装 `symbolic` 可选依赖并完成 PySR 的 Julia 初始化 |
+
+仓库中的运行时路径以仓库根目录为基准。历史报告可以记录当时的机器和环境名称，但执行代码不依赖这些历史地址。`/tmp/lvs-*` 只用作 Linux 缓存默认值，可通过 `MPLCONFIGDIR` 和 `XDG_CACHE_HOME` 环境变量覆盖。
+
+PDEBench Burgers 数据可用带尺寸和校验和检查的脚本准备：
+
+```bash
+bash scripts/download_pdebench_burgers_nu002.sh
+```
+
+NASA reviewer-clean 数据准备器接受显式路径：
+
+```bash
+python scripts/prepare_nasa_battery_reviewer_clean_20260825.py \
+  --raw-root /path/to/nasa_battery/extracted_batches \
+  --output-root data/real_datasets2/prepared/nasa_battery_reviewer_clean_20260825
+```
+
+完整 Stage C 还需要未纳入 Git 的上游 `runs/nasa_battery_reviewer_clean_inner_q_20260825`。恢复该目录后，运行 [冻结计划](NASA_INNER_SYMBOLIC_STRUCTURE_PLAN_20260825.md) 中的相对路径命令。若上游产物位于其他位置，重新分析时显式传入：
+
+```bash
+python scripts/analyze_nasa_inner_symbolic_structure_20260825.py \
+  --root runs/nasa_battery_reviewer_clean_inner_symbolic_20260825 \
+  --q-root /path/to/nasa_battery_reviewer_clean_inner_q_20260825
 ```
 
 ## 快速运行
@@ -118,7 +161,7 @@ lvs-torch \
 ## 测试
 
 ```bash
-python -m unittest discover -s tests -v
+python -m pytest -q
 ```
 
-测试覆盖输入列默认值、校准/评估隔离、label-balanced MSE、采样分布嵌入和一个 CPU 端到端 smoke run。
+测试覆盖输入列默认值、校准/评估隔离、损失预设、连续性与几何指标、support-conditioned baseline 和 CPU 端到端 smoke run。

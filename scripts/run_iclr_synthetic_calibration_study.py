@@ -52,7 +52,7 @@ from lvs.core.pipeline import (
 )
 from scripts.run_iclr_calibration_study import STRATEGY_PROFILES, stable_hash
 
-PYTHON = PROJECT_ROOT / ".venv-lvs-gpu" / "bin" / "python"
+PYTHON = Path(sys.executable)
 DEFAULT_ROOT = PROJECT_ROOT / "runs" / "iclr_synthetic_calibration_strategy_20260809"
 SCHEMA_VERSION = 1
 

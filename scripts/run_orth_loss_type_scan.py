@@ -261,7 +261,7 @@ def resolve(path: Path) -> Path:
 
 
 def python_bin() -> str:
-    return str(PROJECT_ROOT / ".venv-lvs-gpu" / "bin" / "python")
+    return sys.executable
 
 
 def timestamp() -> str:

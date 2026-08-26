@@ -35,8 +35,10 @@ Passing all gates advances one recurring motif to the minimal structured-decoder
 
 ## Exact command
 
+Run from the repository root after activating an environment with the `experiments` and `symbolic` dependencies. The command also requires the upstream inner-q artifact root produced by the completed 30-cell inner-q stage.
+
 ```bash
-/public/home/wangyg/workspace/llm_pysr_project/.venv/bin/python \
+python \
   scripts/run_nasa_inner_symbolic_structure_20260825.py \
   --inner-q-root runs/nasa_battery_reviewer_clean_inner_q_20260825 \
   --methods joint_continuity_step1,joint_mse_step1 \

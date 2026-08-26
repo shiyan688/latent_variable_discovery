@@ -174,7 +174,7 @@ def completed_pairs(run_root: Path) -> set[tuple[int, int]]:
 
 def launch_job(args: argparse.Namespace, library_csv: Path, output_root: Path, job: Job) -> tuple[subprocess.Popen[Any], Any]:
     cmd = [
-        str(PROJECT_ROOT / ".venv-lvs-gpu" / "bin" / "python"),
+        sys.executable,
         str(PROJECT_ROOT / "run_workflow.py"),
         "--library-csv",
         str(library_csv),

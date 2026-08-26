@@ -9,6 +9,7 @@ import json
 import os
 import shutil
 import subprocess
+import sys
 import time
 from dataclasses import asdict, dataclass
 from datetime import datetime, timezone
@@ -17,7 +18,7 @@ from typing import Any
 
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
-PYTHON = PROJECT_ROOT / ".venv-lvs-gpu" / "bin" / "python"
+PYTHON = Path(sys.executable)
 RUNS = PROJECT_ROOT / "runs"
 DEFAULT_ROOT = RUNS / "matched_1000ep_real_pde_20260817"
 REAL_ROOT = DEFAULT_ROOT / "real"

@@ -9,6 +9,7 @@ import json
 import os
 import shutil
 import subprocess
+import sys
 import time
 from dataclasses import asdict, dataclass
 from datetime import datetime, timedelta, timezone
@@ -16,7 +17,7 @@ from pathlib import Path
 from typing import Any
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
-PYTHON = PROJECT_ROOT / ".venv-lvs-gpu" / "bin" / "python"
+PYTHON = Path(sys.executable)
 RUNS = PROJECT_ROOT / "runs"
 CAMPAIGN_ROOT = RUNS / "extended_15h_campaign_20260809"
 PDE_SOURCE_ROOT = RUNS / "pdebench_burgers_latent_20260809"

@@ -3,6 +3,12 @@
   "plan": "NASA_INNER_SYMBOLIC_STRUCTURE_PLAN_20260825.md",
   "plan_sha256": "11536789f4656ad8e2cbf72b6adc77317fea06ac0513ca8b5cfb10f506f46cd2",
   "runner_sha256": "4b59e02c92d7fb3d56f955cde84de48ac5cb62a2636d45b86ab6ae2399b9201c",
+  "portable_plan_sha256": "e95e623413bbcc89ccdc9cf13a2c57d72e0baff360a7bf0ebb42d508dc91e926",
+  "portable_runner_sha256": "55ae14f90a5d1a07af620937cdddccd96ac66eec956cee069d710d99be7c7b6a",
+  "post_run_path_normalization": {
+    "date": "2026-08-26",
+    "scientific_outputs_changed": false
+  },
   "source_manifest": "runs/nasa_battery_reviewer_clean_inner_q_20260825/experiment_manifest.json",
   "source_manifest_sha256": "e922e6615ae17c44764c705dd7dedc02eacb80708c97bc6b4d6ba01e960802d5",
   "datasets": [
@@ -571,8 +577,9 @@
   ],
   "planned": 90,
   "config": {
-    "q_root": "/public/home/wangyg/latent_variable_search/runs/nasa_battery_reviewer_clean_inner_q_20260825",
-    "output_root": "/public/home/wangyg/latent_variable_search/runs/nasa_battery_reviewer_clean_inner_symbolic_20260825",
+    "path_base": "repository_root",
+    "q_root": "runs/nasa_battery_reviewer_clean_inner_q_20260825",
+    "output_root": "runs/nasa_battery_reviewer_clean_inner_symbolic_20260825",
     "condition_columns": [
       "discharge_index",
       "ambient_temperature",

@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import subprocess
+import sys
 import time
 from datetime import datetime, timezone
 from pathlib import Path
@@ -11,7 +12,7 @@ from typing import Sequence
 
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
-PYTHON = PROJECT_ROOT / ".venv-lvs-gpu" / "bin" / "python"
+PYTHON = Path(sys.executable)
 STATE_ROOT = PROJECT_ROOT / "runs" / "iclr_overnight_20260808"
 SYNTHETIC_ROOT = PROJECT_ROOT / "runs" / "iclr_synthetic_continuity_main_20260808"
 REAL_MAIN_ROOT = PROJECT_ROOT / "runs" / "iclr_real_broad_pilot_20260808"

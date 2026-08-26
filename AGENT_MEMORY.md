@@ -1,7 +1,7 @@
 ---
 document_type: agent_handoff_memory
 project: latent_variable_search
-last_updated: 2026-08-26 15:44 CST
+last_updated: 2026-08-26 16:17 CST
 current_branch: research/latent-q-stagec-20260826
 base_commit: 2b13869
 live_status_source: runs/nasa_battery_reviewer_clean_inner_symbolic_20260825/status.json
@@ -120,7 +120,7 @@ lvs_extended_until_complete_20260810  # completed and no longer present
 The completed takeover process ran:
 
 ```bash
-.venv-lvs-gpu/bin/python scripts/run_extended_15h_campaign_20260809.py \
+python scripts/run_extended_15h_campaign_20260809.py \
   --gpus 2,3,4,5 \
   --run-until-complete \
   --poll-seconds 30 \
@@ -154,7 +154,7 @@ Read-only checks:
 ```bash
 tmux ls
 nvidia-smi
-.venv-lvs-gpu/bin/python - <<'PY'
+python - <<'PY'
 import json
 from pathlib import Path
 p = Path("runs/extended_15h_campaign_20260809/campaign_status.json")
@@ -171,9 +171,9 @@ Interpretation details:
 
 ## 7. Repository state and preservation rules
 
-- Working directory: `/public/home/wangyg/latent_variable_search`.
-- Python environment used for the campaign: `.venv-lvs-gpu`.
-- Current branch: `research/latent-q-extended-20260810` (created locally on 2026-08-10 to isolate the active research work).
+- Working directory: repository root.
+- The campaign originally used a dedicated Python 3.11 GPU environment. Current controllers inherit the interpreter that launches them through `sys.executable`.
+- Current branch: `research/latent-q-stagec-20260826`, tracking `origin/research/latent-q-stagec-20260826`.
 - Base commit: `2b13869`.
 - Remote: `origin`, with only `origin/main` visible at last check.
 - The worktree is intentionally dirty with modified/new research code, experiment drivers, analyzers, and tests.
@@ -919,6 +919,14 @@ The user authorized synchronizing the current research state to a new remote bra
 
 The snapshot scope is source code, experiment/analyzer scripts, tests, the explicit handoff and research reports, and the compact frozen Stage C evidence chain. For Stage C this includes the 90-cell consolidated results, cell-level formula diagnostics, manifest/status, integrity audit, gate decision, paired/method/motif summaries, and beginner-readable analysis. Per-cell predictions, Pareto fronts, checkpoints, downloaded datasets, logs, local environments, and the broader generated `runs/` tree remain ignored. This boundary keeps the branch reviewable while preserving the numbers needed to audit the terminal Stage C claims.
 
-Pre-commit verification on the snapshot worktree completed with `54 passed` under `.venv-lvs-gpu`; the only warnings were the expected undefined R-squared values for fewer than two samples. The test fixture was minimally updated to carry the production-default `support_split_mode="random"` argument introduced by the real-data runner.
+Pre-commit verification on the snapshot worktree completed with `54 passed` under the active Python 3.11 GPU environment; the only warnings were the expected undefined R-squared values for fewer than two samples. The test fixture was minimally updated to carry the production-default `support_split_mode="random"` argument introduced by the real-data runner.
 
 Remote synchronization completed at 2026-08-26 15:44 CST. Snapshot commit `0c3eab6` was pushed to `origin/research/latent-q-stagec-20260826` at `git@github.com:shiyan688/latent_variable_discovery.git`, and the local branch now tracks that remote branch.
+
+## 35. Cross-machine portability normalization (2026-08-26)
+
+After the remote snapshot, the user requested a portability audit and authorized remediation. The tracked core package had no user-home dependency, but 23 campaign/controller scripts selected a repository-local `.venv-lvs-gpu/bin/python`; the Stage C frozen command named the original host's PySR interpreter; the checked Stage C manifest stored absolute q/output roots; and README overstated that symbolic code/results were absent while understating the external artifact boundary.
+
+The controllers now launch child tasks with `sys.executable`, so the active environment is inherited rather than guessed from a directory name. The shell PDE waiter accepts `PYTHON_BIN` and otherwise uses `python`. The Stage C runner writes repository-relative q/output roots with `path_base: repository_root`; the checked manifest was normalized in the same non-scientific path fields; and the analyzer accepts `--q-root` for a restored upstream artifact location. Frozen metrics, formulas, gates, splits, seeds, and predictions were not changed. The manifest retains its execution-time plan/runner hashes and adds hashes for the post-run portable revisions plus an explicit `scientific_outputs_changed: false` marker. PySR 1.5.10 was verified from the historical environment metadata and is declared as the `symbolic` optional dependency; `scipy` and `h5py` are declared under `experiments`.
+
+README now distinguishes three levels: core/synthetic code that runs from a clean clone, compact Stage C summaries that can be inspected without raw artifacts, and full real/PDE/Stage C reruns that require external data or upstream q/checkpoint artifacts. A portability regression test scans only Git-tracked executables in a worktree (or all exported executables without `.git`) and rejects user-home or fixed historical-virtualenv bindings; a second test requires relative Stage C manifest paths. Full verification at this transition is 56 tests passed with only the two expected small-sample R-squared warnings. The staged candidate tree was exported without `.git` or ignored local files and passed the same 56 tests; its CLI listed the tracked expression library and completed a two-epoch CPU workflow smoke with all artifacts written under the supplied output root. Large datasets and omitted raw run artifacts remain external by design; do not claim that cloning this branch alone reproduces all paper experiments.

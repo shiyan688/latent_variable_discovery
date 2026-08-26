@@ -41,7 +41,7 @@ from scripts.run_iclr_synthetic_calibration_study import (
     _true_q_metrics,
 )
 
-PYTHON = PROJECT_ROOT / ".venv-lvs-gpu" / "bin" / "python"
+PYTHON = Path(sys.executable)
 DEFAULT_ROOT = PROJECT_ROOT / "runs" / "burgers_latent_poc_20260809"
 SCHEMA_VERSION = 1
 

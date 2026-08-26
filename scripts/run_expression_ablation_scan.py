@@ -61,7 +61,7 @@ def main() -> None:
     for setting in settings:
         setting_root = output_root / setting.name
         cmd = [
-            str(PROJECT_ROOT / ".venv-lvs-gpu" / "bin" / "python"),
+            sys.executable,
             str(PROJECT_ROOT / "scripts" / "run_expression_qdim_torch_grid.py"),
             "--library-csv",
             str(resolve(args.library_csv)),

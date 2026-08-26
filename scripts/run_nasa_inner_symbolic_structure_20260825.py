@@ -516,8 +516,9 @@ def main() -> None:
         support_order_column=args.support_order_column,
     )
     config = {
-        "q_root": str(q_root),
-        "output_root": str(output_root),
+        "path_base": "repository_root",
+        "q_root": str(q_root.relative_to(PROJECT_ROOT)),
+        "output_root": str(output_root.relative_to(PROJECT_ROOT)),
         "condition_columns": condition_columns,
         "functional_columns": functional_columns,
         "support_ratio": args.support_ratio,

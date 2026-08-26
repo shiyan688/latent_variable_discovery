@@ -5,12 +5,13 @@ from __future__ import annotations
 import argparse
 import json
 import subprocess
+import sys
 import time
 from datetime import datetime, timezone
 from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
-PYTHON = PROJECT_ROOT / ".venv-lvs-gpu" / "bin" / "python"
+PYTHON = Path(sys.executable)
 CAMPAIGN_ROOT = PROJECT_ROOT / "runs" / "extended_15h_campaign_20260809"
 OUTPUT_ROOT = PROJECT_ROOT / "runs" / "extended_15h_analysis_20260810"
 STATUS_PATH = CAMPAIGN_ROOT / "analysis_watcher_status.json"

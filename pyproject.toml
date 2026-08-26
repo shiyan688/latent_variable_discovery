@@ -20,6 +20,8 @@ dependencies = [
 [project.optional-dependencies]
 kan = ["pykan>=0.2"]
 dev = ["pytest>=8.0"]
+experiments = ["h5py>=3.8", "scipy>=1.10"]
+symbolic = ["pysr==1.5.10"]
 
 [project.scripts]
 lvs-workflow      = "lvs.workflows.single:main"

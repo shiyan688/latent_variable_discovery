@@ -49,7 +49,7 @@ from lvs.core.pipeline import (
 )
 
 
-PYTHON = PROJECT_ROOT / ".venv-lvs-gpu" / "bin" / "python"
+PYTHON = Path(sys.executable)
 DEFAULT_ROOT = PROJECT_ROOT / "runs" / "q_knn_reliability_selector_confirm_20260822"
 PLAN_PATH = PROJECT_ROOT / "Q_KNN_RELIABILITY_SELECTOR_PLAN_20260822.md"
 GPU_MEMORY_THRESHOLD_MIB = 128

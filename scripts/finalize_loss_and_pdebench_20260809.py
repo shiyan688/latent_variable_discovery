@@ -5,12 +5,13 @@ from __future__ import annotations
 import argparse
 import json
 import subprocess
+import sys
 import time
 from datetime import datetime, timezone
 from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
-PYTHON = PROJECT_ROOT / ".venv-lvs-gpu" / "bin" / "python"
+PYTHON = Path(sys.executable)
 SYNTHETIC_ROOT = PROJECT_ROOT / "runs" / "loss_component_ablation_synthetic_20260809"
 REAL_ROOT = PROJECT_ROOT / "runs" / "loss_component_ablation_real_20260809"
 PDE_ROOT = PROJECT_ROOT / "runs" / "pdebench_burgers_latent_20260809"

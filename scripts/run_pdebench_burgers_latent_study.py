@@ -52,7 +52,7 @@ from lvs.core.pipeline import (
 )
 from scripts.run_iclr_calibration_study import CalibrationStrategy, stable_hash
 
-PYTHON = PROJECT_ROOT / ".venv-lvs-gpu" / "bin" / "python"
+PYTHON = Path(sys.executable)
 DEFAULT_DATA = PROJECT_ROOT / "data" / "external" / "pdebench" / "1D_Burgers_Sols_Nu0.02.hdf5"
 DEFAULT_ROOT = PROJECT_ROOT / "runs" / "pdebench_burgers_latent_20260809"
 SCHEMA_VERSION = 1

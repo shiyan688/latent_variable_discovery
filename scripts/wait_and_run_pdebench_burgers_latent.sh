@@ -2,7 +2,7 @@
 set -euo pipefail
 
 repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-python_bin="${repo_root}/.venv-lvs-gpu/bin/python"
+python_bin="${PYTHON_BIN:-python}"
 runner="${repo_root}/scripts/run_pdebench_burgers_latent_study.py"
 data_path="${repo_root}/data/external/pdebench/1D_Burgers_Sols_Nu0.02.hdf5"
 output_root="${repo_root}/runs/pdebench_burgers_latent_20260809"

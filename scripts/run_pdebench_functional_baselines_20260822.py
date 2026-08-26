@@ -37,7 +37,7 @@ from lvs.core.metrics import macro_prediction_metrics, reference_scaled_predicti
 from lvs.core.pipeline import split_support_query_indices
 
 
-PYTHON = PROJECT_ROOT / ".venv-lvs-gpu" / "bin" / "python"
+PYTHON = Path(sys.executable)
 SOURCE_ROOT = PROJECT_ROOT / "runs" / "pdebench_burgers_latent_20260809"
 ANCHOR_ROOT = PROJECT_ROOT / "runs" / "matched_1000ep_real_pde_20260817" / "pdebench"
 DEFAULT_ROOT = PROJECT_ROOT / "runs" / "pdebench_functional_baselines_20260822"

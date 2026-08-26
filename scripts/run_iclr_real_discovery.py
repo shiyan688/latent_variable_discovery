@@ -45,7 +45,7 @@ from lvs.core.pipeline import (
     train_latent_q_model,
 )
 
-PYTHON = PROJECT_ROOT / ".venv-lvs-gpu" / "bin" / "python"
+PYTHON = Path(sys.executable)
 DEFAULT_ROOT = PROJECT_ROOT / "runs" / "iclr_real_discovery"
 
 

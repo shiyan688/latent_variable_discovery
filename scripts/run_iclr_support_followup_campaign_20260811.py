@@ -7,6 +7,7 @@ import hashlib
 import json
 import os
 import subprocess
+import sys
 import time
 from dataclasses import asdict
 from pathlib import Path
@@ -15,7 +16,7 @@ from typing import Any
 import run_iclr_support_encoder_campaign_20260811 as base
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
-PYTHON = PROJECT_ROOT / ".venv-lvs-gpu" / "bin" / "python"
+PYTHON = Path(sys.executable)
 DEFAULT_ROOT = PROJECT_ROOT / "runs" / "iclr_support_followup_20260811"
 DATASETS = (
     ("nasa_battery_capacity", PROJECT_ROOT / "data" / "real_datasets2" / "prepared" / "prepared_datasets.json", 8),
