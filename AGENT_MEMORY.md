@@ -1,7 +1,7 @@
 ---
 document_type: agent_handoff_memory
 project: latent_variable_search
-last_updated: 2026-08-26 15:39 CST
+last_updated: 2026-08-26 15:44 CST
 current_branch: research/latent-q-stagec-20260826
 base_commit: 2b13869
 live_status_source: runs/nasa_battery_reviewer_clean_inner_symbolic_20260825/status.json
@@ -920,3 +920,5 @@ The user authorized synchronizing the current research state to a new remote bra
 The snapshot scope is source code, experiment/analyzer scripts, tests, the explicit handoff and research reports, and the compact frozen Stage C evidence chain. For Stage C this includes the 90-cell consolidated results, cell-level formula diagnostics, manifest/status, integrity audit, gate decision, paired/method/motif summaries, and beginner-readable analysis. Per-cell predictions, Pareto fronts, checkpoints, downloaded datasets, logs, local environments, and the broader generated `runs/` tree remain ignored. This boundary keeps the branch reviewable while preserving the numbers needed to audit the terminal Stage C claims.
 
 Pre-commit verification on the snapshot worktree completed with `54 passed` under `.venv-lvs-gpu`; the only warnings were the expected undefined R-squared values for fewer than two samples. The test fixture was minimally updated to carry the production-default `support_split_mode="random"` argument introduced by the real-data runner.
+
+Remote synchronization completed at 2026-08-26 15:44 CST. Snapshot commit `0c3eab6` was pushed to `origin/research/latent-q-stagec-20260826` at `git@github.com:shiyan688/latent_variable_discovery.git`, and the local branch now tracks that remote branch.
