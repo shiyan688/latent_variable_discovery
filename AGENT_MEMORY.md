@@ -1,7 +1,7 @@
 ---
 document_type: agent_handoff_memory
 project: latent_variable_search
-last_updated: 2026-08-26 16:17 CST
+last_updated: 2026-08-26 21:50 CST
 current_branch: research/latent-q-stagec-20260826
 base_commit: 2b13869
 live_status_source: runs/nasa_battery_reviewer_clean_inner_symbolic_20260825/status.json
@@ -930,3 +930,94 @@ After the remote snapshot, the user requested a portability audit and authorized
 The controllers now launch child tasks with `sys.executable`, so the active environment is inherited rather than guessed from a directory name. The shell PDE waiter accepts `PYTHON_BIN` and otherwise uses `python`. The Stage C runner writes repository-relative q/output roots with `path_base: repository_root`; the checked manifest was normalized in the same non-scientific path fields; and the analyzer accepts `--q-root` for a restored upstream artifact location. Frozen metrics, formulas, gates, splits, seeds, and predictions were not changed. The manifest retains its execution-time plan/runner hashes and adds hashes for the post-run portable revisions plus an explicit `scientific_outputs_changed: false` marker. PySR 1.5.10 was verified from the historical environment metadata and is declared as the `symbolic` optional dependency; `scipy` and `h5py` are declared under `experiments`.
 
 README now distinguishes three levels: core/synthetic code that runs from a clean clone, compact Stage C summaries that can be inspected without raw artifacts, and full real/PDE/Stage C reruns that require external data or upstream q/checkpoint artifacts. A portability regression test scans only Git-tracked executables in a worktree (or all exported executables without `.git`) and rejects user-home or fixed historical-virtualenv bindings; a second test requires relative Stage C manifest paths. Full verification at this transition is 56 tests passed with only the two expected small-sample R-squared warnings. The staged candidate tree was exported without `.git` or ignored local files and passed the same 56 tests; its CLI listed the tracked expression library and completed a two-epoch CPU workflow smoke with all artifacts written under the supplied output root. Large datasets and omitted raw run artifacts remain external by design; do not claim that cloning this branch alone reproduces all paper experiments.
+
+## 36. Completed support-matched q interface diagnostic (2026-08-26 16:38 CST)
+
+The next independently frozen diagnostic is `NASA_SUPPORT_MATCHED_Q_DIAGNOSTIC_PLAN_20260826.md`. It reuses all 30 completed inner-q checkpoints without retraining the decoder. Each meta-fit entity is recalibrated from its earliest 30% target rows using a leave-one-entity-out train-q prior; structure-validation q uses the same prefix protocol and all eight meta-fit embeddings as its prior. It saves raw/functional shift, calibration dispersion, full-curve-to-prefix q displacement, q-manifold distance, and support-Jacobian singular values/condition/effective rank. Query-target perturbation must leave q unchanged.
+
+The predeclared advancement gate requires 30/30 integrity and exact held-out reproduction, at least a 50% reduction of the continuity raw-q median max-|z| from 22.1915, continuity functional median max-|z| at most 3.0, and at least 12/15 continuity functional cells at most 6.0. Jacobian conditioning is diagnostic only. No symbolic Stage C2 or decoder modification is automatic.
+
+A non-counted single-checkpoint GPU smoke passed: leakage difference 0, saved-q reproduction maximum `9.31e-10`, NRMSE difference `1.05e-7`, matched raw/functional max-|z| 6.328/2.217, Jacobian median smallest singular value 0.1111, median condition number 181.18, and median effective rank 4. The full 30-cell matrix was then launched at 16:31 CST after host `nvidia-smi` showed GPUs 0 and 7 at 0 MiB/0%; GPUs 1--6 were occupied by unrelated jobs.
+
+Terminal reconciliation found 30/30 successful cells, exact 8/5 entity counts, maximum query-target leakage difference zero, maximum saved-q reproduction error `1.192e-7`, and maximum NRMSE reproduction difference `1.668e-7`. Integrity and reproduction gates passed. The frozen shift gates failed, so the diagnostic does **not** advance directly to Stage C2. For continuity q, support matching reduces median raw max-|z| from 22.1915 to 9.7086 and functional max-|z| from 7.3658 to 4.2823, but the functional median remains above 3.0 and only 11/15 cells are at most 6.0 rather than the required 12. MSE gives raw/functional medians 9.4246/4.8911 and 13/15 functional-safe cells.
+
+The remaining failure is more consistent with off-manifold calibration than local rank collapse. Across all 30 cells, functional shift has Spearman 0.572 with nearest support-matched q-manifold distance (`p=0.000959`) but only 0.218 with support-Jacobian condition number (`p=0.247`). At the entity level the corresponding correlations are 0.467 (`p=1.75e-9`) and 0.031 (`p=0.711`). Jacobians retain median effective rank 4, although continuity condition numbers remain high (cell-median 137.13). The worst continuity cells are concentrated in B0039 on inner split 2 and B0033 on split 1, and they also have large nearest-manifold q distances. This motivates a convex-support parameterization rather than relaxed gates.
+
+Source-of-truth artifacts:
+
+| Purpose | Path |
+|---|---|
+| Frozen plan | `NASA_SUPPORT_MATCHED_Q_DIAGNOSTIC_PLAN_20260826.md` |
+| Terminal status and gates | `runs/nasa_support_matched_q_diagnostic_20260826/{status,gate_decision}.json` |
+| Cell summaries and raw q/Jacobians | `runs/nasa_support_matched_q_diagnostic_20260826/{all_cells,all_support_matched_q,all_support_jacobians}.csv` |
+| Readable report | `runs/nasa_support_matched_q_diagnostic_20260826/DIAGNOSTIC_REPORT.md` |
+
+## 37. Completed convex-support q diagnostic (2026-08-26 16:51 CST)
+
+The independently frozen next experiment is `NASA_CONVEX_SUPPORT_Q_DIAGNOSTIC_PLAN_20260826.md`. It keeps all 30 decoders fixed and constrains each structure-validation q to `softmax(alpha) @ Q_anchor`, where the eight anchors are the same cell's support-matched meta-fit q values. Only the earliest 30% support targets optimize alpha; query targets remain scoring-only. This is the smallest direct test of the observed off-manifold failure and preserves an explicit four-dimensional q rather than switching methods.
+
+Advancement requires 30/30 integrity, exact simplex and leakage checks, all 15 continuity raw-q shifts at most 3.0, the unchanged functional median/tail thresholds of 3.0 and 12/15 at most 6.0, and prediction retention: continuity median NRMSE within 5% of the unconstrained support-matched comparator with at least 10/15 per-cell ratios at most 1.10. No threshold will be lowered after outcomes are observed, and passing would authorize only a separately frozen bounded symbolic Stage C2.
+
+Static compilation, CLI checks, `git diff --check`, and the full 56-test suite passed before the first cell. A non-counted continuity inner0/seed0 smoke then passed all structural checks: 8 anchors, 5 validation entities, zero query leakage, simplex error `7.03e-8`, positive weights, raw/functional max-|z| 2.192/2.307, and effective-anchor median 1.775. Its convex NRMSE is 1.9426 versus 1.6294 unconstrained (ratio 1.192), which is an unfavorable early predictive observation but is not a gate decision; the full frozen 15-cell continuity distribution must decide retention.
+
+Terminal reconciliation found 30/30 successful cells and **3/4 frozen gates passed**. Integrity, simplex containment, and functional shift all pass. Continuity raw max-|z| has median/maximum 2.321/2.547; functional max-|z| is 2.351/2.542, so all 15/15 cells meet the functional tail threshold. MSE gives raw 1.824/2.426 and functional 1.664/2.125. Thus a support-only q can be kept in a safe coordinate regime without changing the decoder.
+
+Prediction retention fails decisively. Continuity convex NRMSE has median 1.696 versus 1.193 for unconstrained support-matched q, the per-cell ratio median is 1.213, and only 6/15 cells stay within 10%; the frozen requirements were a median within 5% and at least 10/15 retained cells. MSE similarly worsens from 0.9175 to 1.197 with only 5/15 retained cells. Therefore this exact convex-support calibration does not advance to Stage C2.
+
+Failure diagnosis identifies a specific optimization/parameterization confound rather than a generic rejection of bounded q. The near-one-hot best-anchor initialization is selected for 61/75 continuity entities and 56/75 MSE entities. Continuity entity-level effective-anchor count has median 1.0003 and cell-level median 1.0003; the method often degenerates into selecting one training battery. Performance is split-dependent: continuity retains 1/5, 5/5, and 0/5 cells on inner0/inner1/inner2. A next repair may test deterministic minimum-change coordinate bounding, but it must be frozen before inspecting its outcomes and treated as sequential development evidence.
+
+Source-of-truth artifacts:
+
+| Purpose | Path |
+|---|---|
+| Frozen plan | `NASA_CONVEX_SUPPORT_Q_DIAGNOSTIC_PLAN_20260826.md` |
+| Terminal status and gates | `runs/nasa_convex_support_q_diagnostic_20260826/{status,gate_decision}.json` |
+| Cell/q/weight/prediction tables | `runs/nasa_convex_support_q_diagnostic_20260826/{all_cells,all_convex_q,all_convex_weights,all_query_predictions}.csv` |
+| Readable report | `runs/nasa_convex_support_q_diagnostic_20260826/DIAGNOSTIC_REPORT.md` |
+
+## 38. Completed support-box q diagnostic (2026-08-26 21:14 CST)
+
+The next sequential-development protocol is frozen in `NASA_SUPPORT_BOX_Q_DIAGNOSTIC_PLAN_20260826.md`. It removes the convex softmax/anchor-selection confound: each already audited, support-calibrated structure-validation q is changed by only a coordinate-wise clip to the minimum/maximum of the same cell's eight support-matched meta-fit q anchors. There is no fitted hyperparameter, new access to targets, or decoder change. Because prior outcomes on these 30 inner cells motivated the hypothesis, this can select a repair for later evaluation but is not independent confirmation.
+
+The four frozen gates retain the exact convex diagnostic criteria: 30/30 finite integrity with zero upstream leakage and box violation, all continuity raw shifts at most 3.0, continuity functional median at most 3.0 with at least 12/15 cells at most 6.0, and prediction retention within 5% in median with at least 10/15 per-cell ratios at most 1.10. Passing would authorize only a separately frozen bounded symbolic Stage C2; failure ends this exact zero-margin box without widening it on these cells.
+
+Compilation, CLI checks, `git diff --check`, and 56 tests passed before execution. At the pre-smoke refresh, the extended campaign remained terminal, no related process/tmux session existed, the formal output root was absent, and physical GPUs 0, 6, and 7 were empty; cards 1--5 were occupied by unrelated work. A non-counted continuity inner0/seed0 smoke on GPU 0 passed structural checks: 8/5 entities, zero upstream leakage and box violation, 55% coordinates clipped, raw/functional max-|z| 2.192/1.748. Prediction worsened from NRMSE 1.6294 to 2.0083 (ratio 1.233); this is an unfavorable single-cell observation, not the frozen 15-cell gate decision.
+
+The formal matrix completed 30/30 with **3/4 gates passed** and does not advance. Continuity raw max-|z| has median/maximum 2.276/2.547 and functional max-|z| 2.436/5.549, so geometry and all 15 functional-tail cells pass. Prediction retention fails: median NRMSE is 1.702 versus 1.193 unconstrained, median ratio 1.208, and only 6/15 cells remain within 10%. MSE gives 1.145 versus 0.9175, ratio 1.243, and 6/15 retained. Median coordinate clip fraction is 0.60 for both losses.
+
+Durable conclusion: two materially different post-training constraints—convex mixtures and minimum-change coordinate boxes—both eliminate q coordinate extrapolation but produce nearly the same prediction penalty and split-specific behavior. Do not tune a wider box or convex regularizer on these cells. The stronger diagnosis is that the decoder was trained to use full-curve embeddings but evaluated with prefix-only inferred q; post-hoc coordinate repair cannot change that learned dependency. The next justified candidate must align the q information pathway during training.
+
+Source-of-truth artifacts: `NASA_SUPPORT_BOX_Q_DIAGNOSTIC_PLAN_20260826.md` and `runs/nasa_support_box_q_diagnostic_20260826/{status,gate_decision,all_cells,method_summary,DIAGNOSTIC_REPORT}.{json,csv,md}` as applicable.
+
+## 39. Completed information-matched prefix-q training pilot (2026-08-26 21:37 CST)
+
+The frozen sequential-development plan is `NASA_PREFIX_Q_TRAINING_PILOT_PLAN_20260826.md`. The new isolated methods `prefix_q_mse_step1` and `prefix_q_continuity_step1` use alternating blocks: q is updated first from only the earliest 30% rows per training entity, then theta is updated from the complete batch with q frozen. Continuity response-distance targets are also computed only from prefix rows. Per batch theta and q each receive one step, matching old step1 per-parameter update counts, while two separate backward passes expose the added compute honestly.
+
+The matrix is the same three 8/5 inner splits × five seeds × two losses at q=4 and 1,000 epochs. Advancement requires 30/30 integrity, continuity prediction retention within the old support-matched comparator, raw/functional interface safety, and cross-seed q/functional stability. Because these inner cells have already informed method design, even a pass is development evidence and authorizes only bounded Stage C2, not an independent claim.
+
+The implementation adds only the new prefix q-training fields/path and two method names. A dedicated unit test verifies q-first/theta-second phase order, equal block steps, two backward passes, and 26 processed examples for a 20-row two-entity example with six prefix rows. Full verification is 57 tests passed with the same two expected small-sample R2 warnings; compile, `git diff --check`, and a 30-cell dry-run also passed. A non-counted five-epoch GPU smoke passed with exact config (`alternating`, ratio 0.3, order feature 0, continuity 0.05), 15/15 theta/q steps, 30 backward passes, finite NRMSE, exact 8/5 q rows, and every checkpoint/q/prediction/geometry artifact present.
+
+Formal training and frozen functional analysis completed 30/30 with zero launcher failures, 30 metadata records, and all aggregate tables. The frozen decision is **1/4 PASS; DO NOT ADVANCE**. Integrity passed. Prediction retention failed by the absolute-median clause: prefix continuity median NRMSE is 1.387 versus 1.193 old support-matched, although the paired ratio median is favorable at 0.968 and exactly 10/15 cells are within 10%. The method improves the old cell in 10/15 direct pairs but has five large regressions, so it is a promising unstable mechanism rather than a retained predictor.
+
+Interface safety fails: continuity train-to-validation raw-q max-|z| has median/maximum 8.815/19.436 and decoder-functional max-|z| 3.389/12.840. MSE gives 6.378/15.020 and 3.841/6.854. Representation stability partly survives: continuity q-distance cross-seed median-of-split-medians is 0.980 with a 0.945 floor; cycle-1 capacity is 0.726 with a 0.690 floor. Early fade has median-of-split-medians 0.750 but one split is -0.119, failing the frozen 0.50 floor.
+
+Durable training-dynamics conclusion: aligning the target information set alone does not align the optimization pathway. Train q uses Adam at lr 0.001 while co-evolving with theta for roughly 3,000 q steps; held-out q uses lr 0.05 for 200+50 steps against a frozen decoder. The high cross-seed q-distance stability alongside out-of-range validation q and one unstable functional mapping is consistent with calibration-scale/gauge mismatch, not generic absence of entity information. Do not discard the 10/15 paired improvements, but do not promote the method or relax its gates.
+
+Source-of-truth artifacts:
+
+| Purpose | Path |
+|---|---|
+| Frozen plan | `NASA_PREFIX_Q_TRAINING_PILOT_PLAN_20260826.md` |
+| Raw cells and ledger | `runs/nasa_prefix_q_training_pilot_20260826/**/result.json`, `launcher_status.jsonl` |
+| Functional analysis | `runs/nasa_prefix_q_training_pilot_20260826/functional_coordinate_analysis/` |
+| Frozen cells/gates/report | `runs/nasa_prefix_q_training_pilot_20260826/{pilot_cells.csv,gate_decision.json,PREFIX_Q_TRAINING_REPORT.md}` |
+
+## 40. Active meta-selected soft q-prior diagnostic (2026-08-26 21:46 CST)
+
+The next protocol is frozen in `NASA_META_SELECTED_Q_PRIOR_PLAN_20260826.md` using the academic-research-suite experiment-agent boundary. For each prefix-q checkpoint it scores the fixed grid `{0, 0.001, 0.01, 0.1, 1}` by leave-one-entity-out calibration on all eight meta-fit entities. Selection uses only the calibration-internal holdout inside each entity's earliest 30% support; later meta-fit targets and all structure-validation query targets are excluded. The eight selected support-calibrated meta-fit q values then define the prior population for the five structure-validation calibrations. A +123.456 query perturbation audits that selected q is unchanged.
+
+Advancement retains the prediction/interface/stability gates from the prefix-q pilot. This stage tests whether a support-only selected soft standardized prior can remove the large calibration tails without the prediction loss of convex/box projection. It remains sequential inner-split development, not independent confirmation.
+
+Static compilation, CLI checks, `git diff --check`, and 57 tests passed. At 21:44 CST no GPU was empty: physical 0/7 had new ~72.5 GiB VLLM workers, 6 had a ~24.9 GiB sglang worker, and 1--5 were also occupied by unrelated jobs. The formal root remained absent and no formal process was launched. A non-counted CPU smoke first exposed a summary-only DataFrame selection bug; the minimal fix changed functional-shift calculation to use the already merged selected-q table. The rerun passed: 5/5 weights scored, 8/5 entities, zero query leakage, selected weight 0, raw/functional max-|z| 3.985/1.078, and selected validation NRMSE 1.3661 versus 1.3703 prefix-q no-prior. These values are structural/early observations only. Formal execution must wait for a fresh empty-card check and must not claim a utilization-zero but memory-occupied card.
+
+At 21:50 CST a second host-level snapshot still found no empty card: GPUs 0/1/7 each used about 72.4--72.6 GiB, GPUs 2/3 about 70.9 GiB, GPUs 4/5 about 55.8 GiB, and GPU 6 about 24.9 GiB. The utilization-zero readings on 0/1/6/7 do not make those cards available. No formal prior cell or waiting controller was started. The beginner-readable main report now contains a four-row causal comparison of support matching, convex bounding, coordinate-box bounding, and prefix-q training; compact terminal summaries for all four completed stages are explicitly included by `.gitignore` while raw checkpoints, predictions, and logs remain local.

@@ -1,0 +1,53 @@
+{
+  "created_at": "2026-08-26T13:24:05.561467+00:00",
+  "protocol": "group-held-out labels; prefix support/query split within each test label",
+  "prepared_summaries": [
+    "data/real_datasets2/prepared/nasa_battery_reviewer_clean_20260825/inner_prepared_datasets.json"
+  ],
+  "datasets": [
+    "nasa_battery_capacity_reviewer_clean_inner0",
+    "nasa_battery_capacity_reviewer_clean_inner1",
+    "nasa_battery_capacity_reviewer_clean_inner2"
+  ],
+  "methods": [
+    "prefix_q_continuity_step1",
+    "prefix_q_mse_step1"
+  ],
+  "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "q_dims": [
+    4
+  ],
+  "gpus": [
+    "0",
+    "6",
+    "7"
+  ],
+  "gpu_memory_threshold_mib": 128,
+  "dispatch_policy": "dispatch only below the memory threshold; run each job once; never auto-retry",
+  "epochs": 1000,
+  "calibration_steps": 200,
+  "calibration_strategy": {
+    "init_mode": "prior_random",
+    "num_starts": 4,
+    "selection_ratio": 0.25,
+    "selection_min_rows": 24,
+    "refine_steps": 50,
+    "refine_only_after_selection": true
+  },
+  "support_ratio": 0.3,
+  "support_split_mode": "prefix",
+  "support_order_column": "discharge_index",
+  "max_train_per_label": 0,
+  "max_test_per_label": 0,
+  "subsample_seed": 20260825,
+  "method_q_training_split_modes": {
+    "prefix_q_continuity_step1": "prefix",
+    "prefix_q_mse_step1": "prefix"
+  }
+}

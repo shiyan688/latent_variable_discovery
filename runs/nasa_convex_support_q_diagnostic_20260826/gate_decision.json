@@ -1,0 +1,7 @@
+{
+  "gate_1_integrity": true,
+  "gate_2_convex_containment": true,
+  "gate_3_functional_shift": true,
+  "gate_4_prediction_retention": false,
+  "advance_to_bounded_symbolic_stage_c2": false
+}

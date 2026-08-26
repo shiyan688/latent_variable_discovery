@@ -1,0 +1,7 @@
+{
+  "gate_1_integrity": true,
+  "gate_2_reproduction": true,
+  "gate_3_continuity_shift": false,
+  "gate_4_continuity_tail": false,
+  "advance_to_bounded_symbolic_stage_c2": false
+}

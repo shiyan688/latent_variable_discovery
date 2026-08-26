@@ -157,6 +157,33 @@ class PipelineUnitTests(unittest.TestCase):
         counters = artifacts.optimization_counters
         self.assertEqual((counters.theta_steps, counters.q_steps, counters.backward_passes), (4, 4, 4))
 
+    def test_prefix_q_training_uses_only_entity_prefix_for_q_phase(self) -> None:
+        labels = np.repeat(np.arange(2), 10)
+        x = np.tile(np.arange(10, dtype=np.float32), 2).reshape(-1, 1)
+        y = (x[:, 0] + labels * 0.1).astype(np.float32)
+        artifacts = pipeline.train_latent_q_model(
+            pipeline.build_dataset_from_arrays(x, labels, y),
+            lambda input_dim: _TrackingLinear(input_dim),
+            LatentQConfig(
+                q_dim=1,
+                epochs=1,
+                batch_size=20,
+                optimization_schedule="alternating",
+                q_training_split_mode="prefix",
+                q_training_ratio=0.3,
+                q_training_order_feature_index=0,
+                latent_curve_continuity_weight=0.05,
+                early_stop_enabled=False,
+                device="cpu",
+                verbose=False,
+            ),
+        )
+        counters = artifacts.optimization_counters
+        self.assertEqual((counters.theta_steps, counters.q_steps), (1, 1))
+        self.assertEqual(counters.backward_passes, 2)
+        self.assertEqual(counters.examples_processed, 26)
+        self.assertEqual(artifacts.model.trainable_flags[:2], [False, True])
+
     def test_alternating_adaptive_weights_update_on_q_phase(self) -> None:
         labels = np.repeat(np.arange(3), 4)
         x = np.linspace(-1.0, 1.0, 12, dtype=np.float32).reshape(-1, 1)

@@ -57,6 +57,7 @@ class Method:
     weighting: str = "static"
     loss_preset: str = "mse"
     joint_steps_per_cycle: int = 2
+    q_training_split_mode: str = "all"
 
 
 METHODS = {
@@ -73,6 +74,19 @@ METHODS = {
             "latent",
             loss_preset="continuity",
             joint_steps_per_cycle=1,
+        ),
+        Method(
+            "prefix_q_mse_step1",
+            "latent",
+            schedule="alternating",
+            q_training_split_mode="prefix",
+        ),
+        Method(
+            "prefix_q_continuity_step1",
+            "latent",
+            schedule="alternating",
+            loss_preset="continuity",
+            q_training_split_mode="prefix",
         ),
         Method("joint_q_l2", "latent", loss_preset="q_l2"),
         Method("joint_calprior", "latent", loss_preset="calibration_prior"),
@@ -312,6 +326,7 @@ def run_job(args: argparse.Namespace) -> Path:
         "max_train_per_label": args.max_train_per_label,
         "max_test_per_label": args.max_test_per_label,
         "subsample_seed": args.subsample_seed,
+        "q_training_split_mode": method.q_training_split_mode,
     }
     run_dir = (
         args.output_root
@@ -348,7 +363,7 @@ def run_job(args: argparse.Namespace) -> Path:
     test_metrics_payload: dict[str, Any] = {}
 
     if method.kind == "latent":
-        config = _latent_config(args, method)
+        config = _latent_config(args, method, feature_columns)
         latent_config_payload = asdict(config)
         train_dataset = build_dataset_from_arrays(
             train_x, train_labels, train_y, feature_names=feature_columns
@@ -506,7 +521,15 @@ def run_job(args: argparse.Namespace) -> Path:
     return result_path
 
 
-def _latent_config(args: argparse.Namespace, method: Method) -> LatentQConfig:
+def _latent_config(
+    args: argparse.Namespace,
+    method: Method,
+    feature_columns: list[str] | None = None,
+) -> LatentQConfig:
+    q_training_order_feature_index = None
+    if method.q_training_split_mode == "prefix":
+        assert feature_columns is not None
+        q_training_order_feature_index = feature_columns.index(args.support_order_column)
     common = dict(
         q_dim=args.q_dim,
         epochs=args.epochs,
@@ -530,6 +553,9 @@ def _latent_config(args: argparse.Namespace, method: Method) -> LatentQConfig:
         joint_steps_per_cycle=method.joint_steps_per_cycle,
         theta_steps_per_cycle=1,
         q_steps_per_cycle=1,
+        q_training_split_mode=method.q_training_split_mode,
+        q_training_ratio=args.support_ratio if method.q_training_split_mode == "prefix" else 1.0,
+        q_training_order_feature_index=q_training_order_feature_index,
         loss_weighting=method.weighting,
         gradnorm_warmup_steps=5,
         gradnorm_interval=5,
@@ -820,6 +846,7 @@ def launch(args: argparse.Namespace) -> None:
                         "max_train_per_label": args.max_train_per_label,
                         "max_test_per_label": args.max_test_per_label,
                         "subsample_seed": args.subsample_seed,
+                        "q_training_split_mode": METHODS[method_name].q_training_split_mode,
                     }
                     if args.resume and _has_successful_result(
                         args.output_root,
@@ -862,6 +889,9 @@ def launch(args: argparse.Namespace) -> None:
         "max_train_per_label": args.max_train_per_label,
         "max_test_per_label": args.max_test_per_label,
         "subsample_seed": args.subsample_seed,
+        "method_q_training_split_modes": {
+            method: METHODS[method].q_training_split_mode for method in methods
+        },
     }
     (args.output_root / "experiment_manifest.json").write_text(
         json.dumps(manifest, ensure_ascii=False, indent=2), encoding="utf-8"

@@ -1,0 +1,3 @@
+method,q_dim,median_of_split_medians,min_split_median,max_split_median,splits
+prefix_q_continuity_step1,4,0.9800218938149972,0.944991789819376,0.9846743295019157,3
+prefix_q_mse_step1,4,0.6507936507936508,0.11795292829775589,0.7134646962233169,3

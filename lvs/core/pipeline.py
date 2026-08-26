@@ -81,6 +81,9 @@ class LatentQConfig:
     joint_steps_per_cycle: int = 1
     theta_lr: Optional[float] = None
     q_lr: Optional[float] = None
+    q_training_split_mode: str = "all"
+    q_training_ratio: float = 1.0
+    q_training_order_feature_index: Optional[int] = None
     # Diagnostic: record per-epoch gradient-norm statistics for the q embedding and
     # the decoder separately. Used to separate gradient-scale mismatch from latent
     # drift as the cause of poor latent recovery.
@@ -673,11 +676,33 @@ def train_latent_q_model(train_dataset: LatentQDataset, model_factory: ModelFact
     feature_tensor = torch.tensor(normalize_features(train_dataset.features, normalizer), dtype=torch.float32, device=device)
     target_tensor = torch.tensor(normalize_targets(train_dataset.targets, normalizer).reshape(-1, 1), dtype=torch.float32, device=device)
     label_tensor = torch.tensor(indexed_labels, dtype=torch.long, device=device)
+    q_training_mask = torch.ones(len(train_dataset.labels), dtype=torch.bool, device=device)
+    if config.q_training_split_mode == "prefix":
+        order_index = config.q_training_order_feature_index
+        assert order_index is not None
+        if order_index >= train_dataset.features.shape[1]:
+            raise ValueError("q_training_order_feature_index exceeds the feature dimension.")
+        q_training_mask = torch.zeros(len(train_dataset.labels), dtype=torch.bool, device=device)
+        for label_index in range(len(unique_labels)):
+            entity_indices = np.flatnonzero(indexed_labels == label_index)
+            order = np.argsort(
+                train_dataset.features[entity_indices, order_index], kind="stable"
+            )
+            support, _ = split_support_query_indices(
+                entity_indices[order],
+                config.q_training_ratio,
+                mode="prefix",
+                seed=config.seed,
+                label=unique_labels[label_index],
+            )
+            q_training_mask[
+                torch.tensor(support, dtype=torch.long, device=device)
+            ] = True
     feature_stats = _compute_label_feature_stats(feature_tensor, label_tensor, label_count=len(unique_labels), mode=config.latent_feature_stats_mode)
     feature_kernel = None
     if config.latent_feature_orthogonality_type in {"hsic", "nhsic"}:
         feature_kernel = _rbf_kernel_with_median_bandwidth(_standardize_columns(feature_stats)).detach()
-    curve_distances = _compute_label_curve_distance_matrix(feature_tensor, target_tensor.squeeze(1), label_tensor,
+    curve_distances = _compute_label_curve_distance_matrix(feature_tensor[q_training_mask], target_tensor[q_training_mask].squeeze(1), label_tensor[q_training_mask],
                                                             label_count=len(unique_labels), grid_size=config.latent_curve_continuity_grid_size)
 
     if config.optimization_schedule == "joint":
@@ -713,22 +738,41 @@ def train_latent_q_model(train_dataset: LatentQDataset, model_factory: ModelFact
         component_counts: dict[str, int] = {}
         for start in range(0, sample_count, batch_size):
             selection = permutation[start:start + batch_size]
-            batch = (feature_tensor[selection], target_tensor[selection], label_tensor[selection])
             if adversary is not None and adversary_optimizer is not None and adversary_targets is not None:
                 adversary_optimizer.zero_grad()
                 adversary_loss = nn.functional.mse_loss(adversary(_standardize_columns(embedding.weight.detach())), adversary_targets)
                 adversary_loss.backward()
                 counters.backward_passes += 1
                 adversary_optimizer.step()
-            phases = (("joint", joint_optimizer, config.joint_steps_per_cycle),) if config.optimization_schedule == "joint" else (
-                ("theta", theta_optimizer, config.theta_steps_per_cycle), ("q", q_optimizer, config.q_steps_per_cycle))
+            if config.optimization_schedule == "joint":
+                phases = (("joint", joint_optimizer, config.joint_steps_per_cycle),)
+            elif config.q_training_split_mode == "prefix":
+                phases = (
+                    ("q", q_optimizer, config.q_steps_per_cycle),
+                    ("theta", theta_optimizer, config.theta_steps_per_cycle),
+                )
+            else:
+                phases = (
+                    ("theta", theta_optimizer, config.theta_steps_per_cycle),
+                    ("q", q_optimizer, config.q_steps_per_cycle),
+                )
             for phase, optimizer, steps in phases:
                 assert optimizer is not None
                 for _ in range(steps):
+                    phase_selection = (
+                        selection[q_training_mask[selection]]
+                        if phase == "q"
+                        else selection
+                    )
+                    phase_batch = (
+                        feature_tensor[phase_selection],
+                        target_tensor[phase_selection],
+                        label_tensor[phase_selection],
+                    )
                     _set_requires_grad(tuple(model.parameters()), phase != "q")
                     _set_requires_grad(tuple(embedding.parameters()), phase != "theta")
-                    components = _loss_components(model=model, embedding=embedding, batch_features=batch[0],
-                        batch_targets=batch[1], batch_labels=batch[2], config=config, label_feature_stats=feature_stats,
+                    components = _loss_components(model=model, embedding=embedding, batch_features=phase_batch[0],
+                        batch_targets=phase_batch[1], batch_labels=phase_batch[2], config=config, label_feature_stats=feature_stats,
                         label_feature_kernel=feature_kernel,
                         label_curve_distances=curve_distances, adversary=adversary, adversary_targets=adversary_targets,
                         phase=phase)
@@ -766,7 +810,7 @@ def train_latent_q_model(train_dataset: LatentQDataset, model_factory: ModelFact
                             "q_over_theta": q_norm / theta_norm if theta_norm > 0 else float("nan"),
                         })
                     counters.backward_passes += 1
-                    counters.examples_processed += int(selection.numel())
+                    counters.examples_processed += int(phase_selection.numel())
                     optimizer.step()
                     if phase in {"joint", "theta"}: counters.theta_steps += 1
                     if phase in {"joint", "q"}: counters.q_steps += 1
@@ -1599,6 +1643,17 @@ def _validate_config(config: LatentQConfig) -> LatentQConfig:
         raise ValueError("latent_q_smoothness_epsilon must be positive.")
     if config.optimization_schedule not in {"joint", "alternating"}:
         raise ValueError("optimization_schedule must be one of: joint, alternating.")
+    if config.q_training_split_mode not in {"all", "prefix"}:
+        raise ValueError("q_training_split_mode must be one of: all, prefix.")
+    if config.q_training_split_mode == "prefix":
+        if config.optimization_schedule != "alternating":
+            raise ValueError("prefix q training requires alternating optimization.")
+        if not 0 < config.q_training_ratio < 1:
+            raise ValueError("q_training_ratio must be between 0 and 1 for prefix q training.")
+        if config.q_training_order_feature_index is None or config.q_training_order_feature_index < 0:
+            raise ValueError(
+                "q_training_order_feature_index is required for prefix q training."
+            )
     if config.theta_lr is not None and config.theta_lr <= 0:
         raise ValueError("theta_lr must be positive when provided.")
     if config.q_lr is not None and config.q_lr <= 0:
