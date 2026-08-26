@@ -1,0 +1,20 @@
+{
+  "status_completed_all": true,
+  "result_json_count": 90,
+  "prediction_csv_count": 90,
+  "pareto_front_count": 90,
+  "input_scaler_count": 90,
+  "status_line_count": 90,
+  "results_csv_rows": 90,
+  "unique_expected_cells": 90,
+  "unique_observed_cells": 90,
+  "cell_sets_equal": true,
+  "all_metrics_finite": true,
+  "all_predictions_finite": true,
+  "exact_8_5_entity_isolation": true,
+  "all_required_cell_artifacts_present": true,
+  "audited_q_sources": 30,
+  "max_query_target_feature_difference": 0.0,
+  "prefix_order_verified": true,
+  "passed": true
+}

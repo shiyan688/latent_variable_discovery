@@ -29,6 +29,7 @@ SCALAR_LHS_PATTERN = re.compile(r"^(?:y|x\d+)$")
 VARIABLE_CALL_PATTERN = re.compile(r"\b(?:x\d+|q\d+|y)\s*\(")
 RANGE_PATTERN = re.compile(r"^\s*([A-Za-z]\d+)\s*:\s*\[\s*([^,\]]+)\s*,\s*([^\]]+)\s*\]\s*$")
 MAP_PATTERN = re.compile(r"^\s*([A-Za-z]\d+)\s*=\s*(.+?)\s*$")
+GENERATOR_PROTOCOL_VERSION = 2
 
 
 @dataclass(frozen=True)
@@ -65,6 +66,8 @@ class GeneratedExpressionDataset:
     test_frame: pd.DataFrame
     latent_truth_frame: pd.DataFrame
     ground_truth_latent_dim: int
+    validation_frame: Optional[pd.DataFrame] = None
+    label_split_mode: str = "shared"
 
 
 def load_expression_library(csv_path: Path | str) -> list[ExpressionRecord]:
@@ -213,55 +216,103 @@ def sample_expression_dataset(
     noise_std: float = 0.0,
     seed: int = 42,
     max_attempts_per_row: int = 200,
+    label_split_mode: str = "shared",
+    validation_label_count: int = 0,
+    test_label_count: Optional[int] = None,
+    validation_samples_per_label: Optional[int] = None,
 ) -> GeneratedExpressionDataset:
+    """Generate expression data under a shared- or disjoint-label protocol.
+
+    The legacy defaults keep train/test labels shared. With
+    ``label_split_mode="disjoint"``, ``label_count`` is the number of training
+    labels and validation/test receive new labels with independent latent truth.
+    """
     if label_count <= 0:
         raise ValueError("label_count must be a positive integer.")
     if train_samples_per_label <= 0:
         raise ValueError("train_samples_per_label must be a positive integer.")
     if test_samples_per_label <= 0:
         raise ValueError("test_samples_per_label must be a positive integer.")
+    if label_split_mode not in {"shared", "disjoint"}:
+        raise ValueError("label_split_mode must be 'shared' or 'disjoint'.")
+    if validation_label_count < 0:
+        raise ValueError("validation_label_count must be non-negative.")
+    resolved_test_label_count = label_count if test_label_count is None else test_label_count
+    if resolved_test_label_count <= 0:
+        raise ValueError("test_label_count must be a positive integer.")
+    resolved_validation_samples = (
+        test_samples_per_label if validation_samples_per_label is None else validation_samples_per_label
+    )
+    if resolved_validation_samples <= 0:
+        raise ValueError("validation_samples_per_label must be positive.")
+    if label_split_mode == "shared" and (validation_label_count or test_label_count is not None):
+        raise ValueError("Separate validation/test label counts require label_split_mode='disjoint'.")
     if noise_std < 0:
         raise ValueError("noise_std must be non-negative.")
     if max_attempts_per_row <= 0:
         raise ValueError("max_attempts_per_row must be a positive integer.")
 
     rng = np.random.default_rng(seed)
-    latent_truth_rows: list[dict[str, float]] = []
+    latent_truth_rows: list[dict[str, float | str]] = []
     train_rows: list[dict[str, float]] = []
+    validation_rows: list[dict[str, float]] = []
     test_rows: list[dict[str, float]] = []
 
-    for label in range(1, label_count + 1):
-        latent_assignment = {
-            latent_var: _sample_uniform(task.variable_ranges[latent_var], rng)
-            for latent_var in task.latent_variables
-        }
-        latent_truth_rows.append({"label": label, **latent_assignment})
-        train_rows.extend(
-            _sample_split_rows(
-                label=label,
-                task=task,
-                latent_assignment=latent_assignment,
-                sample_count=train_samples_per_label,
-                noise_std=noise_std,
-                rng=rng,
-                max_attempts_per_row=max_attempts_per_row,
-            )
-        )
-        test_rows.extend(
-            _sample_split_rows(
-                label=label,
-                task=task,
-                latent_assignment=latent_assignment,
-                sample_count=test_samples_per_label,
-                noise_std=noise_std,
-                rng=rng,
-                max_attempts_per_row=max_attempts_per_row,
-            )
+    if label_split_mode == "shared":
+        split_specs = (("shared", range(1, label_count + 1), train_samples_per_label, train_rows),)
+    else:
+        train_labels = range(1, label_count + 1)
+        validation_start = label_count + 1
+        validation_labels = range(validation_start, validation_start + validation_label_count)
+        test_start = validation_start + validation_label_count
+        test_labels = range(test_start, test_start + resolved_test_label_count)
+        split_specs = (
+            ("train", train_labels, train_samples_per_label, train_rows),
+            ("validation", validation_labels, resolved_validation_samples, validation_rows),
+            ("test", test_labels, test_samples_per_label, test_rows),
         )
 
-    train_frame = pd.DataFrame(train_rows, columns=["label", *task.feature_columns, "target"])
-    test_frame = pd.DataFrame(test_rows, columns=["label", *task.feature_columns, "target"])
-    latent_truth_frame = pd.DataFrame(latent_truth_rows, columns=["label", *task.latent_variables])
+    assignments: dict[int, dict[str, float]] = {}
+    for split_name, labels, sample_count, destination in split_specs:
+        for label in labels:
+            latent_assignment = {
+                latent_var: _sample_uniform(task.variable_ranges[latent_var], rng)
+                for latent_var in task.latent_variables
+            }
+            assignments[label] = latent_assignment
+            latent_truth_rows.append({"split": split_name, "label": label, **latent_assignment})
+            destination.extend(
+                _sample_split_rows(
+                    label=label,
+                    task=task,
+                    latent_assignment=latent_assignment,
+                    sample_count=sample_count,
+                    noise_std=noise_std,
+                    rng=rng,
+                    max_attempts_per_row=max_attempts_per_row,
+                )
+            )
+
+    if label_split_mode == "shared":
+        for label in range(1, label_count + 1):
+            test_rows.extend(
+                _sample_split_rows(
+                    label=label,
+                    task=task,
+                    latent_assignment=assignments[label],
+                    sample_count=test_samples_per_label,
+                    noise_std=noise_std,
+                    rng=rng,
+                    max_attempts_per_row=max_attempts_per_row,
+                )
+            )
+
+    columns = ["label", *task.feature_columns, "target"]
+    train_frame = pd.DataFrame(train_rows, columns=columns)
+    test_frame = pd.DataFrame(test_rows, columns=columns)
+    validation_frame = pd.DataFrame(validation_rows, columns=columns) if validation_rows else None
+    truth_columns = ["label", *task.latent_variables] if label_split_mode == "shared" else ["split", "label", *task.latent_variables]
+    latent_truth_frame = pd.DataFrame(latent_truth_rows, columns=truth_columns)
 
     return GeneratedExpressionDataset(
         task=task,
@@ -269,6 +320,8 @@ def sample_expression_dataset(
         test_frame=test_frame,
         latent_truth_frame=latent_truth_frame,
         ground_truth_latent_dim=task.ground_truth_latent_dim,
+        validation_frame=validation_frame,
+        label_split_mode=label_split_mode,
     )
 
 
@@ -277,6 +330,7 @@ def save_generated_expression_dataset(
     output_dir: Path | str,
     *,
     train_filename: str = "train.csv",
+    validation_filename: str = "validation.csv",
     test_filename: str = "test.csv",
     latent_truth_filename: str = "latent_truth.csv",
     metadata_filename: str = "expression_metadata.json",
@@ -286,23 +340,29 @@ def save_generated_expression_dataset(
     output_path.mkdir(parents=True, exist_ok=True)
 
     train_path = output_path / train_filename
+    validation_path = output_path / validation_filename
     test_path = output_path / test_filename
     latent_truth_path = output_path / latent_truth_filename
     metadata_path = output_path / metadata_filename
 
     dataset.train_frame.to_csv(train_path, index=False, header=include_header)
+    if dataset.validation_frame is not None:
+        dataset.validation_frame.to_csv(validation_path, index=False, header=include_header)
     dataset.test_frame.to_csv(test_path, index=False, header=include_header)
     dataset.latent_truth_frame.to_csv(latent_truth_path, index=False)
     metadata_path.write_text(
         json.dumps(dataset_metadata(dataset), ensure_ascii=False, indent=2),
         encoding="utf-8",
     )
-    return {
+    paths = {
         "generated_train_csv": train_path,
         "generated_test_csv": test_path,
         "latent_truth_csv": latent_truth_path,
         "expression_metadata_json": metadata_path,
     }
+    if dataset.validation_frame is not None:
+        paths["generated_validation_csv"] = validation_path
+    return paths
 
 
 def dataset_metadata(dataset: GeneratedExpressionDataset) -> dict[str, Any]:
@@ -324,8 +384,25 @@ def dataset_metadata(dataset: GeneratedExpressionDataset) -> dict[str, Any]:
             symbol: [bounds[0], bounds[1]] for symbol, bounds in task.variable_ranges.items()
         },
         "train_row_count": int(len(dataset.train_frame)),
+        "validation_row_count": int(len(dataset.validation_frame)) if dataset.validation_frame is not None else 0,
         "test_row_count": int(len(dataset.test_frame)),
         "label_count": int(dataset.latent_truth_frame["label"].nunique()),
+        "train_label_count": int(dataset.train_frame["label"].nunique()),
+        "validation_label_count": (
+            int(dataset.validation_frame["label"].nunique())
+            if dataset.validation_frame is not None
+            else 0
+        ),
+        "test_label_count": int(dataset.test_frame["label"].nunique()),
+        "generator_protocol_version": GENERATOR_PROTOCOL_VERSION,
+        "label_split_mode": dataset.label_split_mode,
+        "train_labels": sorted(dataset.train_frame["label"].unique().tolist()),
+        "validation_labels": (
+            sorted(dataset.validation_frame["label"].unique().tolist())
+            if dataset.validation_frame is not None
+            else []
+        ),
+        "test_labels": sorted(dataset.test_frame["label"].unique().tolist()),
     }
 
 

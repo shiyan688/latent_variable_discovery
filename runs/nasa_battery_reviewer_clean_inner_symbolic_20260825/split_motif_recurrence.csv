@@ -1,0 +1,7 @@
+method,dataset,n,discharge_plus_functional,functional_slope_modulation
+joint_continuity_step1,nasa_battery_capacity_reviewer_clean_inner0,5,3,1
+joint_continuity_step1,nasa_battery_capacity_reviewer_clean_inner1,5,5,5
+joint_continuity_step1,nasa_battery_capacity_reviewer_clean_inner2,5,4,1
+joint_mse_step1,nasa_battery_capacity_reviewer_clean_inner0,5,3,0
+joint_mse_step1,nasa_battery_capacity_reviewer_clean_inner1,5,5,4
+joint_mse_step1,nasa_battery_capacity_reviewer_clean_inner2,5,3,2

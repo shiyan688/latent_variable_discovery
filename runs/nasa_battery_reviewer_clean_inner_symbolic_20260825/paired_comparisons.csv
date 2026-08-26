@@ -1,0 +1,6 @@
+candidate_method,candidate_regime,anchor_method,anchor_regime,n,wins,ties,losses,median_nrmse_delta,median_relative_delta
+joint_continuity_step1,condition_functional_q,baseline,condition_only,15,4,0,11,0.7702220267167789,0.7819761260641047
+joint_continuity_step1,condition_functional_q,baseline,condition_support_stats,15,4,0,11,0.5019866203413497,0.4858645879082253
+joint_continuity_step1,condition_functional_q,joint_continuity_step1,condition_raw_q,15,10,0,5,-0.5909305532250155,-0.25187553275770025
+joint_mse_step1,condition_functional_q,joint_mse_step1,condition_raw_q,15,7,0,8,0.091294551273433,0.10544208705669833
+joint_continuity_step1,condition_functional_q,joint_mse_step1,condition_functional_q,15,8,0,7,-0.12182835645970047,-0.13942380900560547

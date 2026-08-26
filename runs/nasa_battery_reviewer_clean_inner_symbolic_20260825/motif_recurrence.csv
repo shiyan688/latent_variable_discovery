@@ -1,0 +1,3 @@
+method,n,discharge_plus_functional,functional_slope_modulation,uses_exp,uses_division,uses_square_or_power
+joint_continuity_step1,15,12,7,3,8,3
+joint_mse_step1,15,11,6,6,10,6

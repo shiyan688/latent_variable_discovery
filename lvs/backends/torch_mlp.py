@@ -15,6 +15,7 @@ from lvs.core.pipeline import (
     OutputConfig,
     add_common_cli_arguments,
     build_dataset_from_arrays,
+    evaluate_latent_q_pipeline,
     load_csv_dataset,
     namespace_to_shared_configs,
     run_latent_q_pipeline,

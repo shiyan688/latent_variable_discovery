@@ -1,0 +1,605 @@
+{
+  "created_at": "2026-08-25 16:56:08 CST",
+  "plan": "NASA_INNER_SYMBOLIC_STRUCTURE_PLAN_20260825.md",
+  "plan_sha256": "11536789f4656ad8e2cbf72b6adc77317fea06ac0513ca8b5cfb10f506f46cd2",
+  "runner_sha256": "4b59e02c92d7fb3d56f955cde84de48ac5cb62a2636d45b86ab6ae2399b9201c",
+  "source_manifest": "runs/nasa_battery_reviewer_clean_inner_q_20260825/experiment_manifest.json",
+  "source_manifest_sha256": "e922e6615ae17c44764c705dd7dedc02eacb80708c97bc6b4d6ba01e960802d5",
+  "datasets": [
+    "nasa_battery_capacity_reviewer_clean_inner0",
+    "nasa_battery_capacity_reviewer_clean_inner1",
+    "nasa_battery_capacity_reviewer_clean_inner2"
+  ],
+  "methods": [
+    "joint_continuity_step1",
+    "joint_mse_step1"
+  ],
+  "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "regimes": [
+    "condition_only",
+    "condition_support_stats",
+    "condition_raw_q",
+    "condition_functional_q"
+  ],
+  "cells": [
+    {
+      "dataset": "nasa_battery_capacity_reviewer_clean_inner0",
+      "seed": 0,
+      "method": null,
+      "regime": "condition_only"
+    },
+    {
+      "dataset": "nasa_battery_capacity_reviewer_clean_inner0",
+      "seed": 0,
+      "method": null,
+      "regime": "condition_support_stats"
+    },
+    {
+      "dataset": "nasa_battery_capacity_reviewer_clean_inner0",
+      "seed": 0,
+      "method": "joint_continuity_step1",
+      "regime": "condition_raw_q"
+    },
+    {
+      "dataset": "nasa_battery_capacity_reviewer_clean_inner0",
+      "seed": 0,
+      "method": "joint_continuity_step1",
+      "regime": "condition_functional_q"
+    },
+    {
+      "dataset": "nasa_battery_capacity_reviewer_clean_inner0",
+      "seed": 0,
+      "method": "joint_mse_step1",
+      "regime": "condition_raw_q"
+    },
+    {
+      "dataset": "nasa_battery_capacity_reviewer_clean_inner0",
+      "seed": 0,
+      "method": "joint_mse_step1",
+      "regime": "condition_functional_q"
+    },
+    {
+      "dataset": "nasa_battery_capacity_reviewer_clean_inner0",
+      "seed": 1,
+      "method": null,
+      "regime": "condition_only"
+    },
+    {
+      "dataset": "nasa_battery_capacity_reviewer_clean_inner0",
+      "seed": 1,
+      "method": null,
+      "regime": "condition_support_stats"
+    },
+    {
+      "dataset": "nasa_battery_capacity_reviewer_clean_inner0",
+      "seed": 1,
+      "method": "joint_continuity_step1",
+      "regime": "condition_raw_q"
+    },
+    {
+      "dataset": "nasa_battery_capacity_reviewer_clean_inner0",
+      "seed": 1,
+      "method": "joint_continuity_step1",
+      "regime": "condition_functional_q"
+    },
+    {
+      "dataset": "nasa_battery_capacity_reviewer_clean_inner0",
+      "seed": 1,
+      "method": "joint_mse_step1",
+      "regime": "condition_raw_q"
+    },
+    {
+      "dataset": "nasa_battery_capacity_reviewer_clean_inner0",
+      "seed": 1,
+      "method": "joint_mse_step1",
+      "regime": "condition_functional_q"
+    },
+    {
+      "dataset": "nasa_battery_capacity_reviewer_clean_inner0",
+      "seed": 2,
+      "method": null,
+      "regime": "condition_only"
+    },
+    {
+      "dataset": "nasa_battery_capacity_reviewer_clean_inner0",
+      "seed": 2,
+      "method": null,
+      "regime": "condition_support_stats"
+    },
+    {
+      "dataset": "nasa_battery_capacity_reviewer_clean_inner0",
+      "seed": 2,
+      "method": "joint_continuity_step1",
+      "regime": "condition_raw_q"
+    },
+    {
+      "dataset": "nasa_battery_capacity_reviewer_clean_inner0",
+      "seed": 2,
+      "method": "joint_continuity_step1",
+      "regime": "condition_functional_q"
+    },
+    {
+      "dataset": "nasa_battery_capacity_reviewer_clean_inner0",
+      "seed": 2,
+      "method": "joint_mse_step1",
+      "regime": "condition_raw_q"
+    },
+    {
+      "dataset": "nasa_battery_capacity_reviewer_clean_inner0",
+      "seed": 2,
+      "method": "joint_mse_step1",
+      "regime": "condition_functional_q"
+    },
+    {
+      "dataset": "nasa_battery_capacity_reviewer_clean_inner0",
+      "seed": 3,
+      "method": null,
+      "regime": "condition_only"
+    },
+    {
+      "dataset": "nasa_battery_capacity_reviewer_clean_inner0",
+      "seed": 3,
+      "method": null,
+      "regime": "condition_support_stats"
+    },
+    {
+      "dataset": "nasa_battery_capacity_reviewer_clean_inner0",
+      "seed": 3,
+      "method": "joint_continuity_step1",
+      "regime": "condition_raw_q"
+    },
+    {
+      "dataset": "nasa_battery_capacity_reviewer_clean_inner0",
+      "seed": 3,
+      "method": "joint_continuity_step1",
+      "regime": "condition_functional_q"
+    },
+    {
+      "dataset": "nasa_battery_capacity_reviewer_clean_inner0",
+      "seed": 3,
+      "method": "joint_mse_step1",
+      "regime": "condition_raw_q"
+    },
+    {
+      "dataset": "nasa_battery_capacity_reviewer_clean_inner0",
+      "seed": 3,
+      "method": "joint_mse_step1",
+      "regime": "condition_functional_q"
+    },
+    {
+      "dataset": "nasa_battery_capacity_reviewer_clean_inner0",
+      "seed": 4,
+      "method": null,
+      "regime": "condition_only"
+    },
+    {
+      "dataset": "nasa_battery_capacity_reviewer_clean_inner0",
+      "seed": 4,
+      "method": null,
+      "regime": "condition_support_stats"
+    },
+    {
+      "dataset": "nasa_battery_capacity_reviewer_clean_inner0",
+      "seed": 4,
+      "method": "joint_continuity_step1",
+      "regime": "condition_raw_q"
+    },
+    {
+      "dataset": "nasa_battery_capacity_reviewer_clean_inner0",
+      "seed": 4,
+      "method": "joint_continuity_step1",
+      "regime": "condition_functional_q"
+    },
+    {
+      "dataset": "nasa_battery_capacity_reviewer_clean_inner0",
+      "seed": 4,
+      "method": "joint_mse_step1",
+      "regime": "condition_raw_q"
+    },
+    {
+      "dataset": "nasa_battery_capacity_reviewer_clean_inner0",
+      "seed": 4,
+      "method": "joint_mse_step1",
+      "regime": "condition_functional_q"
+    },
+    {
+      "dataset": "nasa_battery_capacity_reviewer_clean_inner1",
+      "seed": 0,
+      "method": null,
+      "regime": "condition_only"
+    },
+    {
+      "dataset": "nasa_battery_capacity_reviewer_clean_inner1",
+      "seed": 0,
+      "method": null,
+      "regime": "condition_support_stats"
+    },
+    {
+      "dataset": "nasa_battery_capacity_reviewer_clean_inner1",
+      "seed": 0,
+      "method": "joint_continuity_step1",
+      "regime": "condition_raw_q"
+    },
+    {
+      "dataset": "nasa_battery_capacity_reviewer_clean_inner1",
+      "seed": 0,
+      "method": "joint_continuity_step1",
+      "regime": "condition_functional_q"
+    },
+    {
+      "dataset": "nasa_battery_capacity_reviewer_clean_inner1",
+      "seed": 0,
+      "method": "joint_mse_step1",
+      "regime": "condition_raw_q"
+    },
+    {
+      "dataset": "nasa_battery_capacity_reviewer_clean_inner1",
+      "seed": 0,
+      "method": "joint_mse_step1",
+      "regime": "condition_functional_q"
+    },
+    {
+      "dataset": "nasa_battery_capacity_reviewer_clean_inner1",
+      "seed": 1,
+      "method": null,
+      "regime": "condition_only"
+    },
+    {
+      "dataset": "nasa_battery_capacity_reviewer_clean_inner1",
+      "seed": 1,
+      "method": null,
+      "regime": "condition_support_stats"
+    },
+    {
+      "dataset": "nasa_battery_capacity_reviewer_clean_inner1",
+      "seed": 1,
+      "method": "joint_continuity_step1",
+      "regime": "condition_raw_q"
+    },
+    {
+      "dataset": "nasa_battery_capacity_reviewer_clean_inner1",
+      "seed": 1,
+      "method": "joint_continuity_step1",
+      "regime": "condition_functional_q"
+    },
+    {
+      "dataset": "nasa_battery_capacity_reviewer_clean_inner1",
+      "seed": 1,
+      "method": "joint_mse_step1",
+      "regime": "condition_raw_q"
+    },
+    {
+      "dataset": "nasa_battery_capacity_reviewer_clean_inner1",
+      "seed": 1,
+      "method": "joint_mse_step1",
+      "regime": "condition_functional_q"
+    },
+    {
+      "dataset": "nasa_battery_capacity_reviewer_clean_inner1",
+      "seed": 2,
+      "method": null,
+      "regime": "condition_only"
+    },
+    {
+      "dataset": "nasa_battery_capacity_reviewer_clean_inner1",
+      "seed": 2,
+      "method": null,
+      "regime": "condition_support_stats"
+    },
+    {
+      "dataset": "nasa_battery_capacity_reviewer_clean_inner1",
+      "seed": 2,
+      "method": "joint_continuity_step1",
+      "regime": "condition_raw_q"
+    },
+    {
+      "dataset": "nasa_battery_capacity_reviewer_clean_inner1",
+      "seed": 2,
+      "method": "joint_continuity_step1",
+      "regime": "condition_functional_q"
+    },
+    {
+      "dataset": "nasa_battery_capacity_reviewer_clean_inner1",
+      "seed": 2,
+      "method": "joint_mse_step1",
+      "regime": "condition_raw_q"
+    },
+    {
+      "dataset": "nasa_battery_capacity_reviewer_clean_inner1",
+      "seed": 2,
+      "method": "joint_mse_step1",
+      "regime": "condition_functional_q"
+    },
+    {
+      "dataset": "nasa_battery_capacity_reviewer_clean_inner1",
+      "seed": 3,
+      "method": null,
+      "regime": "condition_only"
+    },
+    {
+      "dataset": "nasa_battery_capacity_reviewer_clean_inner1",
+      "seed": 3,
+      "method": null,
+      "regime": "condition_support_stats"
+    },
+    {
+      "dataset": "nasa_battery_capacity_reviewer_clean_inner1",
+      "seed": 3,
+      "method": "joint_continuity_step1",
+      "regime": "condition_raw_q"
+    },
+    {
+      "dataset": "nasa_battery_capacity_reviewer_clean_inner1",
+      "seed": 3,
+      "method": "joint_continuity_step1",
+      "regime": "condition_functional_q"
+    },
+    {
+      "dataset": "nasa_battery_capacity_reviewer_clean_inner1",
+      "seed": 3,
+      "method": "joint_mse_step1",
+      "regime": "condition_raw_q"
+    },
+    {
+      "dataset": "nasa_battery_capacity_reviewer_clean_inner1",
+      "seed": 3,
+      "method": "joint_mse_step1",
+      "regime": "condition_functional_q"
+    },
+    {
+      "dataset": "nasa_battery_capacity_reviewer_clean_inner1",
+      "seed": 4,
+      "method": null,
+      "regime": "condition_only"
+    },
+    {
+      "dataset": "nasa_battery_capacity_reviewer_clean_inner1",
+      "seed": 4,
+      "method": null,
+      "regime": "condition_support_stats"
+    },
+    {
+      "dataset": "nasa_battery_capacity_reviewer_clean_inner1",
+      "seed": 4,
+      "method": "joint_continuity_step1",
+      "regime": "condition_raw_q"
+    },
+    {
+      "dataset": "nasa_battery_capacity_reviewer_clean_inner1",
+      "seed": 4,
+      "method": "joint_continuity_step1",
+      "regime": "condition_functional_q"
+    },
+    {
+      "dataset": "nasa_battery_capacity_reviewer_clean_inner1",
+      "seed": 4,
+      "method": "joint_mse_step1",
+      "regime": "condition_raw_q"
+    },
+    {
+      "dataset": "nasa_battery_capacity_reviewer_clean_inner1",
+      "seed": 4,
+      "method": "joint_mse_step1",
+      "regime": "condition_functional_q"
+    },
+    {
+      "dataset": "nasa_battery_capacity_reviewer_clean_inner2",
+      "seed": 0,
+      "method": null,
+      "regime": "condition_only"
+    },
+    {
+      "dataset": "nasa_battery_capacity_reviewer_clean_inner2",
+      "seed": 0,
+      "method": null,
+      "regime": "condition_support_stats"
+    },
+    {
+      "dataset": "nasa_battery_capacity_reviewer_clean_inner2",
+      "seed": 0,
+      "method": "joint_continuity_step1",
+      "regime": "condition_raw_q"
+    },
+    {
+      "dataset": "nasa_battery_capacity_reviewer_clean_inner2",
+      "seed": 0,
+      "method": "joint_continuity_step1",
+      "regime": "condition_functional_q"
+    },
+    {
+      "dataset": "nasa_battery_capacity_reviewer_clean_inner2",
+      "seed": 0,
+      "method": "joint_mse_step1",
+      "regime": "condition_raw_q"
+    },
+    {
+      "dataset": "nasa_battery_capacity_reviewer_clean_inner2",
+      "seed": 0,
+      "method": "joint_mse_step1",
+      "regime": "condition_functional_q"
+    },
+    {
+      "dataset": "nasa_battery_capacity_reviewer_clean_inner2",
+      "seed": 1,
+      "method": null,
+      "regime": "condition_only"
+    },
+    {
+      "dataset": "nasa_battery_capacity_reviewer_clean_inner2",
+      "seed": 1,
+      "method": null,
+      "regime": "condition_support_stats"
+    },
+    {
+      "dataset": "nasa_battery_capacity_reviewer_clean_inner2",
+      "seed": 1,
+      "method": "joint_continuity_step1",
+      "regime": "condition_raw_q"
+    },
+    {
+      "dataset": "nasa_battery_capacity_reviewer_clean_inner2",
+      "seed": 1,
+      "method": "joint_continuity_step1",
+      "regime": "condition_functional_q"
+    },
+    {
+      "dataset": "nasa_battery_capacity_reviewer_clean_inner2",
+      "seed": 1,
+      "method": "joint_mse_step1",
+      "regime": "condition_raw_q"
+    },
+    {
+      "dataset": "nasa_battery_capacity_reviewer_clean_inner2",
+      "seed": 1,
+      "method": "joint_mse_step1",
+      "regime": "condition_functional_q"
+    },
+    {
+      "dataset": "nasa_battery_capacity_reviewer_clean_inner2",
+      "seed": 2,
+      "method": null,
+      "regime": "condition_only"
+    },
+    {
+      "dataset": "nasa_battery_capacity_reviewer_clean_inner2",
+      "seed": 2,
+      "method": null,
+      "regime": "condition_support_stats"
+    },
+    {
+      "dataset": "nasa_battery_capacity_reviewer_clean_inner2",
+      "seed": 2,
+      "method": "joint_continuity_step1",
+      "regime": "condition_raw_q"
+    },
+    {
+      "dataset": "nasa_battery_capacity_reviewer_clean_inner2",
+      "seed": 2,
+      "method": "joint_continuity_step1",
+      "regime": "condition_functional_q"
+    },
+    {
+      "dataset": "nasa_battery_capacity_reviewer_clean_inner2",
+      "seed": 2,
+      "method": "joint_mse_step1",
+      "regime": "condition_raw_q"
+    },
+    {
+      "dataset": "nasa_battery_capacity_reviewer_clean_inner2",
+      "seed": 2,
+      "method": "joint_mse_step1",
+      "regime": "condition_functional_q"
+    },
+    {
+      "dataset": "nasa_battery_capacity_reviewer_clean_inner2",
+      "seed": 3,
+      "method": null,
+      "regime": "condition_only"
+    },
+    {
+      "dataset": "nasa_battery_capacity_reviewer_clean_inner2",
+      "seed": 3,
+      "method": null,
+      "regime": "condition_support_stats"
+    },
+    {
+      "dataset": "nasa_battery_capacity_reviewer_clean_inner2",
+      "seed": 3,
+      "method": "joint_continuity_step1",
+      "regime": "condition_raw_q"
+    },
+    {
+      "dataset": "nasa_battery_capacity_reviewer_clean_inner2",
+      "seed": 3,
+      "method": "joint_continuity_step1",
+      "regime": "condition_functional_q"
+    },
+    {
+      "dataset": "nasa_battery_capacity_reviewer_clean_inner2",
+      "seed": 3,
+      "method": "joint_mse_step1",
+      "regime": "condition_raw_q"
+    },
+    {
+      "dataset": "nasa_battery_capacity_reviewer_clean_inner2",
+      "seed": 3,
+      "method": "joint_mse_step1",
+      "regime": "condition_functional_q"
+    },
+    {
+      "dataset": "nasa_battery_capacity_reviewer_clean_inner2",
+      "seed": 4,
+      "method": null,
+      "regime": "condition_only"
+    },
+    {
+      "dataset": "nasa_battery_capacity_reviewer_clean_inner2",
+      "seed": 4,
+      "method": null,
+      "regime": "condition_support_stats"
+    },
+    {
+      "dataset": "nasa_battery_capacity_reviewer_clean_inner2",
+      "seed": 4,
+      "method": "joint_continuity_step1",
+      "regime": "condition_raw_q"
+    },
+    {
+      "dataset": "nasa_battery_capacity_reviewer_clean_inner2",
+      "seed": 4,
+      "method": "joint_continuity_step1",
+      "regime": "condition_functional_q"
+    },
+    {
+      "dataset": "nasa_battery_capacity_reviewer_clean_inner2",
+      "seed": 4,
+      "method": "joint_mse_step1",
+      "regime": "condition_raw_q"
+    },
+    {
+      "dataset": "nasa_battery_capacity_reviewer_clean_inner2",
+      "seed": 4,
+      "method": "joint_mse_step1",
+      "regime": "condition_functional_q"
+    }
+  ],
+  "planned": 90,
+  "config": {
+    "q_root": "/public/home/wangyg/latent_variable_search/runs/nasa_battery_reviewer_clean_inner_q_20260825",
+    "output_root": "/public/home/wangyg/latent_variable_search/runs/nasa_battery_reviewer_clean_inner_symbolic_20260825",
+    "condition_columns": [
+      "discharge_index",
+      "ambient_temperature",
+      "load_current_amp",
+      "cutoff_voltage"
+    ],
+    "functional_columns": [
+      "capacity_cycle1",
+      "early_fade_rate"
+    ],
+    "support_ratio": 0.3,
+    "support_order_column": "discharge_index",
+    "iterations": 60,
+    "maxsize": 24,
+    "sample_size": 1200,
+    "pysr_procs": 2,
+    "max_parallel": 2,
+    "threads_per_job": 1,
+    "job_timeout_seconds": 1800.0
+  },
+  "audit": {
+    "audited_q_sources": 30,
+    "max_query_target_feature_difference": 0.0,
+    "entity_split": "8 meta-fit / 5 structure-validation",
+    "prefix_order_verified": true
+  },
+  "train_q_information": "complete meta-fit curves",
+  "structure_validation_q_information": "prefix support targets only",
+  "structure_validation_query_targets_used_for_structure_selection": false
+}

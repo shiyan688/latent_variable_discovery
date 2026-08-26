@@ -1,0 +1,10 @@
+{
+  "gate_1_integrity": true,
+  "gate_2_downstream_value": false,
+  "gate_3_motif_recurrence": true,
+  "gate_4_readability": false,
+  "gate_5_representation_diagnostic": true,
+  "continuity_functional_motif_count": 12,
+  "mse_functional_motif_count": 11,
+  "all_frozen_gates_pass": false
+}

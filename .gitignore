@@ -19,6 +19,21 @@ __pycache__/
 
 # Experiment outputs and model state
 runs/
+!/runs/
+/runs/*
+!/runs/nasa_battery_reviewer_clean_inner_symbolic_20260825/
+/runs/nasa_battery_reviewer_clean_inner_symbolic_20260825/*
+!/runs/nasa_battery_reviewer_clean_inner_symbolic_20260825/STAGE_C_ANALYSIS.md
+!/runs/nasa_battery_reviewer_clean_inner_symbolic_20260825/cell_diagnostics.csv
+!/runs/nasa_battery_reviewer_clean_inner_symbolic_20260825/gate_decision.json
+!/runs/nasa_battery_reviewer_clean_inner_symbolic_20260825/integrity_audit.json
+!/runs/nasa_battery_reviewer_clean_inner_symbolic_20260825/manifest.json
+!/runs/nasa_battery_reviewer_clean_inner_symbolic_20260825/method_regime_summary.csv
+!/runs/nasa_battery_reviewer_clean_inner_symbolic_20260825/motif_recurrence.csv
+!/runs/nasa_battery_reviewer_clean_inner_symbolic_20260825/paired_comparisons.csv
+!/runs/nasa_battery_reviewer_clean_inner_symbolic_20260825/results.csv
+!/runs/nasa_battery_reviewer_clean_inner_symbolic_20260825/split_motif_recurrence.csv
+!/runs/nasa_battery_reviewer_clean_inner_symbolic_20260825/status.json
 model/
 assets/
 outputs/
@@ -62,6 +77,8 @@ q_optimize_nn.py
 expr_sampler.py
 optimize_label.py
 scripts/*symbolic*
+!scripts/run_nasa_inner_symbolic_structure_20260825.py
+!scripts/analyze_nasa_inner_symbolic_structure_20260825.py
 scripts/*dag*
 scripts/expr_sampler.py
 scripts/optimize_label.py
@@ -73,6 +90,13 @@ archives/
 # Local reports and draft notes; keep only the stable method documentation.
 /*.md
 !/README.md
+!/AGENTS.md
+!/AGENT_MEMORY.md
+!/COMPLETE_RESEARCH_REPORT_20260809.md
+!/NEGATIVE_RESULT_REASSESSMENT_20260825.md
+!/REAL_Q_SYMBOLIC_STRUCTURE_LOOP_MILESTONE_20260825.md
+!/NASA_INNER_SYMBOLIC_STRUCTURE_PLAN_20260825.md
+!/NEURAL_TRAINING_DYNAMICS_FOR_LATENT_Q_20260825.md
 !/MAIN_WORKFLOW_LOSS_INNOVATION.md
 !/LATENT_Q_INTRO_MOTIVATION_THEORY_RELATED_WORK.md
 !/LATENT_Q_NEURAL_NETWORK_BACKGROUND_AND_THEORY_FOR_STUDENT.md

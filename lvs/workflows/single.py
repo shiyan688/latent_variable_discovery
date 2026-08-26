@@ -29,7 +29,11 @@ class WorkflowConfig:
     expression_id: Optional[int]
     expression_name: Optional[str]
     label_count: int
+    validation_label_count: int
+    test_label_count: Optional[int]
+    label_split_mode: str
     train_samples_per_label: int
+    validation_samples_per_label: Optional[int]
     test_samples_per_label: int
     noise_std: float
     seed: int
@@ -46,6 +50,7 @@ class WorkflowConfig:
     cal_steps: int
     cal_lr: float
     cal_ratio: float
+    calibration_split_mode: str
     early_stop_enabled: bool
     early_stop_r2_threshold: float
     early_stop_patience: int
@@ -62,6 +67,19 @@ class WorkflowConfig:
     latent_q_canonicalization_mode: str
     latent_q_smoothness_weight: float
     latent_q_smoothness_epsilon: float
+    optimization_schedule: str
+    theta_lr: Optional[float]
+    q_lr: Optional[float]
+    theta_steps_per_cycle: int
+    q_steps_per_cycle: int
+    loss_weighting: str
+    gradnorm_warmup_steps: int
+    gradnorm_interval: int
+    gradnorm_alpha: float
+    gradnorm_lr: float
+    gradnorm_min_weight: float
+    gradnorm_max_weight: float
+    gradnorm_record_trace: bool
     device: Optional[str]
     quiet: bool
     hidden_sizes: str
@@ -113,7 +131,11 @@ def add_workflow_arguments(
         parser.add_argument("--expression-id", type=int, default=None)
         parser.add_argument("--expression-name", type=str, default=None)
     parser.add_argument("--label-count", type=int, default=50)
+    parser.add_argument("--validation-label-count", type=int, default=0)
+    parser.add_argument("--test-label-count", type=int, default=None)
+    parser.add_argument("--label-split-mode", choices=("shared", "disjoint"), default="shared")
     parser.add_argument("--train-samples-per-label", type=int, default=80)
+    parser.add_argument("--validation-samples-per-label", type=int, default=None)
     parser.add_argument("--test-samples-per-label", type=int, default=30)
     parser.add_argument("--noise-std", type=float, default=0.0)
     parser.add_argument("--seed", type=int, default=42)
@@ -131,6 +153,12 @@ def add_workflow_arguments(
     parser.add_argument("--cal-steps", type=int, default=4000)
     parser.add_argument("--cal-lr", type=float, default=0.10)
     parser.add_argument("--cal-ratio", type=float, default=0.3)
+    parser.add_argument(
+        "--calibration-split-mode",
+        choices=("prefix", "random"),
+        default="prefix",
+        help="How each test label is divided into calibration support and evaluation query rows.",
+    )
     parser.add_argument("--early-stop", dest="early_stop_enabled", action="store_true", default=True)
     parser.add_argument("--disable-early-stop", dest="early_stop_enabled", action="store_false")
     parser.add_argument("--early-stop-r2-threshold", type=float, default=0.999)
@@ -160,6 +188,19 @@ def add_workflow_arguments(
     )
     parser.add_argument("--latent-q-smoothness-weight", type=float, default=0.0)
     parser.add_argument("--latent-q-smoothness-epsilon", type=float, default=0.05)
+    parser.add_argument("--optimization-schedule", choices=("joint", "alternating"), default="joint")
+    parser.add_argument("--theta-lr", type=float, default=None)
+    parser.add_argument("--q-lr", type=float, default=None)
+    parser.add_argument("--theta-steps-per-cycle", type=int, default=1)
+    parser.add_argument("--q-steps-per-cycle", type=int, default=1)
+    parser.add_argument("--loss-weighting", choices=("static", "gradnorm"), default="static")
+    parser.add_argument("--gradnorm-warmup-steps", type=int, default=0)
+    parser.add_argument("--gradnorm-interval", type=int, default=1)
+    parser.add_argument("--gradnorm-alpha", type=float, default=0.5)
+    parser.add_argument("--gradnorm-lr", type=float, default=0.025)
+    parser.add_argument("--gradnorm-min-weight", type=float, default=1e-3)
+    parser.add_argument("--gradnorm-max-weight", type=float, default=1e3)
+    parser.add_argument("--gradnorm-record-trace", action="store_true")
     parser.add_argument("--device", type=str, default=None)
     parser.add_argument("--quiet", action="store_true")
     parser.add_argument("--hidden-sizes", type=str, default="128,64")
@@ -184,7 +225,11 @@ def namespace_to_workflow_config(args: argparse.Namespace) -> WorkflowConfig:
         expression_id=args.expression_id,
         expression_name=args.expression_name,
         label_count=args.label_count,
+        validation_label_count=args.validation_label_count,
+        test_label_count=args.test_label_count,
+        label_split_mode=args.label_split_mode,
         train_samples_per_label=args.train_samples_per_label,
+        validation_samples_per_label=args.validation_samples_per_label,
         test_samples_per_label=args.test_samples_per_label,
         noise_std=args.noise_std,
         seed=args.seed,
@@ -201,6 +246,7 @@ def namespace_to_workflow_config(args: argparse.Namespace) -> WorkflowConfig:
         cal_steps=args.cal_steps,
         cal_lr=args.cal_lr,
         cal_ratio=args.cal_ratio,
+        calibration_split_mode=args.calibration_split_mode,
         early_stop_enabled=args.early_stop_enabled,
         early_stop_r2_threshold=args.early_stop_r2_threshold,
         early_stop_patience=args.early_stop_patience,
@@ -217,6 +263,19 @@ def namespace_to_workflow_config(args: argparse.Namespace) -> WorkflowConfig:
         latent_q_canonicalization_mode=args.latent_q_canonicalization_mode,
         latent_q_smoothness_weight=args.latent_q_smoothness_weight,
         latent_q_smoothness_epsilon=args.latent_q_smoothness_epsilon,
+        optimization_schedule=args.optimization_schedule,
+        theta_lr=args.theta_lr,
+        q_lr=args.q_lr,
+        theta_steps_per_cycle=args.theta_steps_per_cycle,
+        q_steps_per_cycle=args.q_steps_per_cycle,
+        loss_weighting=args.loss_weighting,
+        gradnorm_warmup_steps=args.gradnorm_warmup_steps,
+        gradnorm_interval=args.gradnorm_interval,
+        gradnorm_alpha=args.gradnorm_alpha,
+        gradnorm_lr=args.gradnorm_lr,
+        gradnorm_min_weight=args.gradnorm_min_weight,
+        gradnorm_max_weight=args.gradnorm_max_weight,
+        gradnorm_record_trace=args.gradnorm_record_trace,
         device=args.device,
         quiet=args.quiet,
         hidden_sizes=args.hidden_sizes,
@@ -288,6 +347,7 @@ def build_pipeline_config(config: WorkflowConfig):
         calibration_steps=config.cal_steps,
         calibration_lr=config.cal_lr,
         calibration_ratio=config.cal_ratio,
+        calibration_split_mode=config.calibration_split_mode,
         seed=config.seed,
         early_stop_enabled=config.early_stop_enabled,
         early_stop_r2_threshold=config.early_stop_r2_threshold,
@@ -305,6 +365,19 @@ def build_pipeline_config(config: WorkflowConfig):
         latent_q_canonicalization_mode=config.latent_q_canonicalization_mode,
         latent_q_smoothness_weight=config.latent_q_smoothness_weight,
         latent_q_smoothness_epsilon=config.latent_q_smoothness_epsilon,
+        optimization_schedule=config.optimization_schedule,
+        theta_lr=config.theta_lr,
+        q_lr=config.q_lr,
+        theta_steps_per_cycle=config.theta_steps_per_cycle,
+        q_steps_per_cycle=config.q_steps_per_cycle,
+        loss_weighting=config.loss_weighting,
+        gradnorm_warmup_steps=config.gradnorm_warmup_steps,
+        gradnorm_interval=config.gradnorm_interval,
+        gradnorm_alpha=config.gradnorm_alpha,
+        gradnorm_lr=config.gradnorm_lr,
+        gradnorm_min_weight=config.gradnorm_min_weight,
+        gradnorm_max_weight=config.gradnorm_max_weight,
+        gradnorm_record_trace=config.gradnorm_record_trace,
         device=config.device,
         verbose=not config.quiet,
     )
@@ -312,21 +385,23 @@ def build_pipeline_config(config: WorkflowConfig):
 
 def detect_target_scaling(
     train_targets: np.ndarray,
-    test_targets: np.ndarray,
-    config: WorkflowConfig,
+    test_targets_or_config: np.ndarray | WorkflowConfig,
+    config: WorkflowConfig | None = None,
 ) -> TargetScalingDecision:
-    combined_targets = np.concatenate(
-        [
-            np.asarray(train_targets, dtype=np.float64).reshape(-1),
-            np.asarray(test_targets, dtype=np.float64).reshape(-1),
-        ]
-    )
+    """Fit target-scaling decisions strictly from training targets.
+
+    The three-argument form remains accepted for callers on the legacy API, but
+    the test targets are deliberately ignored.
+    """
+    resolved_config = test_targets_or_config if config is None else config
+    train_values = np.asarray(train_targets, dtype=np.float64).reshape(-1)
     representative_magnitude = float(
         max(
-            float(np.max(np.abs(combined_targets))) if combined_targets.size else 0.0,
-            float(np.std(combined_targets)) if combined_targets.size else 0.0,
+            float(np.max(np.abs(train_values))) if train_values.size else 0.0,
+            float(np.std(train_values)) if train_values.size else 0.0,
         )
     )
+    config = resolved_config
     if not config.auto_target_scale:
         return TargetScalingDecision(
             applied=False,
@@ -490,6 +565,23 @@ def write_failure_summary(run_dir: Path, config: Optional[WorkflowConfig], stage
     write_json(run_dir / "run_summary.json", summary)
 
 
+def generate_expression_dataset(task, config: WorkflowConfig) -> GeneratedExpressionDataset:
+    """Generate data using the split protocol recorded in the workflow config."""
+    return sample_expression_dataset(
+        task,
+        label_count=config.label_count,
+        validation_label_count=config.validation_label_count,
+        test_label_count=config.test_label_count,
+        label_split_mode=config.label_split_mode,
+        train_samples_per_label=config.train_samples_per_label,
+        validation_samples_per_label=config.validation_samples_per_label,
+        test_samples_per_label=config.test_samples_per_label,
+        noise_std=config.noise_std,
+        seed=config.seed,
+        max_attempts_per_row=config.max_attempts_per_row,
+    )
+
+
 def run_workflow(config: WorkflowConfig) -> WorkflowResult:
     run_dir = create_run_dir(config)
     paths = ensure_run_structure(run_dir)
@@ -519,15 +611,7 @@ def run_workflow(config: WorkflowConfig) -> WorkflowResult:
             },
         })
 
-        generated_dataset = sample_expression_dataset(
-            task,
-            label_count=config.label_count,
-            train_samples_per_label=config.train_samples_per_label,
-            test_samples_per_label=config.test_samples_per_label,
-            noise_std=config.noise_std,
-            seed=config.seed,
-            max_attempts_per_row=config.max_attempts_per_row,
-        )
+        generated_dataset = generate_expression_dataset(task, config)
         generated_paths = save_generated_expression_dataset(
             generated_dataset,
             paths["data"],
@@ -540,7 +624,6 @@ def run_workflow(config: WorkflowConfig) -> WorkflowResult:
 
         target_scaling = detect_target_scaling(
             generated_dataset.train_frame["target"].to_numpy(),
-            generated_dataset.test_frame["target"].to_numpy(),
             config,
         )
 

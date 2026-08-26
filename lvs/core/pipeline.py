@@ -1,10 +1,11 @@
 from __future__ import annotations
 
 import argparse
+import math
 import os
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any, Callable, Optional, Sequence
+from typing import Any, Callable, Iterable, Optional, Sequence
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 MPLCONFIG_DIR = Path(
@@ -50,6 +51,13 @@ class LatentQConfig:
     calibration_steps: int = 200
     calibration_lr: float = 0.05
     calibration_ratio: float = 0.3
+    calibration_split_mode: str = "prefix"
+    calibration_init_mode: str = "legacy_random"
+    calibration_num_starts: int = 1
+    calibration_selection_ratio: float = 0.0
+    calibration_selection_min_rows: int = 2
+    calibration_refine_steps: int = 0
+    calibration_refine_only_after_selection: bool = False
     seed: int = 42
     device: Optional[str] = None
     verbose: bool = True
@@ -69,6 +77,31 @@ class LatentQConfig:
     latent_q_canonicalization_mode: str = "none"
     latent_q_smoothness_weight: float = 0.0
     latent_q_smoothness_epsilon: float = 0.05
+    optimization_schedule: str = "joint"
+    joint_steps_per_cycle: int = 1
+    theta_lr: Optional[float] = None
+    q_lr: Optional[float] = None
+    # Diagnostic: record per-epoch gradient-norm statistics for the q embedding and
+    # the decoder separately. Used to separate gradient-scale mismatch from latent
+    # drift as the cause of poor latent recovery.
+    record_gradient_norms: bool = False
+    gradient_norm_interval: int = 20
+    # Quotient-representative constraint on the q embedding. "none" leaves q free.
+    # "fixed_norm" rescales the centered embedding to a constant Frobenius norm each
+    # q step, removing the arbitrary global scale inside the (q, decoder) equivalence
+    # class without changing the represented geometry.
+    q_scale_constraint: str = "none"
+    q_scale_constraint_target: float = 1.0
+    theta_steps_per_cycle: int = 1
+    q_steps_per_cycle: int = 1
+    loss_weighting: str = "static"
+    gradnorm_warmup_steps: int = 0
+    gradnorm_interval: int = 1
+    gradnorm_alpha: float = 0.5
+    gradnorm_lr: float = 0.025
+    gradnorm_min_weight: float = 1e-3
+    gradnorm_max_weight: float = 1e3
+    gradnorm_record_trace: bool = False
 
 
 @dataclass(frozen=True)
@@ -102,6 +135,17 @@ class EpochMetrics:
     r2: float
     mse: float
     mse_original: float
+    loss_components: dict[str, float] = field(default_factory=dict)
+    loss_weights: dict[str, float] = field(default_factory=dict)
+
+
+@dataclass
+class OptimizationCounters:
+    theta_steps: int = 0
+    q_steps: int = 0
+    backward_passes: int = 0
+    examples_processed: int = 0
+    gradient_norm_trace: list[dict[str, float]] = field(default_factory=list)
 
 
 @dataclass(frozen=True)
@@ -120,6 +164,8 @@ class TrainingArtifacts:
     label_to_index: dict[Any, int]
     device: torch.device
     train_history: list[EpochMetrics]
+    optimization_counters: OptimizationCounters = field(default_factory=OptimizationCounters)
+    dynamic_weight_trace: list[dict[str, float]] = field(default_factory=list)
     early_stopped: bool = False
     early_stop_epoch: Optional[int] = None
 
@@ -131,6 +177,8 @@ class CalibrationArtifacts:
     eval_targets: np.ndarray
     eval_plot_axis: np.ndarray
     eval_indices: np.ndarray
+    eval_labels: np.ndarray
+    diagnostics_by_label: dict[Any, dict[str, float]] = field(default_factory=dict)
 
 
 @dataclass
@@ -144,6 +192,7 @@ class LatentQPipelineResult:
     eval_targets: np.ndarray
     eval_plot_axis: np.ndarray
     eval_indices: np.ndarray
+    eval_labels: np.ndarray
     plot_feature_name: str
     metrics: dict[str, Any]
     saved_paths: dict[str, Path] = field(default_factory=dict)
@@ -358,6 +407,19 @@ def add_common_cli_arguments(
         default=0.05,
         help="Finite-difference step used by --latent-q-smoothness-weight.",
     )
+    parser.add_argument("--optimization-schedule", choices=("joint", "alternating"), default="joint")
+    parser.add_argument("--theta-lr", type=float, default=None)
+    parser.add_argument("--q-lr", type=float, default=None)
+    parser.add_argument("--theta-steps-per-cycle", type=int, default=1)
+    parser.add_argument("--q-steps-per-cycle", type=int, default=1)
+    parser.add_argument("--loss-weighting", choices=("static", "gradnorm"), default="static")
+    parser.add_argument("--gradnorm-warmup-steps", type=int, default=0)
+    parser.add_argument("--gradnorm-interval", type=int, default=1)
+    parser.add_argument("--gradnorm-alpha", type=float, default=0.5)
+    parser.add_argument("--gradnorm-lr", type=float, default=0.025)
+    parser.add_argument("--gradnorm-min-weight", type=float, default=1e-3)
+    parser.add_argument("--gradnorm-max-weight", type=float, default=1e3)
+    parser.add_argument("--gradnorm-record-trace", action="store_true")
 
 
 def namespace_to_shared_configs(args: argparse.Namespace) -> tuple[CSVColumnConfig, LatentQConfig, OutputConfig]:
@@ -394,6 +456,19 @@ def namespace_to_shared_configs(args: argparse.Namespace) -> tuple[CSVColumnConf
         latent_q_canonicalization_mode=args.latent_q_canonicalization_mode,
         latent_q_smoothness_weight=args.latent_q_smoothness_weight,
         latent_q_smoothness_epsilon=args.latent_q_smoothness_epsilon,
+        optimization_schedule=args.optimization_schedule,
+        theta_lr=args.theta_lr,
+        q_lr=args.q_lr,
+        theta_steps_per_cycle=args.theta_steps_per_cycle,
+        q_steps_per_cycle=args.q_steps_per_cycle,
+        loss_weighting=args.loss_weighting,
+        gradnorm_warmup_steps=args.gradnorm_warmup_steps,
+        gradnorm_interval=args.gradnorm_interval,
+        gradnorm_alpha=args.gradnorm_alpha,
+        gradnorm_lr=args.gradnorm_lr,
+        gradnorm_min_weight=args.gradnorm_min_weight,
+        gradnorm_max_weight=args.gradnorm_max_weight,
+        gradnorm_record_trace=args.gradnorm_record_trace,
     )
     output_config = OutputConfig(
         output_dir=Path(args.output_dir),
@@ -490,187 +565,241 @@ def build_dataset_from_arrays(
     )
 
 
-def train_latent_q_model(
-    train_dataset: LatentQDataset,
-    model_factory: ModelFactory,
-    config: LatentQConfig,
-) -> TrainingArtifacts:
-    validated_config = _validate_config(config)
-    _validate_matching_feature_dimensions(train_dataset, train_dataset)
-    _set_random_seed(validated_config.seed)
-    device = _resolve_device(validated_config.device)
+def _static_loss_weights(config: LatentQConfig) -> dict[str, float]:
+    return {
+        "prediction": 1.0,
+        "latent_feature_orthogonality": config.latent_feature_orthogonality_weight,
+        "latent_curve_continuity": config.latent_curve_continuity_weight,
+        "latent_q_l2": config.latent_q_l2_weight,
+        "latent_q_whitening": config.latent_q_whitening_weight,
+        "latent_jacobian_disentanglement": config.latent_jacobian_disentanglement_weight,
+        "latent_q_smoothness": config.latent_q_smoothness_weight,
+    }
 
-    input_dim = train_dataset.features.shape[1] + validated_config.q_dim
-    model = model_factory(input_dim)
+
+def _loss_components(*, model: nn.Module, embedding: nn.Embedding, batch_features: torch.Tensor,
+                     batch_targets: torch.Tensor, batch_labels: torch.Tensor, config: LatentQConfig,
+                     label_feature_stats: torch.Tensor, label_feature_kernel: Optional[torch.Tensor],
+                     label_curve_distances: torch.Tensor,
+                     adversary: Optional[nn.Module], adversary_targets: Optional[torch.Tensor],
+                     phase: str) -> dict[str, torch.Tensor]:
+    q_batch = embedding(batch_labels)
+    predictions = _ensure_prediction_column(model(torch.cat([batch_features, q_batch], dim=1)))
+    components = {"prediction": _prediction_loss(predictions, batch_targets, batch_labels,
+                                                   loss_type=config.prediction_loss_type)}
+    weights = _static_loss_weights(config)
+    if phase != "theta":
+        if weights["latent_feature_orthogonality"] > 0:
+            components["latent_feature_orthogonality"] = _latent_feature_orthogonality_penalty(
+                embedding.weight, label_feature_stats, penalty_type=config.latent_feature_orthogonality_type,
+                feature_kernel=label_feature_kernel,
+                adversary=adversary, adversary_targets=adversary_targets)
+        if weights["latent_curve_continuity"] > 0:
+            components["latent_curve_continuity"] = _latent_curve_continuity_penalty(embedding.weight, label_curve_distances)
+        if weights["latent_q_l2"] > 0:
+            components["latent_q_l2"] = embedding.weight.pow(2).mean()
+        if weights["latent_q_whitening"] > 0:
+            components["latent_q_whitening"] = _latent_q_whitening_penalty(embedding.weight)
+    if phase != "q" and weights["latent_jacobian_disentanglement"] > 0:
+        components["latent_jacobian_disentanglement"] = _latent_jacobian_disentanglement_penalty(model, batch_features, q_batch)
+    if weights["latent_q_smoothness"] > 0:
+        components["latent_q_smoothness"] = _latent_q_smoothness_penalty(
+            model, batch_features, q_batch, epsilon=config.latent_q_smoothness_epsilon)
+    return components
+
+
+def _update_dynamic_loss_weights(
+    weights: dict[str, float],
+    components: dict[str, torch.Tensor],
+    config: LatentQConfig,
+    *,
+    phase: str = "joint",
+) -> None:
+    """Prediction-anchored adaptive weighting using instantaneous loss scales.
+
+    This is intentionally not GradNorm: it avoids undefined theta gradients for
+    Q-only objectives and balances only components active in the current block.
+    Prediction remains anchored at one.
+    """
+    anchor = float(components["prediction"].detach().abs().item())
+    if not math.isfinite(anchor):
+        raise FloatingPointError("Non-finite prediction loss in dynamic weighting.")
+    anchor = max(anchor, EPSILON)
+    active_regularizers = [
+        name
+        for name in components
+        if name != "prediction" and weights.get(name, 0.0) > 0
+    ]
+    for name in active_regularizers:
+        component = components[name]
+        magnitude = float(component.detach().abs().item())
+        if not math.isfinite(magnitude):
+            raise FloatingPointError(f"Non-finite loss component: {name}.")
+        target = (anchor / max(magnitude, EPSILON)) ** config.gradnorm_alpha
+        target = min(config.gradnorm_max_weight, max(config.gradnorm_min_weight, target))
+        current = min(config.gradnorm_max_weight, max(config.gradnorm_min_weight, weights[name]))
+        updated = math.exp((1.0 - config.gradnorm_lr) * math.log(current) + config.gradnorm_lr * math.log(target))
+        if not math.isfinite(updated):
+            raise FloatingPointError(f"Non-finite dynamic loss weight: {name}.")
+        weights[name] = min(config.gradnorm_max_weight, max(config.gradnorm_min_weight, updated))
+
+    # In alternating mode the theta phase only exposes prediction (and optional
+    # theta-side penalties). Do not silently report an unchanged update as a
+    # dynamic-weight step; Q-only weights are updated in the q phase.
+    weights["prediction"] = 1.0
+
+
+def _set_requires_grad(parameters: Sequence[nn.Parameter], enabled: bool) -> None:
+    for parameter in parameters:
+        parameter.requires_grad_(enabled)
+
+
+def train_latent_q_model(train_dataset: LatentQDataset, model_factory: ModelFactory,
+                         config: LatentQConfig) -> TrainingArtifacts:
+    config = _validate_config(config)
+    _validate_matching_feature_dimensions(train_dataset, train_dataset)
+    _set_random_seed(config.seed)
+    device = _resolve_device(config.device)
+    model = model_factory(train_dataset.features.shape[1] + config.q_dim)
     if not isinstance(model, nn.Module):
         raise TypeError("model_factory must return a torch.nn.Module instance.")
     model = model.to(device)
-
     normalizer = fit_normalization(train_dataset.features, train_dataset.targets)
-    train_features_normalized = normalize_features(train_dataset.features, normalizer)
-    train_targets_normalized = normalize_targets(train_dataset.targets, normalizer)
-
     unique_labels = [_normalize_label_value(label) for label in pd.unique(train_dataset.labels)]
     label_to_index = {label: index for index, label in enumerate(unique_labels)}
-    indexed_labels = np.asarray(
-        [label_to_index[_normalize_label_value(label)] for label in train_dataset.labels],
-        dtype=np.int64,
-    )
-
-    embedding = nn.Embedding(len(unique_labels), validated_config.q_dim).to(device)
+    indexed_labels = np.asarray([label_to_index[_normalize_label_value(label)] for label in train_dataset.labels], dtype=np.int64)
+    embedding = nn.Embedding(len(unique_labels), config.q_dim).to(device)
     nn.init.normal_(embedding.weight, mean=0.0, std=0.1)
-
-    feature_tensor = torch.tensor(train_features_normalized, dtype=torch.float32, device=device)
-    target_tensor = torch.tensor(train_targets_normalized.reshape(-1, 1), dtype=torch.float32, device=device)
+    feature_tensor = torch.tensor(normalize_features(train_dataset.features, normalizer), dtype=torch.float32, device=device)
+    target_tensor = torch.tensor(normalize_targets(train_dataset.targets, normalizer).reshape(-1, 1), dtype=torch.float32, device=device)
     label_tensor = torch.tensor(indexed_labels, dtype=torch.long, device=device)
-    label_feature_stats_tensor = _compute_label_feature_stats(
-        feature_tensor,
-        label_tensor,
-        label_count=len(unique_labels),
-        mode=validated_config.latent_feature_stats_mode,
-    )
-    label_curve_distance_tensor = _compute_label_curve_distance_matrix(
-        feature_tensor,
-        target_tensor.squeeze(1),
-        label_tensor,
-        label_count=len(unique_labels),
-        grid_size=validated_config.latent_curve_continuity_grid_size,
-    )
+    feature_stats = _compute_label_feature_stats(feature_tensor, label_tensor, label_count=len(unique_labels), mode=config.latent_feature_stats_mode)
+    feature_kernel = None
+    if config.latent_feature_orthogonality_type in {"hsic", "nhsic"}:
+        feature_kernel = _rbf_kernel_with_median_bandwidth(_standardize_columns(feature_stats)).detach()
+    curve_distances = _compute_label_curve_distance_matrix(feature_tensor, target_tensor.squeeze(1), label_tensor,
+                                                            label_count=len(unique_labels), grid_size=config.latent_curve_continuity_grid_size)
 
-    optimizer = optim.Adam(list(model.parameters()) + list(embedding.parameters()), lr=validated_config.lr)
-    orth_adversary: Optional[nn.Module] = None
-    orth_adversary_optimizer: Optional[optim.Optimizer] = None
-    orth_adversary_targets: Optional[torch.Tensor] = None
-    if (
-        validated_config.latent_feature_orthogonality_weight > 0
-        and validated_config.latent_feature_orthogonality_type == "adversarial"
-    ):
-        adversary_hidden = max(16, min(128, validated_config.q_dim * 16))
-        orth_adversary = nn.Sequential(
-            nn.Linear(validated_config.q_dim, adversary_hidden),
-            nn.ReLU(),
-            nn.Linear(adversary_hidden, label_feature_stats_tensor.shape[1]),
-        ).to(device)
-        orth_adversary_optimizer = optim.Adam(orth_adversary.parameters(), lr=validated_config.lr)
-        orth_adversary_targets = _standardize_columns(label_feature_stats_tensor).detach()
-    mse_loss = nn.MSELoss()
+    if config.optimization_schedule == "joint":
+        joint_optimizer = optim.Adam(list(model.parameters()) + list(embedding.parameters()), lr=config.lr)
+        theta_optimizer = q_optimizer = None
+    else:
+        joint_optimizer = None
+        theta_optimizer = optim.Adam(model.parameters(), lr=config.theta_lr or config.lr)
+        q_optimizer = optim.Adam(embedding.parameters(), lr=config.q_lr or config.lr)
+    adversary = adversary_optimizer = adversary_targets = None
+    if config.latent_feature_orthogonality_weight > 0 and config.latent_feature_orthogonality_type == "adversarial":
+        hidden = max(16, min(128, config.q_dim * 16))
+        adversary = nn.Sequential(nn.Linear(config.q_dim, hidden), nn.ReLU(), nn.Linear(hidden, feature_stats.shape[1])).to(device)
+        adversary_optimizer = optim.Adam(adversary.parameters(), lr=config.lr)
+        adversary_targets = _standardize_columns(feature_stats).detach()
 
     history: list[EpochMetrics] = []
+    counters = OptimizationCounters()
+    trace: list[dict[str, float]] = []
+    loss_weights = _static_loss_weights(config)
+    # Adaptive weighting only updates objectives explicitly enabled by config;
+    # a zero static weight remains disabled instead of being clamped on.
     sample_count = feature_tensor.shape[0]
-    batch_size = min(validated_config.batch_size, sample_count)
+    batch_size = min(config.batch_size, sample_count)
     early_stop_streak = 0
     early_stopped = False
-    early_stop_epoch: Optional[int] = None
-
-    for epoch in range(validated_config.epochs):
+    early_stop_epoch = None
+    dynamic_update_index = 0
+    for epoch in range(config.epochs):
         model.train()
         permutation = torch.randperm(sample_count, device=device)
+        component_sums: dict[str, float] = {}
+        component_counts: dict[str, int] = {}
         for start in range(0, sample_count, batch_size):
-            selection = permutation[start : start + batch_size]
-            batch_features = feature_tensor[selection]
-            batch_targets = target_tensor[selection]
-            batch_labels = label_tensor[selection]
-
-            if orth_adversary is not None and orth_adversary_optimizer is not None and orth_adversary_targets is not None:
-                orth_adversary.train()
-                orth_adversary_optimizer.zero_grad()
-                detached_q = _standardize_columns(embedding.weight.detach())
-                adversary_predictions = orth_adversary(detached_q)
-                adversary_loss = mse_loss(adversary_predictions, orth_adversary_targets)
+            selection = permutation[start:start + batch_size]
+            batch = (feature_tensor[selection], target_tensor[selection], label_tensor[selection])
+            if adversary is not None and adversary_optimizer is not None and adversary_targets is not None:
+                adversary_optimizer.zero_grad()
+                adversary_loss = nn.functional.mse_loss(adversary(_standardize_columns(embedding.weight.detach())), adversary_targets)
                 adversary_loss.backward()
-                orth_adversary_optimizer.step()
-
-            q_batch = embedding(batch_labels)
-            model_inputs = torch.cat([batch_features, q_batch], dim=1)
-            predictions = _ensure_prediction_column(model(model_inputs))
-            loss = _prediction_loss(
-                predictions,
-                batch_targets,
-                batch_labels,
-                loss_type=validated_config.prediction_loss_type,
-            )
-            if validated_config.latent_feature_orthogonality_weight > 0:
-                loss = loss + validated_config.latent_feature_orthogonality_weight * _latent_feature_orthogonality_penalty(
-                    embedding.weight,
-                    label_feature_stats_tensor,
-                    penalty_type=validated_config.latent_feature_orthogonality_type,
-                    adversary=orth_adversary,
-                    adversary_targets=orth_adversary_targets,
-                )
-            if validated_config.latent_curve_continuity_weight > 0:
-                loss = loss + validated_config.latent_curve_continuity_weight * _latent_curve_continuity_penalty(
-                    embedding.weight,
-                    label_curve_distance_tensor,
-                )
-            if validated_config.latent_q_l2_weight > 0:
-                loss = loss + validated_config.latent_q_l2_weight * embedding.weight.pow(2).mean()
-            if validated_config.latent_q_whitening_weight > 0:
-                loss = loss + validated_config.latent_q_whitening_weight * _latent_q_whitening_penalty(embedding.weight)
-            if validated_config.latent_jacobian_disentanglement_weight > 0:
-                loss = (
-                    loss
-                    + validated_config.latent_jacobian_disentanglement_weight
-                    * _latent_jacobian_disentanglement_penalty(model, batch_features, q_batch)
-                )
-            if validated_config.latent_q_smoothness_weight > 0:
-                loss = loss + validated_config.latent_q_smoothness_weight * _latent_q_smoothness_penalty(
-                    model,
-                    batch_features,
-                    q_batch,
-                    epsilon=validated_config.latent_q_smoothness_epsilon,
-                )
-
-            optimizer.zero_grad()
-            loss.backward()
-            optimizer.step()
-            if validated_config.latent_q_canonicalization_mode == "train":
-                _project_embedding_to_canonical_q_(embedding)
-
-        epoch_metrics = _compute_train_epoch_metrics(
-        epoch_number=epoch + 1,
-        model=model,
-        embedding=embedding,
-        feature_tensor=feature_tensor,
-        label_tensor=label_tensor,
-        targets_original=train_dataset.targets_original,
-        target_scale_factor=train_dataset.target_scale_factor,
-        normalizer=normalizer,
-    )
-        history.append(epoch_metrics)
-        if validated_config.verbose:
-            message = (
-                f"Epoch {epoch_metrics.epoch}: "
-                f"Train R2: {epoch_metrics.r2:.6f}, Train MSE: {epoch_metrics.mse:.6g}"
-            )
-            if not np.isclose(train_dataset.target_scale_factor, 1.0):
-                message += f", Train MSE Original: {epoch_metrics.mse_original:.6g}"
-            print(message)
-
-        if _is_early_stop_epoch(epoch_metrics, validated_config):
-            early_stop_streak += 1
-            if early_stop_streak >= validated_config.early_stop_patience:
-                early_stopped = True
-                early_stop_epoch = epoch_metrics.epoch
-                if validated_config.verbose:
-                    print(
-                        "Early stopping triggered: "
-                        f"train R2={epoch_metrics.r2:.6f} >= {validated_config.early_stop_r2_threshold:.6f} "
-                        f"for {validated_config.early_stop_patience} consecutive epochs."
+                counters.backward_passes += 1
+                adversary_optimizer.step()
+            phases = (("joint", joint_optimizer, config.joint_steps_per_cycle),) if config.optimization_schedule == "joint" else (
+                ("theta", theta_optimizer, config.theta_steps_per_cycle), ("q", q_optimizer, config.q_steps_per_cycle))
+            for phase, optimizer, steps in phases:
+                assert optimizer is not None
+                for _ in range(steps):
+                    _set_requires_grad(tuple(model.parameters()), phase != "q")
+                    _set_requires_grad(tuple(embedding.parameters()), phase != "theta")
+                    components = _loss_components(model=model, embedding=embedding, batch_features=batch[0],
+                        batch_targets=batch[1], batch_labels=batch[2], config=config, label_feature_stats=feature_stats,
+                        label_feature_kernel=feature_kernel,
+                        label_curve_distances=curve_distances, adversary=adversary, adversary_targets=adversary_targets,
+                        phase=phase)
+                    active_dynamic = any(
+                        name != "prediction" and loss_weights.get(name, 0.0) > 0
+                        for name in components
                     )
+                    if (
+                        config.loss_weighting in {"adaptive_loss_scale", "gradnorm"}
+                        and active_dynamic
+                        and dynamic_update_index >= config.gradnorm_warmup_steps
+                        and dynamic_update_index % config.gradnorm_interval == 0
+                    ):
+                        _update_dynamic_loss_weights(loss_weights, components, config, phase=phase)
+                        if config.gradnorm_record_trace:
+                            trace.append({"step": float(counters.backward_passes), "phase": phase, **loss_weights})
+                    if active_dynamic:
+                        dynamic_update_index += 1
+                    total_loss = sum(loss_weights[name] * value for name, value in components.items())
+                    if not bool(torch.isfinite(total_loss)):
+                        raise FloatingPointError("Non-finite total training loss.")
+                    optimizer.zero_grad()
+                    total_loss.backward()
+                    if config.record_gradient_norms and (
+                        counters.backward_passes % config.gradient_norm_interval == 0
+                    ):
+                        theta_norm = _gradient_norm(model.parameters())
+                        q_norm = _gradient_norm(embedding.parameters())
+                        counters.gradient_norm_trace.append({
+                            "step": float(counters.backward_passes),
+                            "epoch": float(epoch + 1),
+                            "phase": phase,
+                            "theta_grad_norm": theta_norm,
+                            "q_grad_norm": q_norm,
+                            "q_over_theta": q_norm / theta_norm if theta_norm > 0 else float("nan"),
+                        })
+                    counters.backward_passes += 1
+                    counters.examples_processed += int(selection.numel())
+                    optimizer.step()
+                    if phase in {"joint", "theta"}: counters.theta_steps += 1
+                    if phase in {"joint", "q"}: counters.q_steps += 1
+                    if phase in {"joint", "q"}:
+                        _apply_q_scale_constraint_(
+                            embedding, config.q_scale_constraint, config.q_scale_constraint_target
+                        )
+                    if phase in {"joint", "q"} and config.latent_q_canonicalization_mode == "train":
+                        _project_embedding_to_canonical_q_(embedding)
+                    for name, value in {**components, "total": total_loss}.items():
+                        component_sums[name] = component_sums.get(name, 0.0) + float(value.detach().item())
+                        component_counts[name] = component_counts.get(name, 0) + 1
+        _set_requires_grad(tuple(model.parameters()), True)
+        _set_requires_grad(tuple(embedding.parameters()), True)
+        base = _compute_train_epoch_metrics(epoch_number=epoch + 1, model=model, embedding=embedding,
+            feature_tensor=feature_tensor, label_tensor=label_tensor, targets_original=train_dataset.targets_original,
+            target_scale_factor=train_dataset.target_scale_factor, normalizer=normalizer)
+        metrics = EpochMetrics(base.epoch, base.r2, base.mse, base.mse_original,
+            {name: component_sums[name] / component_counts[name] for name in component_sums}, dict(loss_weights))
+        history.append(metrics)
+        if config.verbose:
+            losses = ", ".join(f"{name}={value:.4g}" for name, value in metrics.loss_components.items())
+            print(f"Epoch {metrics.epoch}: Train R2: {metrics.r2:.6f}, Train MSE: {metrics.mse:.6g}; {losses}")
+        if _is_early_stop_epoch(metrics, config):
+            early_stop_streak += 1
+            if early_stop_streak >= config.early_stop_patience:
+                early_stopped, early_stop_epoch = True, metrics.epoch
                 break
         else:
             early_stop_streak = 0
-
-    return TrainingArtifacts(
-        model=model,
-        embedding=embedding,
-        normalizer=normalizer,
-        label_to_index=label_to_index,
-        device=device,
-        train_history=history,
-        early_stopped=early_stopped,
-        early_stop_epoch=early_stop_epoch,
-    )
+    return TrainingArtifacts(model=model, embedding=embedding, normalizer=normalizer, label_to_index=label_to_index,
+        device=device, train_history=history, optimization_counters=counters, dynamic_weight_trace=trace,
+        early_stopped=early_stopped, early_stop_epoch=early_stop_epoch)
 
 
 def calibrate_latent_q_for_test_labels(
@@ -679,6 +808,9 @@ def calibrate_latent_q_for_test_labels(
     config: LatentQConfig,
     *,
     plot_feature_index: Optional[int] = None,
+    extra_initial_q_provider: Optional[
+        Callable[[Any, np.ndarray], np.ndarray | torch.Tensor]
+    ] = None,
 ) -> CalibrationArtifacts:
     validated_config = _validate_config(config)
     plot_index = _resolve_plot_feature_index(plot_feature_index, test_dataset.features.shape[1])
@@ -694,58 +826,153 @@ def calibrate_latent_q_for_test_labels(
     eval_targets: list[np.ndarray] = []
     eval_plot_axis: list[np.ndarray] = []
     eval_indices: list[np.ndarray] = []
+    eval_labels: list[np.ndarray] = []
+    diagnostics_by_label: dict[Any, dict[str, float]] = {}
 
     model = training_artifacts.model
     model.eval()
     mse_loss = nn.MSELoss()
     train_q = training_artifacts.embedding.weight.detach()
     q_prior_mean = train_q.mean(dim=0)
-    q_prior_std = train_q.std(dim=0).clamp_min(0.05)
+    q_prior_std = train_q.std(dim=0, unbiased=False).clamp_min(0.05)
+    model_parameters = tuple(model.parameters())
+    previous_requires_grad = tuple(parameter.requires_grad for parameter in model_parameters)
+    _set_requires_grad(model_parameters, False)
+    for parameter in model_parameters:
+        parameter.grad = None
 
-    for raw_label in pd.unique(test_dataset.labels):
-        label = _normalize_label_value(raw_label)
-        label_indices = np.flatnonzero(test_dataset.labels == raw_label)
-        calibration_indices, evaluation_indices = split_calibration_and_eval_indices(
-            label_indices,
-            validated_config.calibration_ratio,
-        )
-        initial_q = _initial_q_vector(label, training_artifacts, validated_config.q_dim)
-        q_parameter = nn.Parameter(initial_q.to(training_artifacts.device))
-        optimizer = optim.Adam([q_parameter], lr=validated_config.calibration_lr)
+    try:
+        for raw_label in pd.unique(test_dataset.labels):
+            label = _normalize_label_value(raw_label)
+            label_indices = np.flatnonzero(test_dataset.labels == raw_label)
+            calibration_indices, evaluation_indices = split_support_query_indices(
+                label_indices,
+                validated_config.calibration_ratio,
+                mode=validated_config.calibration_split_mode,
+                seed=validated_config.seed,
+                label=label,
+            )
+            fit_indices, selection_indices, used_inner_split = _calibration_fit_selection_indices(
+                calibration_indices,
+                validated_config.calibration_selection_ratio,
+                min_rows=validated_config.calibration_selection_min_rows,
+                seed=validated_config.seed,
+                label=label,
+            )
+            initial_candidates = _calibration_initial_q_candidates(
+                label,
+                training_artifacts,
+                validated_config,
+                q_prior_mean=q_prior_mean,
+                q_prior_std=q_prior_std,
+            )
+            extra_candidate_index: Optional[int] = None
+            if extra_initial_q_provider is not None:
+                provided = torch.as_tensor(
+                    extra_initial_q_provider(label, fit_indices),
+                    dtype=torch.float32,
+                ).detach().reshape(-1)
+                if provided.shape != (validated_config.q_dim,):
+                    raise ValueError(
+                        "extra_initial_q_provider must return one vector with shape "
+                        f"({validated_config.q_dim},), got {tuple(provided.shape)}"
+                    )
+                if not bool(torch.isfinite(provided).all()):
+                    raise ValueError("extra_initial_q_provider returned non-finite values")
+                extra_candidate_index = len(initial_candidates)
+                initial_candidates.append(provided)
+            fitted_candidates: list[torch.Tensor] = []
+            selection_losses: list[float] = []
+            for initial_q in initial_candidates:
+                candidate = _optimize_calibration_q(
+                    initial_q,
+                    steps=validated_config.calibration_steps,
+                    indices=fit_indices,
+                    feature_tensor=feature_tensor,
+                    target_tensor=target_tensor,
+                    model=model,
+                    mse_loss=mse_loss,
+                    q_prior_mean=q_prior_mean,
+                    q_prior_std=q_prior_std,
+                    config=validated_config,
+                )
+                fitted_candidates.append(candidate.detach().clone())
+                selection_losses.append(
+                    _calibration_prediction_loss(
+                        candidate,
+                        selection_indices,
+                        feature_tensor=feature_tensor,
+                        target_tensor=target_tensor,
+                        model=model,
+                        mse_loss=mse_loss,
+                    )
+                )
 
-        for _ in range(validated_config.calibration_steps):
-            calibration_features = feature_tensor[calibration_indices]
-            repeated_q = q_parameter.unsqueeze(0).repeat(calibration_features.shape[0], 1)
-            model_inputs = torch.cat([calibration_features, repeated_q], dim=1)
-            predictions = _ensure_prediction_column(model(model_inputs))
-            loss = mse_loss(predictions, target_tensor[calibration_indices])
-            if validated_config.calibration_q_prior_weight > 0:
-                standardized_q = (q_parameter - q_prior_mean) / q_prior_std
-                loss = loss + validated_config.calibration_q_prior_weight * torch.mean(standardized_q.pow(2))
+            selected_start = int(np.argmin(selection_losses))
+            selected_q = fitted_candidates[selected_start]
+            refinement_used = validated_config.calibration_refine_steps > 0 and (
+                not validated_config.calibration_refine_only_after_selection
+                or used_inner_split
+            )
+            if refinement_used:
+                selected_q = _optimize_calibration_q(
+                    selected_q,
+                    steps=validated_config.calibration_refine_steps,
+                    indices=calibration_indices,
+                    feature_tensor=feature_tensor,
+                    target_tensor=target_tensor,
+                    model=model,
+                    mse_loss=mse_loss,
+                    q_prior_mean=q_prior_mean,
+                    q_prior_std=q_prior_std,
+                    config=validated_config,
+                )
+            q_parameter = selected_q
 
-            optimizer.zero_grad()
-            loss.backward()
-            optimizer.step()
+            candidate_matrix = torch.stack(fitted_candidates, dim=0)
+            candidate_center = candidate_matrix.mean(dim=0, keepdim=True)
+            candidate_dispersion = torch.sqrt(
+                torch.mean(torch.sum((candidate_matrix - candidate_center).pow(2), dim=1))
+            )
+            diagnostics_by_label[label] = {
+                "selected_start": float(selected_start),
+                "selection_loss": float(selection_losses[selected_start]),
+                "candidate_q_dispersion": float(candidate_dispersion.detach().cpu().item()),
+                "inner_selection_used": float(used_inner_split),
+                "refinement_used": float(refinement_used),
+                "fit_rows": float(len(fit_indices)),
+                "selection_rows": float(len(selection_indices)),
+                "extra_candidate_available": float(extra_candidate_index is not None),
+                "selected_extra_candidate": float(
+                    extra_candidate_index is not None and selected_start == extra_candidate_index
+                ),
+            }
 
-        q_by_label[label] = q_parameter.detach().cpu().numpy().copy()
+            q_by_label[label] = q_parameter.detach().cpu().numpy().copy()
 
-        if evaluation_indices.size == 0:
-            continue
+            if evaluation_indices.size == 0:
+                continue
 
-        with torch.no_grad():
-            evaluation_features = feature_tensor[evaluation_indices]
-            repeated_q = q_parameter.unsqueeze(0).repeat(evaluation_features.shape[0], 1)
-            model_inputs = torch.cat([evaluation_features, repeated_q], dim=1)
-            predictions = _ensure_prediction_column(model(model_inputs)).squeeze(1)
+            with torch.no_grad():
+                evaluation_features = feature_tensor[evaluation_indices]
+                repeated_q = q_parameter.unsqueeze(0).repeat(evaluation_features.shape[0], 1)
+                model_inputs = torch.cat([evaluation_features, repeated_q], dim=1)
+                predictions = _ensure_prediction_column(model(model_inputs)).squeeze(1)
 
-        denormalized_predictions = denormalize_targets(
-            predictions.cpu().numpy(),
-            training_artifacts.normalizer,
-        )
-        eval_predictions.append(denormalized_predictions / test_dataset.target_scale_factor)
-        eval_targets.append(test_dataset.targets_original[evaluation_indices])
-        eval_plot_axis.append(test_dataset.features[evaluation_indices, plot_index])
-        eval_indices.append(evaluation_indices)
+            denormalized_predictions = denormalize_targets(
+                predictions.cpu().numpy(),
+                training_artifacts.normalizer,
+            )
+            eval_predictions.append(denormalized_predictions / test_dataset.target_scale_factor)
+            eval_targets.append(test_dataset.targets_original[evaluation_indices])
+            eval_plot_axis.append(test_dataset.features[evaluation_indices, plot_index])
+            eval_indices.append(evaluation_indices)
+            eval_labels.append(np.full(evaluation_indices.size, raw_label, dtype=test_dataset.labels.dtype))
+    finally:
+        for parameter, requires_grad in zip(model_parameters, previous_requires_grad):
+            parameter.requires_grad_(requires_grad)
+        for parameter in model_parameters:
+            parameter.grad = None
 
     if not eval_predictions:
         raise RuntimeError("No evaluation samples remain after applying the calibration split.")
@@ -756,7 +983,120 @@ def calibrate_latent_q_for_test_labels(
         eval_targets=np.concatenate(eval_targets),
         eval_plot_axis=np.concatenate(eval_plot_axis),
         eval_indices=np.concatenate(eval_indices),
+        eval_labels=np.concatenate(eval_labels),
+        diagnostics_by_label=diagnostics_by_label,
     )
+
+
+def _calibration_fit_selection_indices(
+    calibration_indices: np.ndarray,
+    selection_ratio: float,
+    *,
+    min_rows: int = 2,
+    seed: int,
+    label: Any,
+) -> tuple[np.ndarray, np.ndarray, bool]:
+    indices = np.asarray(calibration_indices, dtype=np.int64).reshape(-1)
+    if selection_ratio <= 0 or indices.size < min_rows:
+        return indices, indices, False
+    fit_ratio = 1.0 - selection_ratio
+    fit_indices, selection_indices = split_support_query_indices(
+        indices,
+        fit_ratio,
+        mode="random",
+        seed=seed,
+        label=f"{label}:calibration-selection",
+    )
+    return fit_indices, selection_indices, True
+
+
+def _calibration_initial_q_candidates(
+    label: Any,
+    training_artifacts: TrainingArtifacts,
+    config: LatentQConfig,
+    *,
+    q_prior_mean: torch.Tensor,
+    q_prior_std: torch.Tensor,
+) -> list[torch.Tensor]:
+    mode = config.calibration_init_mode
+    count = config.calibration_num_starts
+    if mode == "legacy_random" and count == 1:
+        return [_initial_q_vector(label, training_artifacts, config.q_dim)]
+
+    label_token = str(_normalize_label_value(label)).encode("utf-8")
+    label_hash = int.from_bytes(label_token[:8].ljust(8, b"\0"), "little")
+    seed_sequence = np.random.SeedSequence([int(config.seed), label_hash, 271828])
+    generator = torch.Generator(device="cpu").manual_seed(
+        int(seed_sequence.generate_state(1, dtype=np.uint64)[0] % np.uint64(2**63 - 1))
+    )
+    candidates: list[torch.Tensor] = []
+    for _ in range(count):
+        if label in training_artifacts.label_to_index:
+            candidate = training_artifacts.embedding.weight[
+                training_artifacts.label_to_index[label]
+            ].detach().clone()
+        elif mode == "zero":
+            candidate = torch.zeros(config.q_dim, dtype=torch.float32)
+        elif mode == "train_mean":
+            candidate = q_prior_mean.detach().cpu().clone()
+        elif mode == "prior_random":
+            noise = torch.randn(config.q_dim, generator=generator, dtype=torch.float32)
+            candidate = q_prior_mean.detach().cpu() + q_prior_std.detach().cpu() * noise
+        else:
+            candidate = torch.randn(config.q_dim, generator=generator, dtype=torch.float32) * 0.1
+        candidates.append(candidate)
+    return candidates
+
+
+def _optimize_calibration_q(
+    initial_q: torch.Tensor,
+    *,
+    steps: int,
+    indices: np.ndarray,
+    feature_tensor: torch.Tensor,
+    target_tensor: torch.Tensor,
+    model: nn.Module,
+    mse_loss: nn.Module,
+    q_prior_mean: torch.Tensor,
+    q_prior_std: torch.Tensor,
+    config: LatentQConfig,
+) -> torch.Tensor:
+    q_parameter = nn.Parameter(initial_q.detach().clone().to(feature_tensor.device))
+    optimizer = optim.Adam([q_parameter], lr=config.calibration_lr)
+    selected_features = feature_tensor[indices]
+    selected_targets = target_tensor[indices]
+    for _ in range(steps):
+        repeated_q = q_parameter.unsqueeze(0).repeat(selected_features.shape[0], 1)
+        predictions = _ensure_prediction_column(
+            model(torch.cat([selected_features, repeated_q], dim=1))
+        )
+        loss = mse_loss(predictions, selected_targets)
+        if config.calibration_q_prior_weight > 0:
+            standardized_q = (q_parameter - q_prior_mean) / q_prior_std
+            loss = loss + config.calibration_q_prior_weight * torch.mean(standardized_q.pow(2))
+        optimizer.zero_grad()
+        loss.backward()
+        optimizer.step()
+    return q_parameter.detach().clone()
+
+
+def _calibration_prediction_loss(
+    q_value: torch.Tensor,
+    indices: np.ndarray,
+    *,
+    feature_tensor: torch.Tensor,
+    target_tensor: torch.Tensor,
+    model: nn.Module,
+    mse_loss: nn.Module,
+) -> float:
+    with torch.no_grad():
+        selected_features = feature_tensor[indices]
+        repeated_q = q_value.unsqueeze(0).repeat(selected_features.shape[0], 1)
+        predictions = _ensure_prediction_column(
+            model(torch.cat([selected_features, repeated_q], dim=1))
+        )
+        loss = mse_loss(predictions, target_tensor[indices])
+    return float(loss.detach().cpu().item())
 
 
 def assemble_output_frame(dataset: LatentQDataset, q_matrix: np.ndarray) -> pd.DataFrame:
@@ -804,20 +1144,19 @@ def save_pipeline_outputs(result: LatentQPipelineResult, output_config: OutputCo
     return saved_paths
 
 
-def run_latent_q_pipeline(
+def evaluate_latent_q_pipeline(
     train_dataset: LatentQDataset,
     test_dataset: LatentQDataset,
-    model_factory: ModelFactory,
+    training_artifacts: TrainingArtifacts,
     config: LatentQConfig,
     *,
     output_config: Optional[OutputConfig] = None,
 ) -> LatentQPipelineResult:
+    """Calibrate and evaluate held-out labels using one fitted training model."""
     _validate_matching_feature_dimensions(train_dataset, test_dataset)
     validated_config = _validate_config(config)
     resolved_output_config = output_config or OutputConfig(save_csv=False, save_plot=False)
     plot_index = _resolve_plot_feature_index(resolved_output_config.plot_feature_index, test_dataset.features.shape[1])
-
-    training_artifacts = train_latent_q_model(train_dataset, model_factory, validated_config)
     calibration_artifacts = calibrate_latent_q_for_test_labels(
         test_dataset,
         training_artifacts,
@@ -832,6 +1171,8 @@ def run_latent_q_pipeline(
     train_output = assemble_output_frame(train_dataset, train_q_matrix)
     test_output = assemble_output_frame(test_dataset, test_q_matrix)
 
+    from lvs.core.metrics import macro_prediction_metrics
+
     metrics = {
         "train_r2_last_epoch": training_artifacts.train_history[-1].r2,
         "train_mse_last_epoch": training_artifacts.train_history[-1].mse,
@@ -843,7 +1184,51 @@ def run_latent_q_pipeline(
         "early_stop_epoch": training_artifacts.early_stop_epoch,
         "epochs_completed": len(training_artifacts.train_history),
         "latent_q_canonicalization_mode": validated_config.latent_q_canonicalization_mode,
+        "optimization_schedule": validated_config.optimization_schedule,
+        "loss_weighting": validated_config.loss_weighting,
+        "theta_steps": training_artifacts.optimization_counters.theta_steps,
+        "q_steps": training_artifacts.optimization_counters.q_steps,
+        "backward_passes": training_artifacts.optimization_counters.backward_passes,
+        "examples_processed": training_artifacts.optimization_counters.examples_processed,
+        "loss_components_last_epoch": training_artifacts.train_history[-1].loss_components,
+        "loss_weights_last_epoch": training_artifacts.train_history[-1].loss_weights,
+        "calibration_init_mode": validated_config.calibration_init_mode,
+        "calibration_num_starts": validated_config.calibration_num_starts,
+        "calibration_selection_ratio": validated_config.calibration_selection_ratio,
+        "calibration_selection_min_rows": validated_config.calibration_selection_min_rows,
+        "calibration_refine_steps": validated_config.calibration_refine_steps,
+        "calibration_refine_only_after_selection": (
+            validated_config.calibration_refine_only_after_selection
+        ),
     }
+    if calibration_artifacts.diagnostics_by_label:
+        diagnostic_rows = list(calibration_artifacts.diagnostics_by_label.values())
+        metrics.update(
+            {
+                "calibration_candidate_q_dispersion_mean": float(
+                    np.mean([row["candidate_q_dispersion"] for row in diagnostic_rows])
+                ),
+                "calibration_selection_loss_mean": float(
+                    np.mean([row["selection_loss"] for row in diagnostic_rows])
+                ),
+                "calibration_inner_selection_fraction": float(
+                    np.mean([row["inner_selection_used"] for row in diagnostic_rows])
+                ),
+                "calibration_refinement_fraction": float(
+                    np.mean([row["refinement_used"] for row in diagnostic_rows])
+                ),
+            }
+        )
+    metrics.update(
+        {
+            f"test_{key}": value
+            for key, value in macro_prediction_metrics(
+                calibration_artifacts.eval_targets,
+                calibration_artifacts.eval_predictions,
+                calibration_artifacts.eval_labels,
+            ).items()
+        }
+    )
     metrics.update(compute_latent_feature_orthogonality_metrics(train_dataset, train_q_matrix))
     metrics.update(_flatten_q_distribution_metrics("train_q", train_q_matrix))
     metrics.update(_flatten_q_distribution_metrics("test_q", test_q_matrix))
@@ -858,14 +1243,34 @@ def run_latent_q_pipeline(
         eval_targets=calibration_artifacts.eval_targets,
         eval_plot_axis=calibration_artifacts.eval_plot_axis,
         eval_indices=calibration_artifacts.eval_indices,
+        eval_labels=calibration_artifacts.eval_labels,
         plot_feature_name=test_dataset.feature_names[plot_index],
         metrics=metrics,
     )
-
     if output_config is not None:
         save_pipeline_outputs(result, resolved_output_config)
-
     return result
+
+
+def run_latent_q_pipeline(
+    train_dataset: LatentQDataset,
+    test_dataset: LatentQDataset,
+    model_factory: ModelFactory,
+    config: LatentQConfig,
+    *,
+    output_config: Optional[OutputConfig] = None,
+) -> LatentQPipelineResult:
+    """Fit once and evaluate one held-out split; retained as the compatibility API."""
+    _validate_matching_feature_dimensions(train_dataset, test_dataset)
+    validated_config = _validate_config(config)
+    training_artifacts = train_latent_q_model(train_dataset, model_factory, validated_config)
+    return evaluate_latent_q_pipeline(
+        train_dataset,
+        test_dataset,
+        training_artifacts,
+        validated_config,
+        output_config=output_config,
+    )
 
 
 def _flatten_q_distribution_metrics(prefix: str, q_matrix: np.ndarray) -> dict[str, float]:
@@ -986,13 +1391,37 @@ def scale_dataset_targets(dataset: LatentQDataset, scale_factor: float) -> Laten
     )
 
 
+def split_support_query_indices(
+    indices: np.ndarray,
+    support_ratio: float,
+    *,
+    mode: str = "prefix",
+    seed: int = 42,
+    label: Any = None,
+) -> tuple[np.ndarray, np.ndarray]:
+    """Split one label's rows into support and query sets reproducibly."""
+    index_array = np.asarray(indices, dtype=np.int64).reshape(-1)
+    if index_array.size < 2:
+        raise ValueError("Each calibrated label must contain at least two rows for non-empty support and query sets.")
+    if not 0 < support_ratio < 1:
+        raise ValueError("support_ratio must be between 0 and 1.")
+    if mode not in {"prefix", "random"}:
+        raise ValueError("mode must be one of: prefix, random.")
+
+    split_point = max(1, int(np.floor(support_ratio * index_array.size)))
+    split_point = min(split_point, index_array.size - 1)
+    ordered = index_array.copy()
+    if mode == "random":
+        label_token = str(_normalize_label_value(label)).encode("utf-8")
+        label_hash = int.from_bytes(label_token[:8].ljust(8, b"\0"), "little")
+        rng = np.random.default_rng(np.random.SeedSequence([int(seed), label_hash]))
+        ordered = rng.permutation(ordered)
+    return ordered[:split_point], ordered[split_point:]
+
+
 def split_calibration_and_eval_indices(indices: np.ndarray, calibration_ratio: float) -> tuple[np.ndarray, np.ndarray]:
-    if indices.size == 0:
-        raise ValueError("indices cannot be empty.")
-    split_point = max(1, int(np.floor(calibration_ratio * indices.size)))
-    calibration_indices = indices[:split_point]
-    evaluation_indices = indices[split_point:]
-    return calibration_indices, evaluation_indices
+    """Backward-compatible prefix split alias."""
+    return split_support_query_indices(indices, calibration_ratio, mode="prefix")
 
 
 def plot_prediction_curve(
@@ -1107,6 +1536,25 @@ def _validate_config(config: LatentQConfig) -> LatentQConfig:
         raise ValueError("calibration_lr must be positive.")
     if not 0 < config.calibration_ratio < 1:
         raise ValueError("calibration_ratio must be between 0 and 1.")
+    if config.calibration_split_mode not in {"prefix", "random"}:
+        raise ValueError("calibration_split_mode must be one of: prefix, random.")
+    if config.calibration_init_mode not in {
+        "legacy_random",
+        "prior_random",
+        "zero",
+        "train_mean",
+    }:
+        raise ValueError(
+            "calibration_init_mode must be one of: legacy_random, prior_random, zero, train_mean."
+        )
+    if config.calibration_num_starts <= 0:
+        raise ValueError("calibration_num_starts must be a positive integer.")
+    if not 0 <= config.calibration_selection_ratio < 1:
+        raise ValueError("calibration_selection_ratio must be in [0, 1).")
+    if config.calibration_selection_min_rows < 2:
+        raise ValueError("calibration_selection_min_rows must be at least two.")
+    if config.calibration_refine_steps < 0:
+        raise ValueError("calibration_refine_steps must be non-negative.")
     if not 0 <= config.early_stop_r2_threshold <= 1:
         raise ValueError("early_stop_r2_threshold must be between 0 and 1.")
     if config.early_stop_patience <= 0:
@@ -1149,6 +1597,28 @@ def _validate_config(config: LatentQConfig) -> LatentQConfig:
         raise ValueError("latent_q_smoothness_weight must be non-negative.")
     if config.latent_q_smoothness_epsilon <= 0:
         raise ValueError("latent_q_smoothness_epsilon must be positive.")
+    if config.optimization_schedule not in {"joint", "alternating"}:
+        raise ValueError("optimization_schedule must be one of: joint, alternating.")
+    if config.theta_lr is not None and config.theta_lr <= 0:
+        raise ValueError("theta_lr must be positive when provided.")
+    if config.q_lr is not None and config.q_lr <= 0:
+        raise ValueError("q_lr must be positive when provided.")
+    if config.joint_steps_per_cycle <= 0:
+        raise ValueError("joint_steps_per_cycle must be a positive integer.")
+    if config.theta_steps_per_cycle <= 0 or config.q_steps_per_cycle <= 0:
+        raise ValueError("theta/q steps per cycle must be positive integers.")
+    if config.loss_weighting not in {"static", "adaptive_loss_scale", "gradnorm"}:
+        raise ValueError("loss_weighting must be one of: static, adaptive_loss_scale, gradnorm (deprecated alias).")
+    if config.gradnorm_warmup_steps < 0 or config.gradnorm_interval <= 0:
+        raise ValueError("gradnorm warmup must be non-negative and interval positive.")
+    if config.gradnorm_alpha < 0 or not 0 < config.gradnorm_lr <= 1:
+        raise ValueError("gradnorm_alpha must be non-negative and gradnorm_lr in (0, 1].")
+    if config.gradnorm_min_weight <= 0 or config.gradnorm_max_weight < config.gradnorm_min_weight:
+        raise ValueError("gradnorm weight bounds must be positive and ordered.")
+    if config.q_scale_constraint not in {"none", "fixed_norm"}:
+        raise ValueError("q_scale_constraint must be one of: none, fixed_norm.")
+    if config.q_scale_constraint_target <= 0:
+        raise ValueError("q_scale_constraint_target must be positive.")
     return config
 
 
@@ -1303,6 +1773,7 @@ def _latent_feature_orthogonality_penalty(
     feature_stats: torch.Tensor,
     *,
     penalty_type: str,
+    feature_kernel: Optional[torch.Tensor] = None,
     adversary: Optional[nn.Module] = None,
     adversary_targets: Optional[torch.Tensor] = None,
 ) -> torch.Tensor:
@@ -1311,7 +1782,7 @@ def _latent_feature_orthogonality_penalty(
     if penalty_type == "pearson":
         return _latent_feature_correlation_penalty(q_values, feature_stats)
     if penalty_type in {"hsic", "nhsic"}:
-        return _latent_feature_hsic_penalty(q_values, feature_stats)
+        return _latent_feature_hsic_penalty(q_values, feature_stats, feature_kernel=feature_kernel)
     if penalty_type == "distance_correlation":
         return _latent_feature_distance_correlation_penalty(q_values, feature_stats)
     if penalty_type == "propensity":
@@ -1351,9 +1822,16 @@ def _latent_feature_weighted_correlation_penalty(
     return corr.pow(2).mean()
 
 
-def _latent_feature_hsic_penalty(q_values: torch.Tensor, feature_stats: torch.Tensor) -> torch.Tensor:
+def _latent_feature_hsic_penalty(
+    q_values: torch.Tensor,
+    feature_stats: torch.Tensor,
+    *,
+    feature_kernel: Optional[torch.Tensor] = None,
+) -> torch.Tensor:
     q_kernel = _rbf_kernel_with_median_bandwidth(_standardize_columns(q_values))
-    stats_kernel = _rbf_kernel_with_median_bandwidth(_standardize_columns(feature_stats))
+    stats_kernel = feature_kernel
+    if stats_kernel is None:
+        stats_kernel = _rbf_kernel_with_median_bandwidth(_standardize_columns(feature_stats))
     return _centered_kernel_alignment(q_kernel, stats_kernel)
 
 
@@ -1431,6 +1909,34 @@ def _latent_q_smoothness_penalty(
 
 
 @torch.no_grad()
+def _apply_q_scale_constraint_(embedding: nn.Embedding, mode: str, target: float) -> None:
+    """Pick a fixed-scale representative from the (q, decoder) equivalence class.
+
+    Predictions are invariant to ``q -> A q + b`` when the decoder absorbs the
+    inverse map, so the global scale of q carries no information and drifts freely
+    between seeds. Centering and rescaling to a constant Frobenius norm removes that
+    drift while preserving the relative geometry that continuity metrics measure.
+    """
+    if mode == "none":
+        return
+    if mode != "fixed_norm":
+        raise ValueError(f"Unsupported q_scale_constraint: {mode}")
+    q_values = embedding.weight.data
+    q_values.sub_(q_values.mean(dim=0, keepdim=True))
+    norm = torch.linalg.norm(q_values)
+    if float(norm) <= 1e-12:
+        return
+    q_values.mul_(target * (q_values.shape[0] ** 0.5) / norm)
+
+
+def _gradient_norm(parameters: Iterable[nn.Parameter]) -> float:
+    total = 0.0
+    for parameter in parameters:
+        if parameter.grad is not None:
+            total += float(parameter.grad.detach().pow(2).sum().item())
+    return total ** 0.5
+
+
 def _project_embedding_to_canonical_q_(embedding: nn.Embedding) -> None:
     q_values = embedding.weight.data
     if q_values.shape[0] < 2:
@@ -1548,9 +2054,8 @@ def _compute_label_curve_distance_matrix(
             sorted_y = summed / counts.clamp_min(EPSILON)
         profiles.append(_interp1d_torch(grid, sorted_x, sorted_y))
     profile_matrix = torch.stack(profiles, dim=0)
-    profile_matrix = profile_matrix - profile_matrix.mean(dim=1, keepdim=True)
-    scale = profile_matrix.pow(2).mean(dim=1, keepdim=True).sqrt().clamp_min(EPSILON)
-    profile_matrix = profile_matrix / scale
+    # Targets are already normalized with training-wide statistics. Preserve
+    # between-label level and amplitude because they may be the latent signal.
     distances = torch.cdist(profile_matrix, profile_matrix, p=2)
     return _normalize_distance_matrix(distances).detach()
 
@@ -1743,5 +2248,6 @@ __all__ = [
     "save_pipeline_outputs",
     "scale_dataset_targets",
     "split_calibration_and_eval_indices",
+    "split_support_query_indices",
     "train_latent_q_model",
 ]
