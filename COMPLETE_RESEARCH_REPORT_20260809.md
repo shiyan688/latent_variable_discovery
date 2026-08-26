@@ -355,6 +355,8 @@ Outer 原始终态表位于 `runs/nasa_battery_reviewer_clean_anchor_20260825/al
 
 这四行把两个可能混在一起的问题分开了。第一，域外 q 确实是公式爆炸的重要直接原因：凸包和坐标盒都把 15/15 单元带回安全范围。第二，**事后把 q 拉回范围并不能保留 decoder 所需的信息**：两种不同约束几乎产生相同的约 1.70 NRMSE。prefix-q 训练则不靠事后投影，并在 10/15 单元中改善旧 support-matched 接口，说明训练信息对齐的方向有信号；但它还有五个明显退化单元，不能按中位配对改善就宣布成功。
 
+对这五个尾部单元的事后归因没有发现一个可据此调参的简单阈值。continuity 在三个 splits 中分别有 3/5、3/5、4/5 单元保持在旧接口的 10% 内；其 NRMSE 比率与 raw-q 偏移的 Spearman 相关为 -0.329（p=0.232），与 functional-q 偏移为 0.104（p=0.713）。更值得注意的是，continuity 与 MSE 的退化大多不重合：以“比各自旧接口差超过 10%”为界，15 个单元中只有 1 个两者同时失败，另有 11 个只失败一种 loss；两种 loss 的 NRMSE 比率相关为 -0.489（p=0.064）。这些都是小样本、事后探索，不能升级为确认性结论，但它们提示几何漂移之外还存在 loss/optimizer 特异的吸引域或 gauge 选择问题，不能指望一个测试时边界单独消除全部长尾。
+
 目前更精确的诊断是优化动力学和坐标尺度仍不匹配，而不是“真实数据没有可用 q”。训练 q 以学习率 0.001 与 decoder 共同演化约 3,000 步；测试 q 则以学习率 0.05 在冻结 decoder 上独立优化 200+50 步。prefix-q 的训练 q 跨 seed 距离几何仍很稳定（split 中位数的中位数 0.980，最差 split 0.945），但测试 q 仍有长尾，这与校准尺度/规范不一致相符。下一项已经冻结但尚未得到正式结果的实验，是只用 meta-fit 电池前缀内部验证在 `{0, 0.001, 0.01, 0.1, 1}` 中选择一个 soft q-prior 强度，再原样应用到 structure-validation 电池；正式结果出来前，不改变 Stage C 的 FAIL，也不开始符号 Stage C2。
 
 完整的逐单元结果、门槛和可读报告分别保存在 `runs/nasa_support_matched_q_diagnostic_20260826/`、`runs/nasa_convex_support_q_diagnostic_20260826/`、`runs/nasa_support_box_q_diagnostic_20260826/` 和 `runs/nasa_prefix_q_training_pilot_20260826/`。这些实验都来自已反复暴露的 inner development cohort，只能用于机制选择；最终论文确认仍需要新隔离电池或外部数据。

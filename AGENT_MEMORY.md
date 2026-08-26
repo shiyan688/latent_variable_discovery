@@ -1,7 +1,7 @@
 ---
 document_type: agent_handoff_memory
 project: latent_variable_search
-last_updated: 2026-08-26 21:52 CST
+last_updated: 2026-08-26 21:55 CST
 current_branch: research/latent-q-stagec-20260826
 base_commit: 2b13869
 live_status_source: runs/nasa_battery_reviewer_clean_inner_symbolic_20260825/status.json
@@ -1002,6 +1002,8 @@ Formal training and frozen functional analysis completed 30/30 with zero launche
 Interface safety fails: continuity train-to-validation raw-q max-|z| has median/maximum 8.815/19.436 and decoder-functional max-|z| 3.389/12.840. MSE gives 6.378/15.020 and 3.841/6.854. Representation stability partly survives: continuity q-distance cross-seed median-of-split-medians is 0.980 with a 0.945 floor; cycle-1 capacity is 0.726 with a 0.690 floor. Early fade has median-of-split-medians 0.750 but one split is -0.119, failing the frozen 0.50 floor.
 
 Durable training-dynamics conclusion: aligning the target information set alone does not align the optimization pathway. Train q uses Adam at lr 0.001 while co-evolving with theta for roughly 3,000 q steps; held-out q uses lr 0.05 for 200+50 steps against a frozen decoder. The high cross-seed q-distance stability alongside out-of-range validation q and one unstable functional mapping is consistent with calibration-scale/gauge mismatch, not generic absence of entity information. Do not discard the 10/15 paired improvements, but do not promote the method or relax its gates.
+
+Post-terminal exploratory tail attribution (not a frozen gate) found that continuity retention is distributed across splits at 3/5, 3/5, and 4/5. Its NRMSE ratio has no observed monotonic association with raw shift (Spearman -0.329, p=0.232) or functional shift (0.104, p=0.713). Continuity and MSE retention ratios are instead negatively associated (-0.489, p=0.064): under the >10% regression definition only 1/15 cells fail both losses, 11/15 fail exactly one, and 3/15 fail neither. Functional shifts themselves remain positively associated across losses (0.621, p=0.0134). This separates a shared geometry symptom from largely loss-specific prediction basins and warns that a calibration prior may fix scale without fully fixing decoder-training multimodality.
 
 Source-of-truth artifacts:
 
