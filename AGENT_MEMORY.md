@@ -1,7 +1,7 @@
 ---
 document_type: agent_handoff_memory
 project: latent_variable_search
-last_updated: 2026-08-26 21:50 CST
+last_updated: 2026-08-26 21:52 CST
 current_branch: research/latent-q-stagec-20260826
 base_commit: 2b13869
 live_status_source: runs/nasa_battery_reviewer_clean_inner_symbolic_20260825/status.json
@@ -1021,3 +1021,5 @@ Advancement retains the prediction/interface/stability gates from the prefix-q p
 Static compilation, CLI checks, `git diff --check`, and 57 tests passed. At 21:44 CST no GPU was empty: physical 0/7 had new ~72.5 GiB VLLM workers, 6 had a ~24.9 GiB sglang worker, and 1--5 were also occupied by unrelated jobs. The formal root remained absent and no formal process was launched. A non-counted CPU smoke first exposed a summary-only DataFrame selection bug; the minimal fix changed functional-shift calculation to use the already merged selected-q table. The rerun passed: 5/5 weights scored, 8/5 entities, zero query leakage, selected weight 0, raw/functional max-|z| 3.985/1.078, and selected validation NRMSE 1.3661 versus 1.3703 prefix-q no-prior. These values are structural/early observations only. Formal execution must wait for a fresh empty-card check and must not claim a utilization-zero but memory-occupied card.
 
 At 21:50 CST a second host-level snapshot still found no empty card: GPUs 0/1/7 each used about 72.4--72.6 GiB, GPUs 2/3 about 70.9 GiB, GPUs 4/5 about 55.8 GiB, and GPU 6 about 24.9 GiB. The utilization-zero readings on 0/1/6/7 do not make those cards available. No formal prior cell or waiting controller was started. The beginner-readable main report now contains a four-row causal comparison of support matching, convex bounding, coordinate-box bounding, and prefix-q training; compact terminal summaries for all four completed stages are explicitly included by `.gitignore` while raw checkpoints, predictions, and logs remain local.
+
+The verified transition was committed as `e8d4f5c` (`diagnose and align NASA latent q interface`) and pushed to `origin/research/latent-q-stagec-20260826` at 21:52 CST. The pre-commit suite was 57 passed with only the two expected small-sample R-squared warnings. A fresh agent should not rerun the four terminal diagnostics; it should refresh `nvidia-smi`, confirm `runs/nasa_meta_selected_q_prior_20260826/` is absent or reconcile any new raw cells, and then execute the already frozen formal prior commands only on genuinely empty cards.
