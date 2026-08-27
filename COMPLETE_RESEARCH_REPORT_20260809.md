@@ -344,7 +344,7 @@ Outer 原始终态表位于 `runs/nasa_battery_reviewer_clean_anchor_20260825/al
 
 #### 4.0.1 Stage C 接口诊断：为什么找到 q 仍可能无法得到稳定公式
 
-上面的失败首先提出一个接口问题：训练电池的 q 看过完整曲线，测试电池的 q 却只能看前 30% 曲线。若两种 q 不在同一坐标区域，符号公式即使在训练电池上合理，也会在测试电池上外推。为逐层排除原因，我们保持同一组 3 个 inner splits、5 个 seeds 和 8/5 电池划分，依次做了四个冻结诊断。表中的 NRMSE 都是 continuity q 在 15 个“划分×seed”单元上的中位数；`raw z` 和 `functional z` 是测试 q 相对训练 q 范围的最大标准化偏移，越小越安全。
+上面的失败首先提出一个接口问题：训练电池的 q 看过完整曲线，测试电池的 q 却只能看前 30% 曲线。若两种 q 不在同一坐标区域，符号公式即使在训练电池上合理，也会在测试电池上外推。为逐层排除原因，我们保持同一组 3 个 inner splits、5 个 seeds 和 8/5 电池划分，依次做了五个冻结诊断。表中的 NRMSE 都是 continuity q 在 15 个“划分×seed”单元上的中位数；`raw z` 和 `functional z` 是测试 q 相对训练 q 范围的最大标准化偏移，越小越安全。
 
 | q 接口 | 改变了什么 | NRMSE 中位数 | raw z 中位数 | functional z 中位数 | functional z≤6 | 冻结结论 |
 |---|---|---:|---:|---:|---:|---|
@@ -352,14 +352,17 @@ Outer 原始终态表位于 `runs/nasa_battery_reviewer_clean_anchor_20260825/al
 | 凸包 q | 测试 q 限制为 8 个训练 q 的凸组合 | 1.696 | 2.321 | 2.351 | 15/15 | 几何通过，预测保持失败 |
 | 坐标盒 q | 只把每个测试 q 坐标裁到训练 q 的最小/最大值 | 1.702 | **2.276** | 2.436 | 15/15 | 几何通过，预测保持失败 |
 | prefix-q 训练 | 训练时 q 也只看前 30%，theta 仍看完整曲线 | 1.387 | 8.815 | 3.389 | 12/15 | 10/15 配对单元改善，但尾部与稳定性 gate 失败 |
+| meta-selected raw-q prior | 只用 meta-fit support 内部在固定网格选择 soft prior | 1.356 | 8.188 | 3.273 | 14/15 | 预测略改善；接口与稳定性 gate 仍失败 |
 
-这四行把两个可能混在一起的问题分开了。第一，域外 q 确实是公式爆炸的重要直接原因：凸包和坐标盒都把 15/15 单元带回安全范围。第二，**事后把 q 拉回范围并不能保留 decoder 所需的信息**：两种不同约束几乎产生相同的约 1.70 NRMSE。prefix-q 训练则不靠事后投影，并在 10/15 单元中改善旧 support-matched 接口，说明训练信息对齐的方向有信号；但它还有五个明显退化单元，不能按中位配对改善就宣布成功。
+这五行把两个可能混在一起的问题分开了。第一，域外 q 确实是公式爆炸的重要直接原因：凸包和坐标盒都把 15/15 单元带回安全范围。第二，**事后把 q 拉回范围并不能保留 decoder 所需的信息**：两种不同约束几乎产生相同的约 1.70 NRMSE。prefix-q 训练则不靠事后投影，并在 10/15 单元中改善旧 support-matched 接口，说明训练信息对齐的方向有信号；但它还有五个明显退化单元，不能按中位配对改善就宣布成功。soft raw-q prior 将 prefix-q 的中位 NRMSE 从 1.387 降到 1.356，对旧 support-matched 接口的配对 ratio 中位数为 0.979，且 10/15 单元保持在旧接口的 10% 内；不过 12/15 单元仍选择零权重，raw/functional z 中位数仍为 8.188/3.273，四项冻结 gate 只通过完整性。
 
 对这五个尾部单元的事后归因没有发现一个可据此调参的简单阈值。continuity 在三个 splits 中分别有 3/5、3/5、4/5 单元保持在旧接口的 10% 内；其 NRMSE 比率与 raw-q 偏移的 Spearman 相关为 -0.329（p=0.232），与 functional-q 偏移为 0.104（p=0.713）。更值得注意的是，continuity 与 MSE 的退化大多不重合：以“比各自旧接口差超过 10%”为界，15 个单元中只有 1 个两者同时失败，另有 11 个只失败一种 loss；两种 loss 的 NRMSE 比率相关为 -0.489（p=0.064）。这些都是小样本、事后探索，不能升级为确认性结论，但它们提示几何漂移之外还存在 loss/optimizer 特异的吸引域或 gauge 选择问题，不能指望一个测试时边界单独消除全部长尾。
 
-目前更精确的诊断是优化动力学和坐标尺度仍不匹配，而不是“真实数据没有可用 q”。训练 q 以学习率 0.001 与 decoder 共同演化约 3,000 步；测试 q 则以学习率 0.05 在冻结 decoder 上独立优化 200+50 步。prefix-q 的训练 q 跨 seed 距离几何仍很稳定（split 中位数的中位数 0.980，最差 split 0.945），但测试 q 仍有长尾，这与校准尺度/规范不一致相符。下一项已经冻结但尚未得到正式结果的实验，是只用 meta-fit 电池前缀内部验证在 `{0, 0.001, 0.01, 0.1, 1}` 中选择一个 soft q-prior 强度，再原样应用到 structure-validation 电池；正式结果出来前，不改变 Stage C 的 FAIL，也不开始符号 Stage C2。
+目前更精确的诊断是优化动力学和坐标规范仍不匹配，而不是“真实数据没有可用 q”。训练 q 以学习率 0.001 与 decoder 共同演化约 3,000 步；测试 q 则以学习率 0.05 在冻结 decoder 上独立优化 200+50 步。prefix-q 的训练 q 跨 seed 距离几何仍很稳定（split 中位数的中位数 0.980，最差 split 0.945），但测试 q 仍有长尾，这与校准尺度/规范不一致相符。正式实验后的固定权重诊断进一步排除了“只需换一个 raw-q prior 强度”：`0.001` 能把 q 稳定性的中位数提高到 0.777，却让 early-fade 最差 split 只有 0.274；`0.01` 的 q 最差 split 达 0.792，但 capacity 和 fade 均未过门槛。五个权重没有一个通过既有 representation gate。原因是 raw q 与 decoder 第一层存在等价的仿射重参数化，同一物理响应可对应不同 seed 的坐标系；在这种坐标上加 Gaussian prior 不能消除这个 gauge。
 
-完整的逐单元结果、门槛和可读报告分别保存在 `runs/nasa_support_matched_q_diagnostic_20260826/`、`runs/nasa_convex_support_q_diagnostic_20260826/`、`runs/nasa_support_box_q_diagnostic_20260826/` 和 `runs/nasa_prefix_q_training_pilot_20260826/`。这些实验都来自已反复暴露的 inner development cohort，只能用于机制选择；最终论文确认仍需要新隔离电池或外部数据。
+下一项已独立冻结的是 **functional-response prior meta-only screen**：在四个既有物理条件下约束 decoder 的响应签名，而不直接约束 raw q。响应在等价的 q 仿射换元下保持不变，因此更贴合论文最终要暴露的 capacity/fade 功能坐标。Phase A 只读八个 meta-fit 电池，用 later 70% 作开发评分；没有权重同时保留预测并通过稳定性 gate 时就停止，绝不读取 structure-validation。实现、分析器和一个非正式 CPU 结构 smoke 已通过，正式 15-cell 矩阵尚未在 GPU 上执行，因而不改变 Stage C 的 FAIL，也不开始符号 Stage C2。
+
+完整的逐单元结果、门槛和可读报告分别保存在 `runs/nasa_support_matched_q_diagnostic_20260826/`、`runs/nasa_convex_support_q_diagnostic_20260826/`、`runs/nasa_support_box_q_diagnostic_20260826/`、`runs/nasa_prefix_q_training_pilot_20260826/` 和 `runs/nasa_meta_selected_q_prior_20260826/`；raw-q 固定权重事后机制诊断见最后一个目录中的 `RAW_Q_PRIOR_FAILURE_DIAGNOSTIC.md`。这些实验都来自已反复暴露的 inner development cohort，只能用于机制选择；最终论文确认仍需要新隔离电池或外部数据。
 
 ### 4.1 历史主实验总体预测（部分数据已失效）
 

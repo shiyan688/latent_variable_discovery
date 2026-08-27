@@ -286,6 +286,45 @@ class PipelineUnitTests(unittest.TestCase):
         self.assertTrue(np.isfinite(calibrated.q_by_label[2]).all())
         self.assertTrue(all(parameter.grad is None for parameter in artifacts.model.parameters()))
 
+    def test_functional_calibration_prior_is_finite_and_requires_probe_features(self) -> None:
+        train = pipeline.build_dataset_from_arrays(
+            [[0.0], [1.0], [0.0], [1.0]], [1, 1, 2, 2], [0.0, 1.0, 0.5, 1.5]
+        )
+        artifacts = pipeline.train_latent_q_model(
+            train,
+            lambda input_dim: torch.nn.Linear(input_dim, 1),
+            LatentQConfig(
+                q_dim=1,
+                epochs=1,
+                batch_size=4,
+                early_stop_enabled=False,
+                device="cpu",
+                verbose=False,
+            ),
+        )
+        test = pipeline.build_dataset_from_arrays(
+            [[0.0], [1.0], [2.0]], [3, 3, 3], [0.25, 1.25, 2.25]
+        )
+        config = LatentQConfig(
+            q_dim=1,
+            epochs=1,
+            calibration_steps=2,
+            calibration_ratio=0.34,
+            calibration_functional_prior_weight=1.0,
+            device="cpu",
+            verbose=False,
+        )
+        with self.assertRaisesRegex(ValueError, "functional_prior_features"):
+            pipeline.calibrate_latent_q_for_test_labels(test, artifacts, config)
+        calibrated = pipeline.calibrate_latent_q_for_test_labels(
+            test,
+            artifacts,
+            config,
+            functional_prior_features=np.array([[0.0], [1.0]], dtype=np.float32),
+        )
+        self.assertTrue(np.isfinite(calibrated.q_by_label[3]).all())
+        self.assertTrue(all(parameter.grad is None for parameter in artifacts.model.parameters()))
+
     def test_inner_calibration_split_is_seeded_and_disjoint(self) -> None:
         indices = np.arange(10)
         first = pipeline._calibration_fit_selection_indices(

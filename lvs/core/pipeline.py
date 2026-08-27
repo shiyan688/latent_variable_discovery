@@ -70,6 +70,7 @@ class LatentQConfig:
     latent_curve_continuity_weight: float = 0.0
     latent_curve_continuity_grid_size: int = 64
     calibration_q_prior_weight: float = 0.0
+    calibration_functional_prior_weight: float = 0.0
     latent_q_l2_weight: float = 0.0
     prediction_loss_type: str = "mse"
     latent_q_whitening_weight: float = 0.0
@@ -855,6 +856,7 @@ def calibrate_latent_q_for_test_labels(
     extra_initial_q_provider: Optional[
         Callable[[Any, np.ndarray], np.ndarray | torch.Tensor]
     ] = None,
+    functional_prior_features: Optional[np.ndarray] = None,
 ) -> CalibrationArtifacts:
     validated_config = _validate_config(config)
     plot_index = _resolve_plot_feature_index(plot_feature_index, test_dataset.features.shape[1])
@@ -879,6 +881,37 @@ def calibrate_latent_q_for_test_labels(
     train_q = training_artifacts.embedding.weight.detach()
     q_prior_mean = train_q.mean(dim=0)
     q_prior_std = train_q.std(dim=0, unbiased=False).clamp_min(0.05)
+    functional_prior_feature_tensor = None
+    functional_prior_mean = None
+    functional_prior_std = None
+    if functional_prior_features is not None:
+        prior_features = np.asarray(functional_prior_features, dtype=np.float32)
+        if prior_features.ndim != 2 or prior_features.shape[1] != test_dataset.features.shape[1]:
+            raise ValueError(
+                "functional_prior_features must be a 2D array with the test feature dimension."
+            )
+        if not np.isfinite(prior_features).all():
+            raise ValueError("functional_prior_features must be finite.")
+        functional_prior_feature_tensor = torch.tensor(
+            normalize_features(prior_features, training_artifacts.normalizer),
+            dtype=torch.float32,
+            device=training_artifacts.device,
+        )
+        with torch.no_grad():
+            probe_count = functional_prior_feature_tensor.shape[0]
+            repeated_features = functional_prior_feature_tensor.repeat(len(train_q), 1)
+            repeated_train_q = train_q.repeat_interleave(probe_count, dim=0)
+            train_signatures = _ensure_prediction_column(
+                model(torch.cat([repeated_features, repeated_train_q], dim=1))
+            ).reshape(len(train_q), probe_count)
+            functional_prior_mean = train_signatures.mean(dim=0)
+            functional_prior_std = train_signatures.std(
+                dim=0, unbiased=False
+            ).clamp_min(0.05)
+    elif validated_config.calibration_functional_prior_weight > 0:
+        raise ValueError(
+            "functional_prior_features are required when the functional prior weight is positive."
+        )
     model_parameters = tuple(model.parameters())
     previous_requires_grad = tuple(parameter.requires_grad for parameter in model_parameters)
     _set_requires_grad(model_parameters, False)
@@ -938,6 +971,9 @@ def calibrate_latent_q_for_test_labels(
                     mse_loss=mse_loss,
                     q_prior_mean=q_prior_mean,
                     q_prior_std=q_prior_std,
+                    functional_prior_features=functional_prior_feature_tensor,
+                    functional_prior_mean=functional_prior_mean,
+                    functional_prior_std=functional_prior_std,
                     config=validated_config,
                 )
                 fitted_candidates.append(candidate.detach().clone())
@@ -969,6 +1005,9 @@ def calibrate_latent_q_for_test_labels(
                     mse_loss=mse_loss,
                     q_prior_mean=q_prior_mean,
                     q_prior_std=q_prior_std,
+                    functional_prior_features=functional_prior_feature_tensor,
+                    functional_prior_mean=functional_prior_mean,
+                    functional_prior_std=functional_prior_std,
                     config=validated_config,
                 )
             q_parameter = selected_q
@@ -1103,6 +1142,9 @@ def _optimize_calibration_q(
     mse_loss: nn.Module,
     q_prior_mean: torch.Tensor,
     q_prior_std: torch.Tensor,
+    functional_prior_features: Optional[torch.Tensor],
+    functional_prior_mean: Optional[torch.Tensor],
+    functional_prior_std: Optional[torch.Tensor],
     config: LatentQConfig,
 ) -> torch.Tensor:
     q_parameter = nn.Parameter(initial_q.detach().clone().to(feature_tensor.device))
@@ -1118,6 +1160,22 @@ def _optimize_calibration_q(
         if config.calibration_q_prior_weight > 0:
             standardized_q = (q_parameter - q_prior_mean) / q_prior_std
             loss = loss + config.calibration_q_prior_weight * torch.mean(standardized_q.pow(2))
+        if config.calibration_functional_prior_weight > 0:
+            assert functional_prior_features is not None
+            assert functional_prior_mean is not None
+            assert functional_prior_std is not None
+            repeated_probe_q = q_parameter.unsqueeze(0).repeat(
+                functional_prior_features.shape[0], 1
+            )
+            signature = _ensure_prediction_column(
+                model(torch.cat([functional_prior_features, repeated_probe_q], dim=1))
+            ).squeeze(1)
+            standardized_signature = (
+                signature - functional_prior_mean
+            ) / functional_prior_std
+            loss = loss + config.calibration_functional_prior_weight * torch.mean(
+                standardized_signature.pow(2)
+            )
         optimizer.zero_grad()
         loss.backward()
         optimizer.step()
@@ -1627,6 +1685,8 @@ def _validate_config(config: LatentQConfig) -> LatentQConfig:
         raise ValueError("latent_curve_continuity_grid_size must be greater than 1.")
     if config.calibration_q_prior_weight < 0:
         raise ValueError("calibration_q_prior_weight must be non-negative.")
+    if config.calibration_functional_prior_weight < 0:
+        raise ValueError("calibration_functional_prior_weight must be non-negative.")
     if config.latent_q_l2_weight < 0:
         raise ValueError("latent_q_l2_weight must be non-negative.")
     if config.prediction_loss_type not in {"mse", "label_balanced_mse"}:

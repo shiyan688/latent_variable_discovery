@@ -12,6 +12,8 @@
 
 **Status:** Sequential inner-split development, not independent confirmation.
 
+**Execution-only resource amendment (2026-08-27, before any formal cell):** the originally named physical GPUs 0 and 7 were occupied. A fresh host snapshot found physical GPUs 4 and 5 at 4 MiB with no compute processes, so the two method processes use 4 and 5 instead. This changes only physical device assignment; the source checkpoints, matrix, prior grid, selection rule, seeds, gates, output root, and no-retry/no-deadline rules are unchanged.
+
 ## Objective and hypothesis
 
 Information-matched prefix-q training improved 10/15 paired continuity cells and preserved q-distance stability, but held-out calibration still left the training coordinate range. Train q co-evolves with the decoder under Adam lr 0.001, whereas held-out q uses a frozen decoder, lr 0.05, and 200+50 steps. The hypothesis is that a soft standardized train-q prior, selected strictly inside meta-fit support, can control calibration drift without the prediction loss caused by hard convex/box projection.
@@ -44,15 +46,15 @@ All four gates are mandatory. Failure ends this grid and selection rule without 
 
 ## Exact commands
 
-Run only after physical GPUs 0 and 7 are confirmed empty:
+The originally frozen example named physical GPUs 0 and 7. Under the execution-only amendment above, substitute the freshly verified empty GPUs 4 and 5:
 
 ```bash
-CUDA_VISIBLE_DEVICES=0 python scripts/run_nasa_meta_selected_q_prior_20260826.py \
+CUDA_VISIBLE_DEVICES=4 python scripts/run_nasa_meta_selected_q_prior_20260826.py \
   --q-root runs/nasa_prefix_q_training_pilot_20260826 \
   --method prefix_q_continuity_step1 \
   --output-root runs/nasa_meta_selected_q_prior_20260826 --device cuda:0
 
-CUDA_VISIBLE_DEVICES=7 python scripts/run_nasa_meta_selected_q_prior_20260826.py \
+CUDA_VISIBLE_DEVICES=5 python scripts/run_nasa_meta_selected_q_prior_20260826.py \
   --q-root runs/nasa_prefix_q_training_pilot_20260826 \
   --method prefix_q_mse_step1 \
   --output-root runs/nasa_meta_selected_q_prior_20260826 --device cuda:0

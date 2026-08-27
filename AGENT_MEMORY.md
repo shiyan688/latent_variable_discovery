@@ -1,10 +1,10 @@
 ---
 document_type: agent_handoff_memory
 project: latent_variable_search
-last_updated: 2026-08-26 21:55 CST
+last_updated: 2026-08-27 11:45 CST
 current_branch: research/latent-q-stagec-20260826
 base_commit: 2b13869
-live_status_source: runs/nasa_battery_reviewer_clean_inner_symbolic_20260825/status.json
+live_status_source: runs/nasa_meta_selected_q_prior_20260826/status.json
 ---
 
 # Agent memory: latent-variable search
@@ -1014,7 +1014,7 @@ Source-of-truth artifacts:
 | Functional analysis | `runs/nasa_prefix_q_training_pilot_20260826/functional_coordinate_analysis/` |
 | Frozen cells/gates/report | `runs/nasa_prefix_q_training_pilot_20260826/{pilot_cells.csv,gate_decision.json,PREFIX_Q_TRAINING_REPORT.md}` |
 
-## 40. Active meta-selected soft q-prior diagnostic (2026-08-26 21:46 CST)
+## 40. Completed meta-selected soft q-prior diagnostic (2026-08-27 11:16 CST)
 
 The next protocol is frozen in `NASA_META_SELECTED_Q_PRIOR_PLAN_20260826.md` using the academic-research-suite experiment-agent boundary. For each prefix-q checkpoint it scores the fixed grid `{0, 0.001, 0.01, 0.1, 1}` by leave-one-entity-out calibration on all eight meta-fit entities. Selection uses only the calibration-internal holdout inside each entity's earliest 30% support; later meta-fit targets and all structure-validation query targets are excluded. The eight selected support-calibrated meta-fit q values then define the prior population for the five structure-validation calibrations. A +123.456 query perturbation audits that selected q is unchanged.
 
@@ -1024,4 +1024,22 @@ Static compilation, CLI checks, `git diff --check`, and 57 tests passed. At 21:4
 
 At 21:50 CST a second host-level snapshot still found no empty card: GPUs 0/1/7 each used about 72.4--72.6 GiB, GPUs 2/3 about 70.9 GiB, GPUs 4/5 about 55.8 GiB, and GPU 6 about 24.9 GiB. The utilization-zero readings on 0/1/6/7 do not make those cards available. No formal prior cell or waiting controller was started. The beginner-readable main report now contains a four-row causal comparison of support matching, convex bounding, coordinate-box bounding, and prefix-q training; compact terminal summaries for all four completed stages are explicitly included by `.gitignore` while raw checkpoints, predictions, and logs remain local.
 
-The verified transition was committed as `e8d4f5c` (`diagnose and align NASA latent q interface`) and pushed to `origin/research/latent-q-stagec-20260826` at 21:52 CST. The pre-commit suite was 57 passed with only the two expected small-sample R-squared warnings. A fresh agent should not rerun the four terminal diagnostics; it should refresh `nvidia-smi`, confirm `runs/nasa_meta_selected_q_prior_20260826/` is absent or reconcile any new raw cells, and then execute the already frozen formal prior commands only on genuinely empty cards.
+The verified transition was committed as `e8d4f5c` (`diagnose and align NASA latent q interface`) and pushed to `origin/research/latent-q-stagec-20260826` at 21:52 CST. The pre-commit suite was 57 passed with only the two expected small-sample R-squared warnings.
+
+Before any formal cell, the plan recorded an execution-only resource amendment from the then-occupied GPUs 0/7 to freshly empty physical GPUs 4/5; no scientific setting changed. Continuity and MSE processes then completed 15/15 cells each with no retry or deadline. Terminal integrity was exact: 30 cells, 390 selected q rows, 150 prior-score rows, zero query-target leakage, finite outputs, and selected weights only from the frozen grid.
+
+The frozen decision is **1/4 PASS; DO NOT ADVANCE**. Continuity selected-prior NRMSE is 1.3556 versus 1.3872 for prefix weight 0 and 1.1932 for old support matching; its paired selected/old ratio median is 0.9786 and 10/15 cells remain within 10% of old. Interface safety still fails with raw/functional max-|z| medians 8.188/3.273, despite 14/15 functional cells at most 6. Representation stability fails: q-distance median-of-split-medians/minimum split is 0.758/0.461, capacity 0.655/0.655, and early fade 0.691/0.119. Continuity selects weight 0 in 12/15 cells and 0.001 in 3/15. MSE has NRMSE 1.0798, raw/functional medians 5.051/3.378, and only 8/15 prediction-retained cells.
+
+A post-terminal, explicitly post-hoc failure diagnostic did not alter the gate or use structure-validation query to choose a new weight. Support selection loss is directionally associated with later meta-fit query NRMSE (median within-cell rank Spearman 0.900 for continuity), but it matches the meta-query oracle in only 6/15 cells and favors weak/no prior. More decisively, no fixed raw-q weight in `{0, 0.001, 0.01, 0.1, 1}` passes the existing continuity representation gate. Weight 0.001 gives q/capacity/fade median-of-split-medians 0.777/0.702/0.714 but an early-fade minimum split of 0.274; weight 0.01 raises the q minimum split to 0.792 but capacity/fade medians fall to 0.667/0.560. Therefore do not spend structure-validation queries rerunning fixed raw-q weights.
+
+Durable conclusion: this is a coordinate-definition failure, not evidence that q lacks entity information. A raw-q Gaussian prior is expressed in each seed's arbitrary embedding coordinates and preserves the exact affine gauge between q and the decoder first layer. The next prior must operate in decoder-response/functional space. Source-of-truth artifacts are `NASA_META_SELECTED_Q_PRIOR_PLAN_20260826.md`, `runs/nasa_meta_selected_q_prior_20260826/{status,gate_decision,META_SELECTED_Q_PRIOR_REPORT,RAW_Q_PRIOR_FAILURE_DIAGNOSTIC}.{json,md}` as applicable, plus the compact CSV summaries in that root.
+
+## 41. Active functional-response prior meta-only screen (2026-08-27 11:45 CST)
+
+The next protocol was frozen before formal cells in `NASA_FUNCTIONAL_RESPONSE_PRIOR_META_PLAN_20260827.md`. It uses only the 15 continuity prefix-q checkpoints and only their eight meta-fit batteries. For each leave-one-out battery it regularizes the decoder's normalized responses at the four already frozen conditions `(cycle, ambient, load, cutoff)` = `(1,24,2,2.5)`, `(10,24,2,2.5)`, `(20,24,2,2.5)`, and `(28,24,2,2.5)`. Per-probe response standard deviations are floored at 0.05. The raw-q prior is zero and the functional weight grid remains `{0, 0.001, 0.01, 0.1, 1}`.
+
+Phase A never reads structure-validation data. Later 70% meta-fit cycles score prediction development only; a +123.456 perturbation must leave candidate q unchanged. A weight is eligible only if its 15-cell median meta-query NRMSE is at most 1.05 times weight 0 and it passes the existing q/capacity/fade stability gate. The lowest eligible meta-query NRMSE is selected, ties preferring the smaller weight. No eligible weight means STOP; an eligible weight authorizes only a separately frozen Phase B.
+
+The core calibration path now accepts `calibration_functional_prior_weight` and explicit probe features; the default is zero, so existing behavior is unchanged. The new runner and analyzer are `scripts/run_nasa_functional_response_prior_meta_20260827.py` and `scripts/analyze_nasa_functional_response_prior_meta_20260827.py`. A non-counted CPU smoke on inner0/seed0/weight 0.001 passed: one cell, eight leave-one-out candidate q values, zero leakage, finite support loss and meta-query NRMSE, plus capacity/fade and all four probe responses. Full verification is 58 tests passed with the two expected tiny-sample R-squared warnings.
+
+No formal Phase-A root exists yet. At 11:40 CST the sandbox GPU query could not access the driver; a host-level query at 11:42 CST showed every physical card occupied: memory usage for GPUs 0--7 was approximately 13.4, 22.9, 57.6, 57.6, 57.6, 57.6, 76.4, and 17.0 GiB. GPUs 2--5 belonged to one four-card sglang job. Do not launch on utilization-zero cards with resident memory. A takeover should refresh host `nvidia-smi`; only if a card has no foreign process and effectively zero memory should it run the exact command in the frozen plan, then run the analyzer after 15/15 terminal success. No automatic retry, deadline, structure-validation run, or Stage C2 is authorized.

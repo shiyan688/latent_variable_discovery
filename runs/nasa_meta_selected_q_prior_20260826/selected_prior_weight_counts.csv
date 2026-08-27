@@ -1,0 +1,6 @@
+method,selected_prior_weight,cells
+prefix_q_continuity_step1,0.0,12
+prefix_q_continuity_step1,0.001,3
+prefix_q_mse_step1,0.0,5
+prefix_q_mse_step1,0.001,9
+prefix_q_mse_step1,0.01,1
