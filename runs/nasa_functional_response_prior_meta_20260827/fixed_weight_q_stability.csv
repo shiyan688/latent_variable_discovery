@@ -1,0 +1,16 @@
+dataset,prior_weight,median_spearman,min_pair_spearman
+nasa_battery_capacity_reviewer_clean_inner0,0.0,0.7903667214012042,0.5166940339354132
+nasa_battery_capacity_reviewer_clean_inner0,0.001,0.710727969348659,0.45977011494252873
+nasa_battery_capacity_reviewer_clean_inner0,0.01,0.7684729064039408,0.5106732348111659
+nasa_battery_capacity_reviewer_clean_inner0,0.1,0.47482211275314723,0.30925013683634367
+nasa_battery_capacity_reviewer_clean_inner0,1.0,0.41133004926108374,0.1625615763546798
+nasa_battery_capacity_reviewer_clean_inner1,0.0,0.40093048713738366,0.07936507936507936
+nasa_battery_capacity_reviewer_clean_inner1,0.001,0.379584017515052,-0.18500273672687464
+nasa_battery_capacity_reviewer_clean_inner1,0.01,0.2068965517241379,-0.22441160372194854
+nasa_battery_capacity_reviewer_clean_inner1,0.1,0.07717569786535303,-0.3103448275862069
+nasa_battery_capacity_reviewer_clean_inner1,1.0,-0.019430760810071147,-0.32183908045977005
+nasa_battery_capacity_reviewer_clean_inner2,0.0,0.6847290640394088,0.41215106732348106
+nasa_battery_capacity_reviewer_clean_inner2,0.001,0.6280788177339901,0.31143951833607003
+nasa_battery_capacity_reviewer_clean_inner2,0.01,0.5290093048713738,0.2556102900930487
+nasa_battery_capacity_reviewer_clean_inner2,0.1,0.4321291735084839,0.24356869184455393
+nasa_battery_capacity_reviewer_clean_inner2,1.0,0.342911877394636,0.08264915161466885

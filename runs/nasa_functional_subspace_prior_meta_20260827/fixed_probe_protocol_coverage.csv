@@ -1,0 +1,4 @@
+dataset,rows,fixed_probe_exact_rows,fixed_probe_exact_fraction,labels,labels_with_fixed_probe
+nasa_battery_capacity_reviewer_clean_inner0,711,168,0.23628691983122363,8,1
+nasa_battery_capacity_reviewer_clean_inner1,716,0,0.0,8,0
+nasa_battery_capacity_reviewer_clean_inner2,711,168,0.23628691983122363,8,1

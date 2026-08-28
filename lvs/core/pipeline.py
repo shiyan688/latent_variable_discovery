@@ -71,6 +71,7 @@ class LatentQConfig:
     latent_curve_continuity_grid_size: int = 64
     calibration_q_prior_weight: float = 0.0
     calibration_functional_prior_weight: float = 0.0
+    calibration_functional_prior_subspace_rank: int = 0
     latent_q_l2_weight: float = 0.0
     prediction_loss_type: str = "mse"
     latent_q_whitening_weight: float = 0.0
@@ -884,6 +885,7 @@ def calibrate_latent_q_for_test_labels(
     functional_prior_feature_tensor = None
     functional_prior_mean = None
     functional_prior_std = None
+    functional_prior_components = None
     if functional_prior_features is not None:
         prior_features = np.asarray(functional_prior_features, dtype=np.float32)
         if prior_features.ndim != 2 or prior_features.shape[1] != test_dataset.features.shape[1]:
@@ -908,6 +910,18 @@ def calibrate_latent_q_for_test_labels(
             functional_prior_std = train_signatures.std(
                 dim=0, unbiased=False
             ).clamp_min(0.05)
+            rank = validated_config.calibration_functional_prior_subspace_rank
+            if rank > 0:
+                if rank >= probe_count:
+                    raise ValueError(
+                        "calibration_functional_prior_subspace_rank must be smaller than the number of probes."
+                    )
+                standardized_signatures = (
+                    train_signatures - functional_prior_mean
+                ) / functional_prior_std
+                functional_prior_components = torch.linalg.svd(
+                    standardized_signatures, full_matrices=False
+                ).Vh[:rank]
     elif validated_config.calibration_functional_prior_weight > 0:
         raise ValueError(
             "functional_prior_features are required when the functional prior weight is positive."
@@ -974,6 +988,7 @@ def calibrate_latent_q_for_test_labels(
                     functional_prior_features=functional_prior_feature_tensor,
                     functional_prior_mean=functional_prior_mean,
                     functional_prior_std=functional_prior_std,
+                    functional_prior_components=functional_prior_components,
                     config=validated_config,
                 )
                 fitted_candidates.append(candidate.detach().clone())
@@ -1008,6 +1023,7 @@ def calibrate_latent_q_for_test_labels(
                     functional_prior_features=functional_prior_feature_tensor,
                     functional_prior_mean=functional_prior_mean,
                     functional_prior_std=functional_prior_std,
+                    functional_prior_components=functional_prior_components,
                     config=validated_config,
                 )
             q_parameter = selected_q
@@ -1145,6 +1161,7 @@ def _optimize_calibration_q(
     functional_prior_features: Optional[torch.Tensor],
     functional_prior_mean: Optional[torch.Tensor],
     functional_prior_std: Optional[torch.Tensor],
+    functional_prior_components: Optional[torch.Tensor],
     config: LatentQConfig,
 ) -> torch.Tensor:
     q_parameter = nn.Parameter(initial_q.detach().clone().to(feature_tensor.device))
@@ -1173,6 +1190,10 @@ def _optimize_calibration_q(
             standardized_signature = (
                 signature - functional_prior_mean
             ) / functional_prior_std
+            if functional_prior_components is not None:
+                standardized_signature = standardized_signature - (
+                    standardized_signature @ functional_prior_components.T
+                ) @ functional_prior_components
             loss = loss + config.calibration_functional_prior_weight * torch.mean(
                 standardized_signature.pow(2)
             )
@@ -1687,6 +1708,10 @@ def _validate_config(config: LatentQConfig) -> LatentQConfig:
         raise ValueError("calibration_q_prior_weight must be non-negative.")
     if config.calibration_functional_prior_weight < 0:
         raise ValueError("calibration_functional_prior_weight must be non-negative.")
+    if config.calibration_functional_prior_subspace_rank < 0:
+        raise ValueError(
+            "calibration_functional_prior_subspace_rank must be non-negative."
+        )
     if config.latent_q_l2_weight < 0:
         raise ValueError("latent_q_l2_weight must be non-negative.")
     if config.prediction_loss_type not in {"mse", "label_balanced_mse"}:

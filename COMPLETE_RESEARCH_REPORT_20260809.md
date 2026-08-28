@@ -360,9 +360,33 @@ Outer 原始终态表位于 `runs/nasa_battery_reviewer_clean_anchor_20260825/al
 
 目前更精确的诊断是优化动力学和坐标规范仍不匹配，而不是“真实数据没有可用 q”。训练 q 以学习率 0.001 与 decoder 共同演化约 3,000 步；测试 q 则以学习率 0.05 在冻结 decoder 上独立优化 200+50 步。prefix-q 的训练 q 跨 seed 距离几何仍很稳定（split 中位数的中位数 0.980，最差 split 0.945），但测试 q 仍有长尾，这与校准尺度/规范不一致相符。正式实验后的固定权重诊断进一步排除了“只需换一个 raw-q prior 强度”：`0.001` 能把 q 稳定性的中位数提高到 0.777，却让 early-fade 最差 split 只有 0.274；`0.01` 的 q 最差 split 达 0.792，但 capacity 和 fade 均未过门槛。五个权重没有一个通过既有 representation gate。原因是 raw q 与 decoder 第一层存在等价的仿射重参数化，同一物理响应可对应不同 seed 的坐标系；在这种坐标上加 Gaussian prior 不能消除这个 gauge。
 
-下一项已独立冻结的是 **functional-response prior meta-only screen**：在四个既有物理条件下约束 decoder 的响应签名，而不直接约束 raw q。响应在等价的 q 仿射换元下保持不变，因此更贴合论文最终要暴露的 capacity/fade 功能坐标。Phase A 只读八个 meta-fit 电池，用 later 70% 作开发评分；没有权重同时保留预测并通过稳定性 gate 时就停止，绝不读取 structure-validation。实现、分析器和一个非正式 CPU 结构 smoke 已通过，正式 15-cell 矩阵尚未在 GPU 上执行，因而不改变 Stage C 的 FAIL，也不开始符号 Stage C2。
+随后完成了两个只读 meta-fit 的 **functional-response prior** 屏。直接把响应拉向七块参考电池的均值会压掉真实的电池间差异：权重从 0 增至 1 时，meta-query NRMSE 从 0.0723 恶化到 0.2341，因此正式 STOP。rank-2 版本只惩罚四点响应签名中主导 capacity/fade 子空间之外的残差，明显更合理：权重 1 的总体 NRMSE 为 0.0705，比无先验低 2.53%，而响应距离几何的跨 seed 稳定性为 0.789/0.631（split 中位数的中位数/最差 split）。但固定条件下的 early-fade 最差 split 只有 0.143，未通过预注册门槛，所以仍未读取 structure-validation。
 
-完整的逐单元结果、门槛和可读报告分别保存在 `runs/nasa_support_matched_q_diagnostic_20260826/`、`runs/nasa_convex_support_q_diagnostic_20260826/`、`runs/nasa_support_box_q_diagnostic_20260826/`、`runs/nasa_prefix_q_training_pilot_20260826/` 和 `runs/nasa_meta_selected_q_prior_20260826/`；raw-q 固定权重事后机制诊断见最后一个目录中的 `RAW_Q_PRIOR_FAILURE_DIAGNOSTIC.md`。这些实验都来自已反复暴露的 inner development cohort，只能用于机制选择；最终论文确认仍需要新隔离电池或外部数据。
+| NASA inner 数据集 | rank-2 权重 0 NRMSE | rank-2 权重 1 NRMSE | 权重 1 响应几何稳定性 | 权重 1 capacity 稳定性 | 权重 1 early-fade 稳定性 |
+|---|---:|---:|---:|---:|---:|
+| inner0 | 0.0564 | 0.0601 | 0.789 | 0.631 | 0.750 |
+| inner1 | 0.0844 | 0.1173 | 0.631 | 0.619 | 0.143 |
+| inner2 | 0.0791 | 0.0705 | 0.815 | 0.643 | 0.655 |
+
+负结果复核发现，固定探针 `(24°C, 2A, 2.5V)` 在 inner1 的 716 行训练数据中一次也没有出现，在 inner0/2 也都只覆盖 168/711 行。把已经保存的 q 放回每块电池首个真实工况做无重训诊断后，权重 1 的 capacity 稳定性恢复到 1.000/0.976，early-fade 恢复到 0.893/0.833；三个 split 的四点响应几何最坏单个 seed 对也都不低于 0.875。更重要的是，协议匹配 capacity 与从真实前 10 个循环估计的初始容量在 15 个 meta-fit 单元上的 Spearman 中位数为 0.976；early-fade 为 0.690（无先验为 0.786）。后两项是使用 meta-fit 目标的事后开发证据，不是选择 gate，但它们直接说明稳定坐标对应真实科学量。固定探针失败主要是测量条件外推，不能解释为 q 没有功能语义。
+
+第三个、事前冻结的 meta-fit 屏已经干净完成 15/15：每块电池以首个已观测工况定义 cycle 1/10/20/28 探针，保留相同 rank-2 先验、权重网格、support/query 隔离和稳定性阈值。完整性和泄漏审计通过，且没有读取 structure-validation。权重 0、0.001、0.01 和 1 都通过功能表示门槛；按预注册的最低 meta-query NRMSE 选择 `λ=0.01`，其 0.07136 比无先验 0.07235 低 1.37%。该权重的 response/capacity/early-fade 稳定性分别为 0.994/0.936、1.000/1.000 和 0.821/0.786。
+
+另行冻结的 Phase B 已完成 15/15，只在每个 split 的 5 个 structure-validation 电池上比较 `λ=0.01` 与 `λ=0`，没有按验证结果换权重。完整性、预测保持和真实描述符对齐通过；功能稳定性因 inner2 early-fade 只有 0.20 而失败，因此冻结结论是 **3/4 PASS、STOP before Stage C2**。
+
+| NASA held-out 数据集 | 无先验 NRMSE | λ=0.01 NRMSE | 配对 ratio 中位数 | λ=0.01 胜场 |
+|---|---:|---:|---:|---:|
+| inner0 | 1.3872 | 1.3884 | 0.998 | 3/5 |
+| inner1 | 1.4754 | 1.4751 | 1.000 | 2/5 |
+| inner2 | 1.1543 | 1.1530 | 1.000 | 2/5 |
+
+总体 selected/baseline NRMSE 比率为 1.00085，15/15 都在 10% 保持范围内，paired Wilcoxon p=0.7615；因此只能说预测无损保持，不能说显著提升。正面证据非常集中：capacity 的跨 seed 稳定性为 1.000/1.000，与真实初始容量的 Spearman 也为 1.000；四点响应几何在每个 split 都保留，inner2 还从 0.873 提高到 0.921。early-fade 的三个 split 稳定性为 0.85、0.90、0.20，真实衰减对齐中位数恰为 0.50。
+
+事后失败归因没有改门槛：无先验在 inner2 的 fade 稳定性同样是 0.20，说明问题并非 λ=0.01 引入。fade 是两个大响应的微小差值，其跨 seed 噪声占电池间信号的 36%--58%，capacity 仅 3%--4%；B0036、B0039、B0033 还有明显开头恢复，B0039/B0040 在 28 cycle 内切换工况。因此 cycle1→10 slope 并不是所有记录上统一的物理量。rank-2 又有意保留 capacity/fade 两个方向，无法约束保留子空间内部的 noisy fade。
+
+按此机制事前冻结的 rank-1 meta 屏把 NRMSE 从 0.07235 降到 0.07041（-2.68%），并把 meta early-fade 稳定性从 rank-2 的 0.821/0.786 提高到 0.857/0.821；但同 cohort 的预冻结 development replication 没有外层转移。其总体 NRMSE ratio 为 1.0516，略高于 1.05 门槛，且 inner2 fade 仍为 0.20。逐数据集结果为：inner0 1.387→1.459，inner1 1.475→1.474，inner2 1.154→1.153。结论不是继续调 rank，而是把 **protocol-matched capacity** 作为已得到真实 held-out 支持的主科学坐标，把四点 response geometry 作为完整表示证据；early-fade 暂不进入论文主坐标。下一符号阶段应单独冻结 capacity-only bounded interface，并在新电池或另一真实数据集上做最终确认。
+
+完整的逐单元结果、门槛和可读报告分别保存在 `runs/nasa_support_matched_q_diagnostic_20260826/`、`runs/nasa_convex_support_q_diagnostic_20260826/`、`runs/nasa_support_box_q_diagnostic_20260826/`、`runs/nasa_prefix_q_training_pilot_20260826/`、`runs/nasa_meta_selected_q_prior_20260826/`、`runs/nasa_functional_response_prior_meta_20260827/` 和 `runs/nasa_functional_subspace_prior_meta_20260827/`。协议匹配复核见最后一个目录中的 `PROTOCOL_MATCHED_FUNCTIONAL_DIAGNOSTIC.md`。这些实验都来自已反复暴露的 inner development cohort，只能用于机制选择；最终论文确认仍需要新隔离电池或外部数据。
 
 ### 4.1 历史主实验总体预测（部分数据已失效）
 

@@ -1,0 +1,28 @@
+{
+  "created_at": "2026-08-28 10:53:11 CST",
+  "plan": "NASA_PROTOCOL_MATCHED_RANK1_PHASEB_DEVELOPMENT_PLAN_20260828.md",
+  "plan_sha256": "c44d3f4303405ddd56a2c9f7a0b5aa05460a72bc42b08028f048e0a0520ee1ae",
+  "runner_sha256": "3610dcc2e08419da176f2e62ef25526f9a8eaef431a3b7b185adb80c86660a64",
+  "q_root": "runs/nasa_prefix_q_training_pilot_20260826",
+  "method": "prefix_q_continuity_step1",
+  "datasets": [
+    "nasa_battery_capacity_reviewer_clean_inner0",
+    "nasa_battery_capacity_reviewer_clean_inner1",
+    "nasa_battery_capacity_reviewer_clean_inner2"
+  ],
+  "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "prior_weights": [
+    0.0,
+    0.01
+  ],
+  "selected_weight": 0.01,
+  "functional_prior_subspace_rank": 1,
+  "functional_prior_protocol": "first-observed",
+  "planned": 15
+}

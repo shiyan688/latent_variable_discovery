@@ -16,6 +16,12 @@ from scipy.stats import spearmanr
 
 Q_COLUMNS = ("q1", "q2", "q3", "q4")
 FUNCTIONAL_COLUMNS = ("capacity_cycle1", "early_fade_rate")
+RESPONSE_COLUMNS = (
+    "response_cycle1",
+    "response_cycle10",
+    "response_cycle20",
+    "response_cycle28",
+)
 PRIOR_WEIGHTS = {0.0, 0.001, 0.01, 0.1, 1.0}
 
 
@@ -37,11 +43,17 @@ def _spearman(left: np.ndarray, right: np.ndarray) -> float:
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--root", type=Path, required=True)
+    parser.add_argument(
+        "--representation-gate",
+        choices=("raw-q", "functional-response"),
+        default="raw-q",
+    )
     return parser.parse_args()
 
 
 def main() -> None:
-    root = parse_args().root.resolve()
+    args = parse_args()
+    root = args.root.resolve()
     status = json.loads((root / "status.json").read_text())
     if status != {
         "state": "completed_all",
@@ -80,7 +92,11 @@ def main() -> None:
         and len(candidates) == 600
         and np.isfinite(cells[numeric].to_numpy(float)).all()
         and np.isfinite(scores.select_dtypes(include=[np.number]).to_numpy(float)).all()
-        and np.isfinite(candidates[list(Q_COLUMNS) + list(FUNCTIONAL_COLUMNS)].to_numpy(float)).all()
+        and np.isfinite(
+            candidates[
+                list(Q_COLUMNS) + list(FUNCTIONAL_COLUMNS) + list(RESPONSE_COLUMNS)
+            ].to_numpy(float)
+        ).all()
         and (cells.meta_fit_labels == 8).all()
         and (cells.prior_weights_scored == 5).all()
         and (cells.candidate_q_rows == 40).all()
@@ -90,12 +106,14 @@ def main() -> None:
     )
 
     q_rows = []
+    response_rows = []
     functional_rows = []
     for (dataset, prior_weight), frame in candidates.groupby(
         ["dataset", "prior_weight"]
     ):
         by_seed = {int(seed): group for seed, group in frame.groupby("seed")}
         q_values = []
+        response_values = []
         functional_values = {coordinate: [] for coordinate in FUNCTIONAL_COLUMNS}
         for seed_a, seed_b in combinations(sorted(by_seed), 2):
             merged = by_seed[seed_a].merge(
@@ -108,6 +126,20 @@ def main() -> None:
                 _spearman(
                     pdist(merged[[f"{column}_a" for column in Q_COLUMNS]]),
                     pdist(merged[[f"{column}_b" for column in Q_COLUMNS]]),
+                )
+            )
+            response_values.append(
+                _spearman(
+                    pdist(
+                        merged[
+                            [f"{column}_a" for column in RESPONSE_COLUMNS]
+                        ]
+                    ),
+                    pdist(
+                        merged[
+                            [f"{column}_b" for column in RESPONSE_COLUMNS]
+                        ]
+                    ),
                 )
             )
             for coordinate in FUNCTIONAL_COLUMNS:
@@ -125,6 +157,14 @@ def main() -> None:
                 "min_pair_spearman": float(np.min(q_values)),
             }
         )
+        response_rows.append(
+            {
+                "dataset": dataset,
+                "prior_weight": prior_weight,
+                "median_spearman": float(np.median(response_values)),
+                "min_pair_spearman": float(np.min(response_values)),
+            }
+        )
         for coordinate, values in functional_values.items():
             functional_rows.append(
                 {
@@ -136,6 +176,7 @@ def main() -> None:
                 }
             )
     q_stability = pd.DataFrame(q_rows)
+    response_stability = pd.DataFrame(response_rows)
     functional_stability = pd.DataFrame(functional_rows)
 
     score_summary = (
@@ -153,6 +194,16 @@ def main() -> None:
             q_min_split=("median_spearman", "min"),
         )
     )
+    response_gate = (
+        response_stability.groupby("prior_weight", as_index=False)
+        .agg(
+            response_median_of_splits=("median_spearman", "median"),
+            response_min_split=("median_spearman", "min"),
+        )
+    )
+    baseline_response_by_split = response_stability.loc[
+        response_stability.prior_weight == 0.0
+    ].set_index("dataset").median_spearman
     functional_gate = (
         functional_stability.groupby(["prior_weight", "coordinate"], as_index=False)
         .agg(
@@ -168,15 +219,31 @@ def main() -> None:
     )
     for score in score_summary.itertuples(index=False):
         q_row = q_gate.loc[q_gate.prior_weight == score.prior_weight].iloc[0]
+        response_row = response_gate.loc[
+            response_gate.prior_weight == score.prior_weight
+        ].iloc[0]
+        response_by_split = response_stability.loc[
+            response_stability.prior_weight == score.prior_weight
+        ].set_index("dataset").median_spearman
         coordinates = functional_gate.loc[
             functional_gate.prior_weight == score.prior_weight
         ].set_index("coordinate")
         prediction_eligible = bool(score.meta_query_nrmse_median <= 1.05 * baseline)
-        representation_eligible = bool(
-            q_row.q_min_split >= 0.80
-            and (coordinates.median_of_splits >= 0.70).all()
+        response_geometry_retained = bool(
+            (response_by_split >= baseline_response_by_split - 0.05).all()
+        )
+        functional_coordinates_eligible = bool(
+            (coordinates.median_of_splits >= 0.70).all()
             and (coordinates.min_split >= 0.50).all()
         )
+        if args.representation_gate == "raw-q":
+            representation_eligible = bool(
+                q_row.q_min_split >= 0.80 and functional_coordinates_eligible
+            )
+        else:
+            representation_eligible = bool(
+                response_geometry_retained and functional_coordinates_eligible
+            )
         rows.append(
             {
                 "prior_weight": score.prior_weight,
@@ -185,6 +252,9 @@ def main() -> None:
                 "prediction_eligible": prediction_eligible,
                 "q_median_of_splits": q_row.q_median_of_splits,
                 "q_min_split": q_row.q_min_split,
+                "response_median_of_splits": response_row.response_median_of_splits,
+                "response_min_split": response_row.response_min_split,
+                "response_geometry_retained": response_geometry_retained,
                 "capacity_median_of_splits": coordinates.loc[
                     "capacity_cycle1", "median_of_splits"
                 ],
@@ -214,12 +284,16 @@ def main() -> None:
         "selected_weight": selected_weight,
         "authorize_phase_b_validation": bool(integrity and selected_weight is not None),
         "selection_uses_structure_validation": False,
+        "representation_gate": args.representation_gate,
     }
 
     cells.to_csv(root / "all_cells.csv", index=False)
     scores.to_csv(root / "all_prior_scores.csv", index=False)
     candidates.to_csv(root / "all_meta_q_candidates.csv", index=False)
     q_stability.to_csv(root / "fixed_weight_q_stability.csv", index=False)
+    response_stability.to_csv(
+        root / "fixed_weight_response_stability.csv", index=False
+    )
     functional_stability.to_csv(
         root / "fixed_weight_functional_stability.csv", index=False
     )
@@ -235,20 +309,21 @@ def main() -> None:
         "- Origin Mode: validate",
         "- Origin Date: 2026-08-27",
         "- Verification Status: ANALYZED",
-        "- Version Label: nasa_functional_response_prior_meta_v1",
+        f"- Version Label: nasa_functional_response_prior_meta_v1_{args.representation_gate}",
         "",
         f"**Phase-B decision:** {'AUTHORIZE' if selection['authorize_phase_b_validation'] else 'STOP'}",
         "",
-        "本屏只使用八个 meta-fit batteries；structure-validation 数据未被读取。候选必须同时保留 later-cycle meta-query prediction 并通过既有 representation gate。",
+        "本屏只使用八个 meta-fit batteries；structure-validation 数据未被读取。候选必须同时保留 later-cycle meta-query prediction 并通过预先声明的 representation gate。",
         "",
         *_table(
-            ["weight", "meta-query", "pred", "q 中位/最差", "capacity 中位/最差", "fade 中位/最差", "repr", "eligible"],
+            ["weight", "meta-query", "pred", "q 中位/最差", "response 中位/最差", "capacity 中位/最差", "fade 中位/最差", "repr", "eligible"],
             [
                 [
                     f"{row.prior_weight:g}",
                     f"{row.meta_query_nrmse_median:.4g}",
                     "PASS" if row.prediction_eligible else "FAIL",
                     f"{row.q_median_of_splits:.3f}/{row.q_min_split:.3f}",
+                    f"{row.response_median_of_splits:.3f}/{row.response_min_split:.3f}",
                     f"{row.capacity_median_of_splits:.3f}/{row.capacity_min_split:.3f}",
                     f"{row.early_fade_median_of_splits:.3f}/{row.early_fade_min_split:.3f}",
                     "PASS" if row.representation_eligible else "FAIL",

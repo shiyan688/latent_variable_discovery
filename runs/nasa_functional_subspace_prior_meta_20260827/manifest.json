@@ -1,0 +1,56 @@
+{
+  "created_at": "2026-08-27 21:26:58 CST",
+  "plan": "NASA_FUNCTIONAL_SUBSPACE_PRIOR_META_PLAN_20260827.md",
+  "plan_sha256": "6f9518475cc5a270bdd6bd449e7b0c68a494177205d1c4236ca7ac00d8e36568",
+  "runner_sha256": "14de4fbd4c216a1ab75756954adc873af2b1d538bcd6df75cef6c8c09f071766",
+  "q_root": "runs/nasa_prefix_q_training_pilot_20260826",
+  "method": "prefix_q_continuity_step1",
+  "datasets": [
+    "nasa_battery_capacity_reviewer_clean_inner0",
+    "nasa_battery_capacity_reviewer_clean_inner1",
+    "nasa_battery_capacity_reviewer_clean_inner2"
+  ],
+  "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "prior_weights": [
+    0.0,
+    0.001,
+    0.01,
+    0.1,
+    1.0
+  ],
+  "functional_prior_features": [
+    [
+      1.0,
+      24.0,
+      2.0,
+      2.5
+    ],
+    [
+      10.0,
+      24.0,
+      2.0,
+      2.5
+    ],
+    [
+      20.0,
+      24.0,
+      2.0,
+      2.5
+    ],
+    [
+      28.0,
+      24.0,
+      2.0,
+      2.5
+    ]
+  ],
+  "functional_prior_subspace_rank": 2,
+  "structure_validation_read": false,
+  "planned": 15
+}

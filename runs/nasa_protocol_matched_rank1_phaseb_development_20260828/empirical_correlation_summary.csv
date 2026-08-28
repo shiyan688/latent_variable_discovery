@@ -1,0 +1,7 @@
+dataset,prior_weight,capacity_spearman,early_fade_spearman
+nasa_battery_capacity_reviewer_clean_inner0,0.0,0.9999999999999999,0.19999999999999998
+nasa_battery_capacity_reviewer_clean_inner0,0.01,0.9999999999999999,0.19999999999999998
+nasa_battery_capacity_reviewer_clean_inner1,0.0,0.9999999999999999,0.7
+nasa_battery_capacity_reviewer_clean_inner1,0.01,0.9999999999999999,0.7
+nasa_battery_capacity_reviewer_clean_inner2,0.0,0.9999999999999999,0.49999999999999994
+nasa_battery_capacity_reviewer_clean_inner2,0.01,0.9999999999999999,0.49999999999999994

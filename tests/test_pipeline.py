@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import unittest
+from dataclasses import replace
 from unittest.mock import patch
 
 import numpy as np
@@ -324,6 +325,17 @@ class PipelineUnitTests(unittest.TestCase):
         )
         self.assertTrue(np.isfinite(calibrated.q_by_label[3]).all())
         self.assertTrue(all(parameter.grad is None for parameter in artifacts.model.parameters()))
+
+        subspace_config = replace(
+            config, calibration_functional_prior_subspace_rank=1
+        )
+        subspace_calibrated = pipeline.calibrate_latent_q_for_test_labels(
+            test,
+            artifacts,
+            subspace_config,
+            functional_prior_features=np.array([[0.0], [1.0]], dtype=np.float32),
+        )
+        self.assertTrue(np.isfinite(subspace_calibrated.q_by_label[3]).all())
 
     def test_inner_calibration_split_is_seeded_and_disjoint(self) -> None:
         indices = np.arange(10)

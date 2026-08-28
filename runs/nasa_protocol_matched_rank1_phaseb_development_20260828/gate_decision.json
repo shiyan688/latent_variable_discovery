@@ -1,0 +1,16 @@
+{
+  "integrity": true,
+  "prediction_retention": false,
+  "functional_stability": false,
+  "scientific_alignment": true,
+  "overall_advance_to_stage_c2": false,
+  "selected_weight": 0.01,
+  "selected_to_baseline_median_nrmse_ratio": 1.0516154125243904,
+  "cells_with_ratio_at_most_1_10": 14,
+  "capacity_stability_median_of_splits": 0.9999999999999999,
+  "capacity_stability_min_split": 0.8999999999999998,
+  "early_fade_stability_median_of_splits": 0.7,
+  "early_fade_stability_min_split": 0.19999999999999998,
+  "capacity_empirical_alignment": 0.9999999999999999,
+  "early_fade_empirical_alignment": 0.49999999999999994
+}

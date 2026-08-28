@@ -1,0 +1,8 @@
+{
+  "integrity": true,
+  "baseline_weight0_meta_query_nrmse_median": 0.072349164634943,
+  "selected_weight": 0.01,
+  "authorize_phase_b_validation": true,
+  "selection_uses_structure_validation": false,
+  "representation_gate": "functional-response"
+}
