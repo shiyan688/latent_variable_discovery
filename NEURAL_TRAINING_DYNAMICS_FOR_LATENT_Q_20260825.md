@@ -2,6 +2,8 @@
 
 **日期：** 2026-08-25
 
+**MATR 更新：** 2026-08-28
+
 **读者定位：** 不要求预先掌握 NTK、表示可辨识性或逆问题理论
 
 **范围：** 解释当前 latent-q auto-decoder、continuity loss、unseen-entity q calibration 与符号回归接口；不把理想化理论冒充对有限宽 ReLU 网络的完整证明
@@ -305,3 +307,279 @@ H_q\approx 2J_S^\top J_S.
 7. Park et al. [DeepSDF: Learning Continuous Signed Distance Functions for Shape Representation](https://openaccess.thecvf.com/content_CVPR_2019/html/Park_DeepSDF_Learning_Continuous_Signed_Distance_Functions_for_Shape_Representation_CVPR_2019_paper.html). CVPR 2019.
 
 这些文献支持的是相应的一般理论背景；本文关于当前代码的 gauge 变换、梯度分流、局部 $J_S^\top J_S$ 条件性及 Stage C 解释，是基于项目实现与结果作出的明确推导和可检验推论。
+
+## 11. MATR 新发现：同一个正则权重会随 mini-batch 数量改变实际剂量
+
+MATR Batch1 有 37,693 个训练观测，batch size 为 256，所以每个 epoch 有 148 个 mini-batch。`latent_curve_continuity` 却不是一个只依赖当前 mini-batch 的局部量；它每次都使用完整 41 个训练电池的 q embedding 和完整曲线距离矩阵：
+
+\[
+R(Q)=L_{\mathrm{cont}}(q_1,\ldots,q_{41}).
+\]
+
+旧实现对每个 batch 都优化
+
+\[
+L_m=L_{\mathrm{pred},m}+\lambda R(Q).
+\]
+
+因此一整个 epoch 对全局项的一阶累计暴露近似是
+
+\[
+\sum_{m=1}^{M}\lambda R(Q)=M\lambda R(Q).
+\]
+
+当 NASA 小切分每个 epoch 只有约 3 个 batch、MATR 有 148 个 batch 时，同样写着 `λ=0.05`，并不是同一个 epoch-level objective：MATR 对 continuity 的重复施加次数约高 49 倍。五个未归一化 MATR seed 都在 1,000-epoch 训练中得到 non-finite loss，而且没有产生任何 Batch2 prediction result。这首先是损失离散化随数据规模变化的问题，不能被解释成“q 没有预测价值”。
+
+修正后的定义令第 $m$ 个 batch 含 $n_m$ 行、总训练行数为 $N$，只对完整 embedding 上计算的全局正则乘
+
+\[
+s_m=\frac{n_m}{N},\qquad \sum_{m=1}^{M}s_m=1.
+\]
+
+于是
+
+\[
+L_m=L_{\mathrm{pred},m}+s_m\lambda R(Q),
+\]
+
+每个 epoch 的全局正则总质量不再依赖数据被切成多少个 batch。最后一个不满 256 行的 batch 使用自己的实际 $n_m$，所以这不是粗略的 `1/148` 常数近似。只缩放完整 q population 上的 continuity、feature orthogonality、q-L2 和 q-whitening；prediction、Jacobian 与当前 batch 上的 smoothness 不缩放。
+
+这项修复也不是 gradient clipping。clipping 会在梯度过大以后截断方向和幅值；epoch normalization 是先把离散目标定义成跨数据规模可比较的量。Adam 的动量与非线性更新意味着“每 epoch 完全等价”不是严格定理，但它消除了最直接的 $M$ 倍重复暴露。
+
+Batch1-only 的五 epoch 配对诊断没有读取 Batch2 target。两个版本短程都保持有限，但未归一化与归一化版本第一次记录到的 q-gradient norm 约为 0.165 与 0.0296；两者每 epoch 都是 148 个 outer batches，短程观测到的 q-phase support 行数 min/median/max 为 4/28/45，而全局正则 scale sum 分别为 148 和 1。这个短程结果只证明修正实际改变了全局正则的训练动力学剂量；它没有覆盖长期随机排列中可能出现的零-support batch。
+
+五个 epoch-normalized 正式训练随后在 epoch 240--445 全部终止，而且都发生在最后一个 raw mini-batch：continuity 仍是有限值，prediction 却是 `NaN`。进一步检查发现这是第二个、彼此独立的离散化问题。prefix q phase 先对当前 raw batch 做
+
+\[
+B_m^q=B_m\cap S_{\mathrm{prefix}}.
+\]
+
+长期随机排列下，特别是最后一个不满 batch，完全可能有 $|B_m^q|=0$。旧代码仍对空张量计算平均 prediction loss；空集均值按定义不可计算，因此直接产生 `NaN`。这不是梯度爆炸，也不需要调学习率或 continuity 权重。最小修复是当且仅当 $|B_m^q|=0$ 时跳过该次 q update，同时照常执行该 raw batch 的 theta update；所有非空 q update 完全不变。实现记录 `q_phase_empty_batches_skipped`，并用 batch-size-one 的确定性测试验证 40 次 theta update、4 次有效 q update、36 次空 q 跳过和有限训练损失。
+
+这两个问题必须分开写：epoch normalization 使全局 q 正则的每-epoch 剂量跨数据规模可比；empty-prefix skip 使随机 raw batching 对 support 子集具有合法定义。它们都是训练目标离散化修复，不是根据 Batch2 预测效果选择的新超参数。
+
+公平性仍需分开陈述。prefix alternating 每个 raw batch 有一次 q backward 和一次 theta backward，而 no-q MLP 只有一次 theta backward。epoch normalization 只修复正则语义，不会自动让总计算量相等。论文必须同时报告 theta/q steps、backward passes、examples processed、wall time、参数量和 q-gradient trace，表述为相同 epoch 与相同 theta update budget，而不是相同总算力。
+
+## 12. 从 raw q 到“方程坐标”：为什么 decoder-functional canonicalization 是真正的选规
+
+Starry ZT 的新结果把前面的 gauge 讨论推进了一步。现在需要区分三种对象：
+
+1. 神经网络内部任意坐标 `raw q`；
+2. 由 decoder 响应定义的、与坐标重命名无关的函数对象；
+3. 把该函数对象投影到可读基以后得到的“方程坐标”。
+
+这三者不是同一个 q。第三种才是论文中可以命名为参考值、敏感度和曲率的 q。
+
+### 12.1 raw q 为什么原则上不能直接命名
+
+设 decoder 为
+
+\[
+f_\theta(x,q).
+\]
+
+对任意可逆变换 $h$，令
+
+\[
+q'=h(q),\qquad
+f_{\theta'}(x,q')=f_\theta(x,h^{-1}(q')).
+\]
+
+则所有预测完全不变。只要训练目标只看预测、q 距离或其他不完全消除该对称性的量，优化器就可以在这一整族等价参数化中选择任意代表。因而，即使两个 seed 学到相同的实体响应函数，它们的 `q1,q2,q3,q4` 仍可发生旋转、反射、缩放和非线性扭曲。直接对 raw q 做符号回归，等于要求符号方法猜中神经网络偶然选出的内部坐标系。
+
+旧 ZT 资产给出了一个很直观的诊断。在固定 60 个训练实体上用 leave-one-entity-out 选择 ridge，再把四维 raw q 映射为三个二次系数，20 个未见实体 query 的 R² 为 `-0.3335`；同一批未见实体用完全相同的 support 直接重估三系数则为 `0.9677`。这说明可解释结构存在，但没有被 raw q 的逐维坐标稳定暴露出来。
+
+### 12.2 decoder 响应是 gauge-invariant 的对象
+
+选择一组固定 probe $x_1,\ldots,x_m$，定义 decoder response vector
+
+\[
+F_\theta(q)=
+\begin{bmatrix}
+f_\theta(x_1,q)\\
+\vdots\\
+f_\theta(x_m,q)
+\end{bmatrix}.
+\]
+
+在上面的联合重参数化下，
+
+\[
+F_{\theta'}(h(q))=F_\theta(q).
+\]
+
+所以 raw q 虽然改变，decoder 所代表的函数不改变。这就是“functionalization”比直接看 q 更可靠的严格原因：它不是希望优化器恰好学到同一坐标，而是主动把等价坐标都映射到同一个函数对象。
+
+对有实体条件 $c$ 的问题，例如材料组成，probe 写成 $(x_j,c)$。比较不同材料时必须固定 probe 规则，而不是为每个 seed 临时挑一组最有利的点。当前 ZT 桥接实验使用每个未见材料已知的温度区间、41 个等距温度和固定组成；它只使用 query covariates，不读取 query ZT。
+
+### 12.3 方程系数是函数空间里的 canonical q
+
+给定可读基函数
+
+\[
+\Phi(x)=\left[\phi_0(x),\ldots,\phi_k(x)\right],
+\]
+
+在 probe 上形成满列秩矩阵 $\mathbf\Phi$。将 decoder response 投影到这组基：
+
+\[
+a(q)
+=\arg\min_a\|F_\theta(q)-\mathbf\Phi a\|_W^2
+=(\mathbf\Phi^\top W\mathbf\Phi)^{-1}
+\mathbf\Phi^\top W F_\theta(q).
+\]
+
+由于 $a(q)$ 只依赖 gauge-invariant 的 $F_\theta(q)$，所以在 decoder 与 q 同时作任意可逆重参数化时，$a$ 保持不变。只要基函数顺序、归一化和 probe 规则固定，$a_0,\ldots,a_k$ 就是跨 seed 可比较的 canonical coordinates。
+
+ZT 的冻结基为
+
+\[
+\Phi(T)=[1,\tau,\tau^2],\qquad
+\tau=(T-\mu_{\rm train})/\sigma_{\rm train}.
+\]
+
+因此：
+
+- $a_0$ 是训练温度中心附近的参考 ZT；
+- $a_1$ 是一阶温度敏感度；
+- $a_2$ 是温度曲率。
+
+它们是“响应方程坐标”，不是被宣称为唯一微观材料参数。这正好符合用户给出的成功标准：表达式只需有阶段性解释和启发意义，不必恢复最初 raw q 或唯一真定律。
+
+### 12.4 为什么需要同时报告 neural error 和 projection error
+
+令真实 query 响应为 $y$，神经 decoder 为 $f$，其符号投影为 $g=P_\Phi f$。在相同离散范数下，
+
+\[
+\|y-g\|
+\leq
+\underbrace{\|y-f\|}_{\text{neural prediction error}}
++
+\underbrace{\|f-P_\Phi f\|}_{\text{symbolic projection error}}.
+\]
+
+这个分解给出四种完全不同的诊断：
+
+| neural error | projection error | 含义 |
+|---|---|---|
+| 小 | 小 | 神经模型学对了，且响应可压缩成该符号结构；桥接成功 |
+| 小 | 大 | raw q 有预测信息，但选定公式族太弱 |
+| 大 | 小 | decoder 很平滑、很好压缩，但压缩的是错误函数 |
+| 大 | 大 | 神经训练与符号结构都不合适 |
+
+因此只报“decoder response 被二次式拟合得很好”是不够的。两 epoch smoke 中 projection R² 已接近 1，但 physical query R² 只有约 0.70；这恰好是第三种情况，且 smoke 分数不能作为科学结果。正式实验必须同时报告 raw decoder 的物理 R²、二次投影的物理 R²和 decoder-response reconstruction R²。
+
+### 12.5 canonical q 的稳定性由 probe 设计条件数控制
+
+若 decoder response 扰动为 $\delta F$，则系数扰动满足
+
+\[
+\|\delta a\|
+\leq
+\left\|(\mathbf\Phi^\top W\mathbf\Phi)^{-1}
+\mathbf\Phi^\top W\right\|\,\|\delta F\|.
+\]
+
+所以 functionalization 并不会自动保证稳定；稳定性取决于两点：decoder 函数是否跨 seed 稳定，以及 probe 上的基矩阵是否良态。温度点若全部挤在很窄范围，$1,\tau,\tau^2$ 近共线，曲率会极不稳定。当前实验使用覆盖整个已知温区的 41 点网格，并以 outer-train 温度均值和标准差定义 $\tau$，就是为了控制这一放大因子。
+
+论文中应同时给出：
+
+- raw q 未对齐坐标稳定性；
+- raw q 的距离几何稳定性；
+- functional coefficient 的逐维稳定性；
+- functional coefficient 的距离几何稳定性；
+- 每个 fold 的 decoder projection fidelity。
+
+若 functional coefficient 只在逐维上稳定、距离几何不稳定，说明命名变好了但实体关系仍不可靠；若两者都稳定，才支持“canonical q 是可比较科学坐标”。
+
+### 12.6 support re-q 是结构确认，不是绕过神经模型
+
+decoder-functional 系数回答“神经模型内部学到了怎样的响应形状”；support re-q 则在结构被冻结后，用未见实体的真实 support 重新估计同名系数：
+
+\[
+\hat a_S=\arg\min_a\|y_S-\Phi_S a\|^2.
+\]
+
+二者承担不同角色：前者发现并验证结构接口，后者消除 raw-q gauge 和 calibration manifold mismatch，把最终 q 放回物理可读坐标。若只做 support 二次拟合，方法会显得像普通插值；若只做 decoder 投影，又可能忠实解释一个预测不准的神经函数。完整闭环必须展示：
+
+\[
+\text{raw neural q}
+\rightarrow
+\text{decoder response}
+\rightarrow
+\text{shared symbolic basis}
+\rightarrow
+\text{support re-q}
+\rightarrow
+\text{held-out physical prediction}.
+\]
+
+当前 ZT 外部确认已经证明最后两步跨时间、跨论文和跨组成成立。5-fold × 3-seed 神经桥接也给出了有边界的前三步证据：raw q 直接映射二次系数的 R² 为 `-1.907461`，decoder-functional 二次式为 `0.944683`，decoder 响应投影 fidelity 最低 `0.985033`。所以函数商空间选规在 pooled 意义下成立；但原始绝对 MSE 版本有 19/80 个实体超过 structure re-q 十倍 NRMSE，不能写成完整、无尾部的桥接成功。
+
+准确的论文主线因此是：**任意 latent task coordinate 可以先在 decoder 所表示的函数商空间中选规，再变成可命名、可重估、可外部确认的 equation coordinates；这种选规解决可读性问题，但最终实体稳健性仍受神经训练目标影响。**
+
+## 13. 为什么 target scale 会改变 latent-q 的训练动力
+
+### 13.1 label-balanced 不等于误差尺度平衡
+
+原模型使用 label-balanced MSE。它保证不同材料以接近的频率进入梯度，但每个材料贡献的预测梯度仍与物理残差大小成正比。设标准化前残差为
+
+\[
+\delta y=\hat y-y.
+\]
+
+对 ZT 约为 `10^-3` 的曲线，预测成 `10^-2` 在全局物理范围里仍是小绝对误差，却可能比该材料自身变化尺度大几十倍。因此“每个 label 被同样频繁采样”和“每个 label 的相对曲线形状被同样重视”是两件不同的事。
+
+这解释了第一版桥接看似矛盾的结果：pooled R² 为 `0.944683`，但单实体 R² 中位数只有 `0.846748`，19/80 个材料触发十倍尾部。大尺度材料主导 pooled 平方和，小尺度材料在优化与 pooled 指标里都容易被淹没。
+
+### 13.2 asinh 变换对应什么局部误差权重
+
+尺度修复使用 outer-train-only 的
+
+\[
+z=\operatorname{asinh}(y/s),
+\]
+
+其中 $s$ 是训练实体曲线标准差的中位数。它可逆，允许负数和零值，并且
+
+\[
+\frac{\mathrm dz}{\mathrm dy}
+=\frac{1}{\sqrt{s^2+y^2}}.
+\]
+
+当预测误差较小时，一阶展开给出
+
+\[
+(\delta z)^2
+\approx
+\frac{(\delta y)^2}{s^2+y^2}.
+\]
+
+因此它在训练动力上近似一种连续的相对误差加权：
+
+- 当 $|y|\ll s$，权重约为 $1/s^2$，近零曲线不会失去梯度；
+- 当 $|y|\gg s$，权重约为 $1/y^2$，大幅值曲线的绝对误差不再完全支配优化；
+- 在 $|y|\approx s$ 附近平滑过渡，没有对零值做奇异除法。
+
+这不是仅改变打印单位。模型在 $z$ 空间训练、测试 support 也在 $z$ 空间校准，所以 prediction gradient 与 q-prior 的相对作用都发生了变化；输出只在 decoder 预测完成后逆变换回物理 ZT。因而必须把它称为一个训练目标消融，而不是无害的数据标准化。
+
+### 13.3 实验是否符合这个动力学预测
+
+符合，而且效应方向很集中：
+
+| 指标 | 绝对 MSE | asinh scale-aware |
+|---|---:|---:|
+| functional degree-2 pooled R² | 0.944683 | 0.942488 |
+| 单实体 R² 中位数 | 0.846748 | 0.940261 |
+| 单体 R²≥0.85 | 40/80 | 52/80 |
+| 十倍尾部实体 | 19/80 | 9/80 |
+| 最坏倍率 | 744.872 | 139.163 |
+| target std 与 functional NRMSE Spearman | -0.614885 | -0.193718 |
+
+尺度偏差相关性大幅减弱，59/80 个实体 NRMSE 改善，说明原诊断不只是事后故事。functional 距离几何的跨 seed 中位 Spearman 也从 `0.738385` 提到 `0.835419`，超过新模型 raw q 的 `0.748142`。一种合理的动力学解释是：低尺度实体终于对共享 $\theta$ 和实体 q 产生足够梯度，使不同 seed 不再主要由大幅值曲线决定同一个函数流形。
+
+### 13.4 为什么仍不能继续无限压缩
+
+严格十倍尾部仍有 9/80 未过，其中最极端的近零材料虽显著改善，仍因 structure re-q 几乎无误差而保留巨大相对倍率；同时两个正常幅值材料 `6363` 和 `2100` 由原先不过十倍变成超过十倍。这正是上式的另一面：更强的对数式压缩可能继续照顾小 $y$，却进一步降低大 $y$ 区域的梯度。
+
+所以当前证据不授权盲目把 $s$ 调得更小。若未来专门追求 all-entity tail，合理方向是用训练实体内部交叉验证冻结一个异方差损失或 support-only 专家选择器，并在新的实体 cohort 上确认；不能根据这 80 个 query 的尾部继续挑阈值。对当前论文的必要表达式端点也没有这个需要：可解释二次式在严格实体外推上的 pooled R² 已远高于 `0.85`，原始 q 恢复与十倍最坏尾部都是更强、独立的要求。

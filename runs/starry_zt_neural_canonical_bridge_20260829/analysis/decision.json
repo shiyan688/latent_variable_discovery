@@ -1,0 +1,76 @@
+{
+  "scope": "Starry ZT development neural-to-canonical q bridge",
+  "cells": 15,
+  "entities": 80,
+  "query_rows": 3879,
+  "family_summary": [
+    {
+      "family": "functional_degree1",
+      "pooled_r2": 0.9422589584623492,
+      "physical_rmse": 0.06890156809326305,
+      "entity_bootstrap_r2_low": 0.886621570971435,
+      "entity_bootstrap_r2_high": 0.9729552080577952
+    },
+    {
+      "family": "functional_degree2",
+      "pooled_r2": 0.9446832943296251,
+      "physical_rmse": 0.067439594963233,
+      "entity_bootstrap_r2_low": 0.88991808394537,
+      "entity_bootstrap_r2_high": 0.9752219727858872
+    },
+    {
+      "family": "functional_degree3",
+      "pooled_r2": 0.9481049168787345,
+      "physical_rmse": 0.06532056086997086,
+      "entity_bootstrap_r2_low": 0.8926116955332908,
+      "entity_bootstrap_r2_high": 0.9790301902371285
+    },
+    {
+      "family": "functional_degree4",
+      "pooled_r2": 0.9484640719902938,
+      "physical_rmse": 0.06509413339551749,
+      "entity_bootstrap_r2_low": 0.8929384133246255,
+      "entity_bootstrap_r2_high": 0.9793303155297349
+    },
+    {
+      "family": "raw_decoder",
+      "pooled_r2": 0.9483539922131026,
+      "physical_rmse": 0.06516361623680288,
+      "entity_bootstrap_r2_low": 0.8927403817472955,
+      "entity_bootstrap_r2_high": 0.9791820855861931
+    },
+    {
+      "family": "raw_q_ridge_req",
+      "pooled_r2": -1.9074608666878299,
+      "physical_rmse": 0.4889266816351125,
+      "entity_bootstrap_r2_low": -5.238207150408286,
+      "entity_bootstrap_r2_high": 0.1096060478990916
+    },
+    {
+      "family": "structure_req",
+      "pooled_r2": 0.9806678897093667,
+      "physical_rmse": 0.03986818191462734,
+      "entity_bootstrap_r2_low": 0.9617285322081659,
+      "entity_bootstrap_r2_high": 0.9915932089497601
+    }
+  ],
+  "minimum_degree2_decoder_response_r2": 0.9850329981707416,
+  "median_degree2_decoder_response_r2": 0.9946334872406435,
+  "maximum_functional_to_structure_entity_nrmse_ratio": 744.872335141717,
+  "query_target_input_max_difference": 0.0,
+  "median_raw_distance_geometry_spearman": 0.79429821515383,
+  "median_functional_distance_geometry_spearman": 0.7383846100423639,
+  "functional_minus_raw_geometry_stability": -0.05591360511146615,
+  "gates": {
+    "all_15_cells_complete": true,
+    "exact_query_target_invariance": true,
+    "functional_degree2_physical_r2_at_least_0_85": true,
+    "functional_degree2_decoder_fidelity_at_least_0_95": true,
+    "structure_req_physical_r2_at_least_0_85": true,
+    "no_functional_entity_above_ten_times_structure_nrmse": false,
+    "functional_geometry_more_stable_than_raw_geometry": false
+  },
+  "neural_to_canonical_bridge_supported": false,
+  "temporal_confirmation_reused": false,
+  "predictive_superiority_inferred": false
+}

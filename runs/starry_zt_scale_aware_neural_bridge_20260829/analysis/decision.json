@@ -1,0 +1,84 @@
+{
+  "scope": "Starry ZT development scale-aware neural-to-canonical q bridge repair",
+  "cells": 15,
+  "entities": 80,
+  "query_rows": 3879,
+  "family_summary": [
+    {
+      "family": "functional_degree1",
+      "pooled_r2": 0.9364405114512208,
+      "physical_rmse": 0.07228979548657796,
+      "entity_bootstrap_r2_low": 0.8743874765910123,
+      "entity_bootstrap_r2_high": 0.9708003341000245
+    },
+    {
+      "family": "functional_degree2",
+      "pooled_r2": 0.9424880478553223,
+      "physical_rmse": 0.0687647476825397,
+      "entity_bootstrap_r2_low": 0.8842295186505283,
+      "entity_bootstrap_r2_high": 0.9744020840586916
+    },
+    {
+      "family": "functional_degree3",
+      "pooled_r2": 0.9457806020811721,
+      "physical_rmse": 0.0667673507807574,
+      "entity_bootstrap_r2_low": 0.8870034866378355,
+      "entity_bootstrap_r2_high": 0.9778376027327553
+    },
+    {
+      "family": "functional_degree4",
+      "pooled_r2": 0.9462572877777795,
+      "physical_rmse": 0.0664732004790305,
+      "entity_bootstrap_r2_low": 0.8878125440256273,
+      "entity_bootstrap_r2_high": 0.9780809534616782
+    },
+    {
+      "family": "raw_decoder",
+      "pooled_r2": 0.9468165954699648,
+      "physical_rmse": 0.06612639800935649,
+      "entity_bootstrap_r2_low": 0.8884116151047741,
+      "entity_bootstrap_r2_high": 0.9782703628460724
+    },
+    {
+      "family": "raw_q_ridge_req",
+      "pooled_r2": -0.2263153232680215,
+      "physical_rmse": 0.31753227623655295,
+      "entity_bootstrap_r2_low": -1.0128863427062107,
+      "entity_bootstrap_r2_high": 0.17710691281653518
+    },
+    {
+      "family": "structure_req",
+      "pooled_r2": 0.9806678897093667,
+      "physical_rmse": 0.03986818191462734,
+      "entity_bootstrap_r2_low": 0.9617285322081659,
+      "entity_bootstrap_r2_high": 0.9915932089497601
+    }
+  ],
+  "minimum_degree2_decoder_response_r2": 0.9845147488203331,
+  "median_degree2_decoder_response_r2": 0.996276865001738,
+  "maximum_functional_to_structure_entity_nrmse_ratio": 139.16292631652584,
+  "query_target_input_max_difference": 0.0,
+  "median_raw_distance_geometry_spearman": 0.7481422320994513,
+  "median_functional_distance_geometry_spearman": 0.835419126328217,
+  "functional_minus_raw_geometry_stability": 0.08727689422876572,
+  "median_raw_unaligned_coordinate_spearman": -0.06506410256410255,
+  "median_functional_named_coordinate_spearman": 0.8198002605297438,
+  "functional_minus_raw_named_coordinate_stability": 0.8848643630938463,
+  "functional_degree2_median_entity_r2": 0.9402614788226016,
+  "functional_degree2_entities_r2_at_least_0_85": 52,
+  "functional_degree2_entities_above_ten_times_structure_nrmse": 9,
+  "gates": {
+    "all_15_cells_complete": true,
+    "exact_query_target_invariance": true,
+    "functional_degree2_physical_r2_at_least_0_85": true,
+    "functional_degree2_decoder_fidelity_at_least_0_95": true,
+    "structure_req_physical_r2_at_least_0_85": true,
+    "no_functional_entity_above_ten_times_structure_nrmse": false,
+    "functional_geometry_more_stable_than_raw_geometry": true
+  },
+  "scale_aware_tail_repair_supported": false,
+  "full_neural_to_canonical_bridge_supported": false,
+  "neural_to_canonical_bridge_supported": false,
+  "temporal_confirmation_reused": false,
+  "predictive_superiority_inferred": false
+}

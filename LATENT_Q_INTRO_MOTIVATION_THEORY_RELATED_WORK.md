@@ -365,6 +365,24 @@ Neural Process 是后续必须比较的强基线或扩展方向。
 
 这对本项目的直接启示是：低维、独立性、连续性、whitening 和 few-shot 预测协议都是人为加入的归纳偏置。它们能让 q 更有用、更规整，但不能仅凭高 R2 证明 q 就是真实且唯一的因果物理变量。
 
+### 9.8 最接近的方法与新颖性边界
+
+下面按“它已经解决什么、还没有解决什么”比较最接近的工作。这样做的目的不是把每个已有模块重新命名为贡献，而是确定我们真正需要验证的组合命题。
+
+| 工作 | 已有核心思想 | 与当前问题的关键差别 |
+|---|---|---|
+| [Conditional Neural Processes](https://proceedings.mlr.press/v80/garnelo18a) | 用 context 集合推断函数表示，再预测任意 query | 表示由 set encoder 摊销推断；工作重点不是 arbitrary latent gauge 到具名方程系数的转换 |
+| [CAVIA](https://proceedings.mlr.press/v97/zintgraf19a.html) | 用少量可快速更新的 context 参数完成新任务适配 | 证明“只适配低维上下文”本身并不新；没有要求该上下文成为跨实体可读的科学方程坐标 |
+| [Functa](https://proceedings.mlr.press/v162/dupont22a.html) | 用共享神经场及其低维 modulation 表示函数集合 | 与函数级 latent 表示很接近，但 modulation 仍可受坐标规范影响；目标不是投影为固定科学基底的系数并由新实体 support 重新估计 |
+| [Meta-SysId](https://arxiv.org/abs/2206.00694) | 从少量轨迹识别新系统的低维上下文并预测系统行为 | 面向动态系统辨识；没有把等价 latent 表示规范化为可审计的静态响应方程坐标 |
+| [Deep Learning and Symbolic Regression for Discovering Parametric Equations](https://arxiv.org/abs/2207.00529) | 联合神经表示与符号回归，寻找共享形式而系数随系统变化的参数方程 | 这是“共享方程 + 变化系数”最接近的先例；我们的区别必须落在实体 support-only 校准、raw-q 规范歧义诊断、decoder-functional 规范固定，以及时间外新实体确认的完整证据链上 |
+| [SINDy autoencoder](https://www.pnas.org/doi/10.1073/pnas.1906995116) | 同时学习低维坐标和稀疏动力学方程 | 针对随时间演化的动力系统；当前任务是一族由对象级隐藏状态参数化、需要 support-query 外推的响应函数 |
+| [Identifying Metric Structures of Deep Latent Variable Models](https://proceedings.mlr.press/v267/syrota25a.html) | 从 decoder 诱导的可观测几何研究 latent 表示的不变结构 | 支持“raw 坐标不可靠、函数几何更可靠”的理论动机，但没有给出面向科学表达式的固定基底投影与外部实体验证协议 |
+
+因此，以下单点都不能独立声称为本项目的新颖性：对象 embedding、测试时优化 q、few-shot 函数表示、共享方程的对象特异系数、decoder 诱导几何、神经网络后接符号回归。
+
+当前最稳妥的组合贡献是：在多实体科学响应函数中，先实证展示 raw q 的规范不唯一性会破坏符号可读性；再把 decoder 的等价函数投影到预先固定、可命名的方程基底，得到规范固定的系数；对未见实体只用 support 重新估计这些系数，并在时间、论文来源和材料组成均外推的新实体上一次性验证。这里的成功标准是严格 support-query 物理单位 `R² >= 0.85` 且表达式有阶段性启发意义，不是恢复初始 raw q，也不是证明唯一真实定律。预测胜过 kNN/no-q 基线是另一条独立命题。
+
 ---
 
 ## 10. 理论上能声称什么
