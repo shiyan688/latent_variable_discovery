@@ -1,0 +1,105 @@
+\section{Introduction}
+\label{sec:introduction}
+
+% ROLE: opening -- define the task and why both prediction and explanation matter.
+Many scientific measurements arrive as families of response curves rather than
+independent rows.  A new material or compound is observed at only a few support
+conditions, yet the scientist wants both the remaining response curve and a
+compact description of how that entity differs from previously measured ones.
+We study this support-conditioned setting: given sparse measurements of an
+unseen entity, infer entity-specific coordinates from the support alone and use
+them to explain its hidden query response.  Thermoelectric figure of merit,
+vapor pressure, and crystal heat capacity illustrate the central tension.  A
+flexible predictor can interpolate these curves accurately, but a scientific
+coordinate must additionally be stable enough to name, compare, and place in a
+testable equation.
+
+% ROLE: challenge -- expose latent chart ambiguity as the technical obstacle.
+Few-shot function models and implicit neural representations already provide
+powerful mechanisms for predicting a new function from a context set
+\citep{garnelo2018conditional,xu2020metafun,gondal2021function,dupont2022functa}.
+Their internal task vectors, however, are generally coordinates of a learned
+chart rather than intrinsic scientific variables.  An invertible rotation,
+scaling, or affine change of a latent code can be absorbed by the decoder
+without changing a single physical prediction, while changing every individual
+coordinate supplied to symbolic regression.  Low dimensionality alone does not
+ensure identifiability, and common regularized disentanglement objectives do not
+remove the need for explicit assumptions or inductive biases
+\citep{locatello2019challenging,khemakhem2020variational}.  Moreover,
+canonicalization itself has nontrivial scope and continuity limits
+\citep{ma2024canonicalization,dym2024equivariant}.  Consequently, a predictive
+raw latent vector cannot be named as a physical quantity merely because it
+supports accurate reconstruction.
+
+% ROLE: gap -- distinguish our interface from existing equation discovery.
+Scientific equation discovery faces the complementary problem.  Sparse
+dynamics, neural-to-symbolic extraction, and parametric equation models can
+recover compact relations from suitable coordinates or learned components
+\citep{champion2019data,cranmer2020discovering,zhang2022parametric,podina2023universal}.
+Yet when an equation coefficient is inferred for an unseen entity, the input
+coordinate must be determined from that entity's support and must not depend on
+an arbitrary neural chart.  Existing ingredients therefore leave an interface
+question unanswered: what representation-level object should be interpreted
+when different latent parameterizations predict the same scientific response?
+
+% ROLE: method -- state the invariant object and the concrete pipeline.
+We answer this question with \emph{auditable basis-relative response
+coordinates}.  We fix a named structure a priori or select it using
+development entities only; when refinements are allowed, a bounded theory-guided grammar, grouped
+support/query scoring, and a fixed tie break select among them.  Its basis and
+probe grid are then sealed for external evaluation.  We evaluate the decoder on
+those probes and project its response
+onto that basis.  Two representations that agree on the declared probe response
+then have exactly the same coefficients within that frozen specification, regardless of their latent
+dimension, redundancy, or chart.  For a new entity, stable response-metric
+  Gauss--Newton calibration uses only its support; direct structure re-estimation
+provides the auditable endpoint.  We additionally formulate a decoder-prior
+diagnostic, GIRD, whose singular-direction analysis predicts benefit primarily
+when support is underidentified.  Our controlled experiment selects its prior
+weight inside each predeclared support regime; it does not instantiate a
+per-entity rank router.  This separates three
+questions that are often conflated: whether support contains entity state,
+whether that state admits named response coordinates, and whether a learned
+decoder prior adds information beyond the support.
+
+% ROLE: evidence -- lead with external expression transfer and retain the strongest baseline.
+The resulting interpretation target is deliberately operational.  An expression
+succeeds when an unseen entity's support-only coefficients yield finite
+physical-unit query predictions with pooled $R^2\geq0.85$ and its compact named
+terms offer a scientifically suggestive stage-wise reading.  It need not recover
+the initial raw latent code, a preselected physical variable, or a unique
+microscopic law.  We report coefficient stability and falsifiable follow-up tests
+as evidence for that reading rather than treating a particular latent chart as
+the target.  Under a frozen temporal protocol, the
+quadratic response chart
+$\mathrm{ZT}(T)=c_0+c_1\tau+c_2\tau^2$ reaches $R^2=0.9888$ on 30 future
+materials, and a reference-pressure/enthalpy/curvature expression reaches
+$R^2=0.9996$ on 84 future vapor-pressure compounds.  The coordinates are stable
+under support offsets and suggest direct tests of temperature turnover and
+effective vaporization-enthalpy trends.  Strong local interpolation remains
+competitive or better---log-pressure PCHIP is more accurate for vapor pressure, and the ZT
+advantage over kNN is not significant---so our claim is an auditable scientific
+coordinate interface rather than universal predictive superiority.
+
+% ROLE: contributions -- every item maps to evidence already present or to the frozen branch rule.
+Our contributions are:
+\begin{itemize}
+  \item We formulate interpretation on equivalence classes of fixed physical
+  probe responses and show that named basis coefficients are invariant to any
+  response-equivalent representation; we separately characterize the narrower
+  affine/full-rank conditions under which support calibration is equivariant.
+  \item We provide a support-only, basis-relative inference protocol with explicit
+  development-only structure selection, external freezing, rank, conditioning,
+  gauge, leakage, coefficient-stability, and entity-tail audits, together with a
+  rank-aware test of whether a learned decoder prior adds value beyond direct
+  structure re-estimation.
+  \item We evaluate compact equations under entity- and time-disjoint real-data
+  protocols, reporting uncertainty and strong support-aware baselines separately
+  from expression fidelity.  Two domains already provide one-shot temporal
+  confirmation; the Crystal heat-capacity stress test follows a frozen
+  result-to-narrative rule.
+\end{itemize}
+
+% BRANCH RULE: if the terminal learned-prior development and temporal gates fail,
+% keep GIRD as a diagnostic in the second contribution and do not call it a
+% headline algorithm in the abstract or title.  No partial result may change this text.

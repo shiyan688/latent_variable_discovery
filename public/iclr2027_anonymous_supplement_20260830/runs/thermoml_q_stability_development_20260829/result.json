@@ -1,0 +1,59 @@
+{
+  "scope": "ThermoML development selected-expression support-offset q stability",
+  "selected_expression": "ln(P/1 kPa)=q0+q1*(1/T-1/T_ref)+q2*ln(T/T_ref)",
+  "offset_summary": [
+    {
+      "offset": 0,
+      "pooled_physical_r2": 0.9998666485822891,
+      "pooled_log_r2": 0.999976607010713
+    },
+    {
+      "offset": 1,
+      "pooled_physical_r2": 0.999858211695595,
+      "pooled_log_r2": 0.9999277011157636
+    },
+    {
+      "offset": 2,
+      "pooled_physical_r2": 0.9997970964631778,
+      "pooled_log_r2": 0.9999245311070646
+    },
+    {
+      "offset": 3,
+      "pooled_physical_r2": 0.9998549325747863,
+      "pooled_log_r2": 0.9999136231380481
+    }
+  ],
+  "median_physical_q_distance_spearman_across_offsets": 0.8905415541681079,
+  "minimum_physical_q_distance_spearman_across_offsets": 0.8546209052685751,
+  "q_response_curve_distance_spearman": 0.5647645684705961,
+  "coordinate_distribution_offset0": {
+    "q0_log_pressure_at_reference": {
+      "median": 0.5208614223253636,
+      "q05": -12.01897824079376,
+      "q95": 7.225356997841919,
+      "min": -19.71283796653666,
+      "max": 9.362073627205877
+    },
+    "effective_delta_hvap_kj_mol": {
+      "median": 56.227331783142674,
+      "q05": 23.121118861377997,
+      "q95": 128.73892684313958,
+      "min": 14.175853756264097,
+      "max": 199.70995628286573
+    },
+    "effective_delta_cp_j_mol_k": {
+      "median": -58.07649905368584,
+      "q05": -224.55121909869243,
+      "q95": 12.528354295073024,
+      "min": -823.8715582527293,
+      "max": 202.31870953243487
+    }
+  },
+  "scaled_design_condition_number": {
+    "median": 134.993812898695,
+    "q95": 917.2287137317184,
+    "maximum": 6417.153884469542
+  },
+  "confirmation_targets_opened": false,
+  "interpretation_scope": "effective stage-wise coordinates, not definitive thermodynamic measurements"
+}

@@ -1,0 +1,195 @@
+\section{Frozen Basis-Relative Response Coordinates}
+\label{sec:method}
+
+% ROLE: overview -- define inputs, outputs, and the two method branches.
+Our method maps sparse observations of an unseen entity to named equation
+coordinates without assigning scientific meaning to a raw neural latent chart.
+Entity $e$ has observations $(x,y)$ partitioned into support $S_e$ and hidden
+query $Q_e$.  A decoder $f_\theta(x,q_e)$ represents a family of response
+functions, and a new entity's $q_e$ is calibrated using $S_e$ while $\theta$ is
+frozen.  The core branch estimates equation coefficients directly from support;
+the optional GIRD branch asks whether the calibrated decoder supplies useful
+function-space information when the support design is underidentified.  Both
+branches output the same named coefficient vector and symbolic response.
+
+\paragraph{Discover then freeze.}
+Each domain contract distinguishes choices fixed a priori from any atom selected
+on development entities.  Only when a refinement set is allowed do grouped
+support/query folds score its finite, theory-guided grammar using a frozen metric
+and tie break.  The resulting basis and all fixed scaling, probes, support rule,
+and gates are then sealed; this does not imply they were jointly searched.
+External entities receive no structure search---only support-based coefficient
+estimation.  Thus ``predeclared'' means predeclared for external evaluation.
+
+\subsection{Response equivalence and canonical coordinates}
+
+% ROLE: motivation -- explain why the response, not raw q, is interpreted.
+A raw latent coordinate is chart-dependent even when its decoded response is
+fixed.  We therefore declare, before evaluating query targets, physical probes
+$P=\{x_j\}_{j=1}^{m}$, nonnegative weights
+$W=\operatorname{diag}(w_1,\ldots,w_m)$, and named basis functions
+$\phi(x)=[\phi_1(x),\ldots,\phi_K(x)]$.  Let
+$\Phi_P\in\mathbb{R}^{m\times K}$ contain the basis evaluated on the probes and
+let
+\begin{equation}
+  r_\theta(q)=
+  [f_\theta(x_1,q),\ldots,f_\theta(x_m,q)]^\top
+\end{equation}
+be the physical probe response.  When
+$W^{1/2}\Phi_P$ has full column rank, we define the canonical response
+coordinate, canonical only within this frozen specification rather than a
+unique natural coordinate,
+\begin{equation}
+  c_\theta(q)
+  = (\Phi_P^\top W\Phi_P)^{-1}\Phi_P^\top W r_\theta(q).
+  \label{eq:canonical-coordinate}
+\end{equation}
+The basis, probes, weights, units, and rank criterion are part of the method
+specification; changing them changes the coordinate semantics.
+
+% ROLE: theory -- state quotient invariance and its exact scope.
+\paragraph{Proposition 1 (response-quotient invariance).}
+Equation~\eqref{eq:canonical-coordinate} is invariant on probe-response
+equivalence classes.  Formally, define
+$(f,q)\sim_P(\tilde f,\tilde q)$ when
+$r_f(q)=r_{\tilde f}(\tilde q)$ on the declared probes.  Both representations
+then map to the same $c$ because the projection operator is fixed.  Hence the
+map factors through the quotient of model--state pairs by $\sim_P$.  This covers
+different latent dimensions, redundant states, architectures, and arbitrary
+invertible chart changes whenever their probe responses agree; it does not
+imply equality outside $P$, a unique natural basis, or a causal physical
+variable.  Approximate response agreement gives the stability bound
+\begin{equation}
+ \|c(r)-c(\tilde r)\|_2
+ \leq
+ \frac{\|W^{1/2}(r-\tilde r)\|_2}
+ {\sigma_{\min}(W^{1/2}\Phi_P)}.
+ \label{eq:projection-stability}
+\end{equation}
+Thus projection residual and basis conditioning must be audited separately from
+query prediction.  We display the controlled cross-chart response discrepancy
+and retain projection residuals, the real-domain protocol, and conditioning
+diagnostics in the frozen artifacts.
+
+\subsection{Support-only inference and numerical equivariance}
+
+% ROLE: design -- describe direct structure re-q and its error controls.
+The auditable core estimator skips raw $q$ and fits the named structure using
+only support:
+\begin{equation}
+  \hat c_{0}
+  =\arg\min_c
+  \|W_S^{1/2}(y_S-\Phi_Sc)\|_2^2.
+  \label{eq:support-req}
+\end{equation}
+For $y_S=\Phi_Sc^\star+\epsilon_S$ and full-column-rank $\Phi_S$,
+\begin{equation}
+  \|\hat c_0-c^\star\|_2
+  \leq
+  \frac{\|W_S^{1/2}\epsilon_S\|_2}
+  {\sigma_{\min}(W_S^{1/2}\Phi_S)}.
+\end{equation}
+The induced noiseless-query reconstruction error obeys
+\begin{equation}
+  \|\Phi_Q(\hat c_0-c^\star)\|_2
+  \leq
+  \frac{\|\Phi_Q\|_2\|W_S^{1/2}\epsilon_S\|_2}
+  {\sigma_{\min}(W_S^{1/2}\Phi_S)}.
+  \label{eq:query-amplification}
+\end{equation}
+This makes the minimum singular value,
+condition number, query amplification, support-offset coefficient stability,
+and prediction tails mandatory diagnostics.  High pooled $R^2$ alone does not
+identify an individual coefficient when support basis columns are nearly
+collinear.
+
+% ROLE: design/theory -- explain how a decoder response is inferred without chart-dependent optimization.
+To test whether a learned decoder encodes the same response coordinates, we
+calibrate $q$ on $S_e$ with response-metric Gauss--Newton.  At iterate $q_k$,
+we solve $J_k\delta_k=-r_k$ by float64 direct least squares and accept a step
+only when it clears a response-loss decrease margin.  Exact equivariance under
+$q'=Aq+b$ requires consistently transformed latent paths and initial centroids,
+a differentiable decoder with full-rank support Jacobian, and identical
+response loss and coordinate-free line search.  Then $q'_k=Aq_k+b$ and the
+response paths agree.  We log conditioning, steps, and paired discrepancies;
+the guarantee excludes nonlinear charts, rank deficiency, coordinate-norm
+stopping, unsynchronized paths, and ordinary Adam.
+
+\section{Rank-Aware Decoder-Prior Inference}
+\label{sec:gird}
+
+\subsection{Gauge-Invariant Response Dictionary Discovery}
+
+% ROLE: motivation -- identify the only case in which a decoder prior may help.
+Direct support fitting is preferable when $\Phi_S$ identifies the named
+structure, but it can have high variance or a null space under very sparse
+support.  GIRD tests whether a calibrated decoder response provides incremental
+information specifically in this regime.  It never shrinks coefficients in
+arbitrary raw-coordinate units: all fusion occurs in the function metric
+defined by the fixed probes.
+
+% ROLE: development design -- freeze every data-dependent method choice without query leakage.
+During development, entity/DOI-cross-fitted decoder probes drive deterministic
+multi-response OMP.  Nested folds select dictionary width and prior weight with
+frozen ties; the fixed-width path is then refit on all development entities to
+determine atom identities without changing complexity or thresholds.  In the
+controlled study, selection is per family--seed--support regime; rank diagnoses
+the regime but does not route individual test entities.
+
+Hard atom selection needs a stronger audit than smooth projection.  At each OMP
+step we retain the winner--runner-up margin, residual norm, and largest aligned
+response displacement across seeds and support offsets.  Appendix~\ref{app:protocol}
+gives the preregistered sufficient margin certificate.  Failure alone does not
+prove instability, so we combine it with atom recurrence and gauge interventions.
+
+% ROLE: inference design -- give the exact function-metric fusion objective.
+For an unseen entity, decoder calibration and projection yield a functional
+prior $c_f$.  Define the probe Gram matrix
+$G=\Phi_P^\top W\Phi_P$, whitened coordinates $u=G^{1/2}c$, and
+\begin{equation}
+  D=\frac{1}{\sqrt{|S|}}\Phi_SG^{-1/2},\qquad
+  z=\frac{1}{\sqrt{|S|}}y_S.
+\end{equation}
+For a frozen $\lambda$, GIRD solves
+\begin{equation}
+  \begin{aligned}
+    \hat u_\lambda
+    &=\arg\min_u
+      \bigl\{\|Du-z\|_2^2
+      +\lambda\|u-u_f\|_2^2\bigr\},\\
+    \hat c_\lambda&=G^{-1/2}\hat u_\lambda.
+  \end{aligned}
+  \label{eq:gird}
+\end{equation}
+The final prediction is
+$\hat y(x)=\sum_{j=1}^{K}\hat c_{\lambda,j}\phi_j(x)$.  The endpoints
+$\lambda=0$ and $\lambda=\infty$ expose direct support fitting and pure decoder
+projection rather than hiding either source.
+
+% ROLE: advantage/theory -- derive when a finite prior can reduce risk.
+The singular directions of $D$ make GIRD's intended regime explicit.  If
+$D=U\operatorname{diag}(s_i)V^\top$, support noise and prior error are
+independent and zero mean, with directional variances $\sigma^2$ and
+$\tau_i^2$, then
+\begin{equation}
+  \mathbb{E}(\hat u_{\lambda,i}-u_i^\star)^2
+  =\frac{s_i^2\sigma^2+\lambda^2\tau_i^2}
+  {(s_i^2+\lambda)^2}.
+  \label{eq:gird-risk}
+\end{equation}
+A finite prior is most useful when $s_i$ is small and the decoder prior remains
+stable; it can increase error when support is already informative or the prior
+is biased.  When $s_i=0$, any positive $\lambda$ selects the prior's null-space
+coordinate rather than identifying it from support.  This is a diagnostic
+bias--variance calculation, not a guarantee of real-data improvement.
+
+% ROLE: deployment boundary -- separate the tested regime-level diagnostic from a future entity router.
+The tested GIRD variant applies validation-selected $\lambda$ uniformly within
+each support regime; $\lambda=0$ remains explicit, and there is no per-entity
+router.  All choices exclude outer-test queries.  The Crystal development
+registry compares GIRD, $\lambda=0$, direct-target dictionary, FPCA, CNP, local
+interpolation, and no-latent prediction on identical partitions.
+
+% BRANCH RULE: the quotient, support estimator, and diagnostics are the core
+% method in both paper branches. GIRD becomes a headline learned method only if
+% the frozen development and temporal incremental-value gates both pass.

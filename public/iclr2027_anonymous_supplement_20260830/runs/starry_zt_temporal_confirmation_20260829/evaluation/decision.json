@@ -1,0 +1,54 @@
+{
+  "scope": "post-snapshot, DOI/composition-disjoint Starry ZT confirmation",
+  "formula": "ZT(T)=q0+q1*tau+q2*tau^2",
+  "entities": 30,
+  "query_rows": 919,
+  "quadratic_pooled_r2": 0.9888097988570103,
+  "quadratic_physical_rmse": 0.037030591862055436,
+  "entity_bootstrap_r2_95_interval": [
+    0.9733056076887169,
+    0.9947077428468949
+  ],
+  "median_entity_r2": 0.9417389793760602,
+  "fraction_entities_r2_at_least_0_85": 0.6666666666666666,
+  "maximum_entity_nrmse_ratio_to_linear_req": 1.6756074569282087,
+  "query_target_input_max_difference": 0.0,
+  "family_summary": [
+    {
+      "family": "quadratic_req",
+      "pooled_r2": 0.9888097988570103,
+      "physical_rmse": 0.037030591862055436
+    },
+    {
+      "family": "support_knn",
+      "pooled_r2": 0.9826779891705424,
+      "physical_rmse": 0.046072402521262976
+    },
+    {
+      "family": "linear_req",
+      "pooled_r2": 0.9642655514513093,
+      "physical_rmse": 0.06617367424524387
+    },
+    {
+      "family": "no_q_mlp",
+      "pooled_r2": 0.09553918971928721,
+      "physical_rmse": 0.33291746872879946
+    },
+    {
+      "family": "no_q_global_quadratic",
+      "pooled_r2": -0.07151557563473232,
+      "physical_rmse": 0.36236058418076106
+    }
+  ],
+  "gates": {
+    "pooled_r2_at_least_0_85": true,
+    "bootstrap_lower_bound_above_0_85": true,
+    "median_entity_r2_at_least_0_85": true,
+    "two_thirds_entities_r2_at_least_0_85": true,
+    "finite_and_exact_query_target_invariance": true,
+    "no_entity_above_ten_times_linear_req_nrmse": true
+  },
+  "temporal_confirmation_passed": true,
+  "predictive_superiority_inferred": false,
+  "evaluation_consumed": true
+}

@@ -1,0 +1,51 @@
+{
+  "scope": "development-only vapor-pressure structure-selection audit",
+  "candidate_order": [
+    "v_log",
+    "v_T",
+    "v_inv2"
+  ],
+  "reported_unmodified_baseline": "coarse_cc",
+  "candidate_terms": {
+    "v_log": "log(T/T_ref)",
+    "v_T": "(T-T_ref)/T_ref",
+    "v_inv2": "(1/T-1/T_ref)^2"
+  },
+  "fold_grouping": "five DOI-disjoint folds",
+  "fold_reference_rule": "median temperature of all entities outside the heldout fold",
+  "cross_fold_aggregation": "one median over all 282 heldout-entity physical NRMSE values, not a median of fold medians",
+  "tie_rule": "eligible when score <= 1.01 * best; choose first in candidate_order",
+  "aggregate_family_scores": [
+    {
+      "family": "coarse_cc",
+      "all_entity_median_physical_nrmse": 0.0434898861555781
+    },
+    {
+      "family": "v_T",
+      "all_entity_median_physical_nrmse": 0.01420099660472715
+    },
+    {
+      "family": "v_inv2",
+      "all_entity_median_physical_nrmse": 0.0125771018674544
+    },
+    {
+      "family": "v_log",
+      "all_entity_median_physical_nrmse": 0.01104697672231365
+    }
+  ],
+  "csv_json_serialization_max_abs_difference": 4.5102810375396984e-17,
+  "eligible_within_one_percent": [
+    "v_log"
+  ],
+  "selected_family": "v_log",
+  "development_query_role": "scores and selects the frozen structure",
+  "external_query_role": "scores the sealed structure only",
+  "external_fit_role": "only entity support targets estimate coefficients",
+  "confirmation_targets_opened": false,
+  "input_sha256": {
+    "runs/thermoml_vapor_pressure_development_data_20260829/development_curves.csv": "9ebc8ea5a8b870cb98cc829c1700d4ebdad806c043014a0a5051ada8629411b6",
+    "runs/thermoml_vapor_pressure_structure_development_20260829/per_entity_metrics.csv": "ead068c547459187efdea2f0935f459bc44962d75ca5e85bec7b3f539326a7e2",
+    "runs/thermoml_vapor_pressure_structure_development_20260829/oof_expression_coefficients.csv": "58b773a3e9023f3faf822abf902e421e2b1f64c29a6ad33449a37f42c4d07cfe",
+    "runs/thermoml_vapor_pressure_structure_development_20260829/decision.json": "928ee5bc4f21c156a00a49737dca0729b8e9a52f7fb23a165a870b7727adaa26"
+  }
+}

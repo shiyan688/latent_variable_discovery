@@ -1,0 +1,19 @@
+{
+  "base_audit": "CITATION_AUDIT.json",
+  "base_verdict": "PASS",
+  "freshness_verdict": "still-valid-with-new-hashes",
+  "review_status": "same-family provisional",
+  "semantic_context_changes": 0,
+  "added_cite_keys": [],
+  "removed_cite_keys": [],
+  "affected_cite_keys": [],
+  "cite_key_count": 21,
+  "current_input_sha256": {
+    "iclr2027_draft.tex": "ab57cc493a6626cb2e4fe0945056568f508cd20b25b24a0d5db612b3de2f07ea",
+    "iclr_refs.bib": "ef1e91afe1366e4f2b78ce7f716816d120bf2ba9812423f0feef1bd4fe8b5df1",
+    "sections/introduction.tex": "8dbb74a2c57b9579fe28f37ecd24b8e5312294d60d8911ddd44751f56c5846f1",
+    "sections/related_work.tex": "70e1ae65e20bbe8757ca2e94a51f917bd72af560d3053ea8883f7ed0aa3da104",
+    "sections/experiments.tex": "536847223e25eb2b023b04f942c67816a578c8d56d73b94cf48179a1ff6e6f4d"
+  },
+  "review_note": "Method positioning, the vapor selection contract, and compressed Crystal wording do not broaden any cited claim. nist2025webbook remains scoped to the five-term Shomate heat-capacity form."
+}

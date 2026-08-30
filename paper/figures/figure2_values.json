@@ -1,0 +1,87 @@
+{
+  "code": {
+    "paper/figures/paper_plot_style.py": "86939951953f1a0ee30d016f312dbbf6944639e932e8b96f4e36d78da61e75f8",
+    "scripts/generate_iclr_figure2_20260829.py": "e0fbfc1dc3b348ee2fc403a4a048c83ccfb3b63611f0a9f1d6e0b641c0e8e398"
+  },
+  "four_support": {
+    "polynomial": {
+      "direct_target_omp_median_entity_nrmse": 0.01093300990161231,
+      "entity_count": 48,
+      "fpca_median_entity_nrmse": 0.009476550607472144,
+      "fpca_ratio": 0.9093743251696387,
+      "fpca_ratio_paired_entity_bootstrap_95ci": [
+        0.8058458531603225,
+        1.0577170485638527
+      ],
+      "gird_ratio": 1.0,
+      "gird_ratio_paired_entity_bootstrap_95ci": [
+        1.0,
+        1.0
+      ],
+      "gird_selected_median_entity_nrmse": 0.010420956854818116,
+      "lambda0_median_entity_nrmse": 0.010420956854818116
+    },
+    "relaxation": {
+      "direct_target_omp_median_entity_nrmse": 0.0392454104848793,
+      "entity_count": 48,
+      "fpca_median_entity_nrmse": 0.023787506713268222,
+      "fpca_ratio": 0.45076969354733465,
+      "fpca_ratio_paired_entity_bootstrap_95ci": [
+        0.3088534070743618,
+        0.639967330976229
+      ],
+      "gird_ratio": 0.6510147346709921,
+      "gird_ratio_paired_entity_bootstrap_95ci": [
+        0.4903983568898287,
+        0.8443114133605333
+      ],
+      "gird_selected_median_entity_nrmse": 0.03435461077597177,
+      "lambda0_median_entity_nrmse": 0.052770865153050336
+    },
+    "thermodynamic_chart": {
+      "direct_target_omp_median_entity_nrmse": 0.01968887053724242,
+      "entity_count": 48,
+      "fpca_median_entity_nrmse": 0.018050039400307933,
+      "fpca_ratio": 0.9381667527819649,
+      "fpca_ratio_paired_entity_bootstrap_95ci": [
+        0.7607952448251036,
+        1.0136656737211667
+      ],
+      "gird_ratio": 1.0,
+      "gird_ratio_paired_entity_bootstrap_95ci": [
+        1.0,
+        1.0
+      ],
+      "gird_selected_median_entity_nrmse": 0.01923969203426127,
+      "lambda0_median_entity_nrmse": 0.01923969203426127
+    }
+  },
+  "gauge_case_design": {
+    "families": 3,
+    "gauges_per_family_seed": 5,
+    "seeds_per_family": 5
+  },
+  "gauge_interventions_per_method": 75,
+  "maximum_response_difference": {
+    "mapped_start_adam": 0.2545347393872659,
+    "response_metric_gauss_newton": 3.656727143308558e-10
+  },
+  "median_raw_coordinate_change": {
+    "mapped_start_adam": 1.3406009530469682,
+    "response_metric_gauss_newton": 1.7387249344129303
+  },
+  "outputs": {
+    "figure2_gauge_gird.pdf": "4fe94201a330845e858e2d22c586867e91b304381cdc0285251980f5c5dcb477",
+    "figure2_gauge_gird.png": "65316f12321cc238a82d6e2ef1b29fb8e3a961dca693f3d63c00e118478916e6"
+  },
+  "paired_entity_bootstrap": {
+    "draws": 10000,
+    "seed": 20260829
+  },
+  "scope": "Figure 2: gauge intervention and controlled four-support GIRD",
+  "sources": {
+    "runs/gauge_equivariant_calibration_stable_extension_20260829/analysis/gauge_invariance_summary.csv": "8bef6880b5d45cb96c4e642b7747f3ace8e410be79bc3322c402fd3dba97763d",
+    "runs/gird_controlled_discovery_20260829/analysis/regime_entity_metrics.csv": "21e13684ba5d1ca0c515038f327f0f55d90b22fb64541c94f0d2c078f297ce7b",
+    "runs/gird_controlled_discovery_20260829/analysis/regime_method_summary.csv": "30d806fd161b816e1d638d95bb6ae4c07259f8ad3ef71962920e4bb5a11bcc79"
+  }
+}

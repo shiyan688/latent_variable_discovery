@@ -1,0 +1,227 @@
+\section{Experiments}
+\label{sec:experiments}
+
+\subsection{Questions and protocol}
+
+% ROLE: overview -- define the four questions and the common evidence standard.
+The experiments ask four questions: (Q1) do canonical coordinates remain stable
+when raw latent charts change; (Q2) do compact equations transfer to unseen
+future entities; (Q3) does a decoder prior add value specifically when support
+does not identify the symbolic structure; and (Q4) what predictive accuracy is
+traded for a compact named expression?  We split by entity and, where available,
+DOI and time.  A test entity's coefficients and calibrated state use support
+targets only; query targets are read once for scoring.  Primary reporting uses
+physical-unit pooled $R^2$, entity- or DOI-cluster bootstrap intervals, the
+fraction of entities above $R^2=0.85$, and paired comparisons.  The heterogeneous
+Crystal stress test additionally reports median/p95/maximum entity NRMSE and
+negative-prediction count; every displayed aggregate requires finite full query
+coverage.  For fitted methods with an explicit perturbation audit, perturbing
+hidden query targets must leave all fitted inputs, coefficients, and predictions
+unchanged; all such declared differences are zero.
+For entity $e$, NRMSE is query RMSE divided by the population standard deviation
+of its query targets ($\mathrm{ddof}=0$).  Controlled five-seed GIRD predictions
+are aggregated pointwise before entity metrics; neural-ablation seed rules are
+reported with their respective results.
+The real-data cohorts come from the Starrydata thermoelectric collection
+\citep{katsura2025starrydata} and the NIST ThermoML archive
+\citep{riccardi2021thermoml,frenkel2006thermoml}.  Frozen cohort manifests bind
+the selected source files by repository-local SHA-256; mutable ``latest'' links
+are not treated as the experimental artifact.
+
+% ROLE: fairness -- state information paths and baseline families.
+Every method is labeled by its information path.  Support structure re-q fits a
+frozen named basis; raw-q ridge maps neural coordinates directly to equation
+coefficients; decoder-functional projection probes the calibrated decoder;
+GIRD fuses that projection using a validation-selected weight fixed within each
+predeclared support regime; rank and conditioning diagnose the regime rather
+than route individual entities.  Comparators include
+the same-budget direct-target dictionary, FPCA \citep{ramsay2005functional},
+CNP, a temperature-only no-q MLP, and support nearest-neighbor, linear, kNN,
+and PCHIP predictors \citep{fritsch1984pchip}.  The
+strongest support-aware baseline is displayed beside each headline expression
+score.  Expression fidelity and predictive superiority are tested separately.
+
+\subsection{Gauge intervention and controlled prior evidence}
+
+% ROLE: evidence -- verify the representation-level invariance claim.
+We first intervene on the latent chart while preserving the decoder response.
+Across three controlled response families, five training seeds, and 25 exact
+affine gauges per family--seed cell (375 interventions), the constructed
+counterfactual changes raw coordinates by as much as $4.996$ while changing
+decoder predictions and fixed-basis coefficients by at most
+$4.50\times10^{-15}$ and $2.04\times10^{-14}$.  This tests the algebraic
+response-quotient claim.  A separate 75-case experiment independently
+recalibrates each of five affine charts per family--seed cell.  The original
+response-metric Gauss--Newton extension diverges by as
+much as $0.0448$ in query response; float64 direct least squares, a response-loss
+acceptance margin, and
+15 fixed Gauss--Newton steps reduce the maximum response and coefficient
+differences to $3.66\times10^{-10}$ and $6.23\times10^{-9}$, with identical
+paired line-search decisions.  This narrower result supports numerical affine
+equivariance only under the stated full-rank calibration assumptions.
+
+% ROLE: boundary evidence -- show that GIRD has a conditional, not universal, mechanism.
+The controlled GIRD study next varies support identifiability.  Under four-point
+support, aggregate polynomial and thermodynamic selections match their
+$\lambda=0$ results.
+For the relaxation family under four-point support, a finite prior reduces error
+from $0.05277$ to $0.03435$, a $34.9\%$ development improvement.  FPCA remains
+better than every GIRD variant, and two of 30 family--seed--regime OMP
+certificate audits fail.
+These results are consistent with the rank-conditioned bias--variance mechanism
+and expose its failure modes; they do not establish a universal prior
+advantage.
+
+\subsection{One-shot real-data expression transfer}
+
+% ROLE: primary evidence -- report the two completed temporal confirmations in one table.
+Table~\ref{tab:temporal-expression} reports two single-use temporal
+confirmations.  ZT's quadratic endpoint was fixed a priori.  Vapor alone used
+structure selection: five DOI-grouped folds scored exactly
+$\{\log(T/T_r),(T-T_r)/T_r,(1/T-1/T_r)^2\}$ as one-term corrections to coarse
+Clausius--Clapeyron by median physical NRMSE over all 282 held-out entities;
+candidates within 1\% use the displayed order.  ZT development queries evaluate
+its fixed endpoint and vapor development queries select the correction.  After
+sealing, future targets only score the structure and support estimates its
+coefficients (full audit in Appendix~\ref{app:protocol}).
+
+\begin{table*}[t]
+  \centering
+  \small
+  \caption{One-shot unseen-entity temporal expression results.  Confidence
+  intervals resample entities, with an additional DOI-cluster interval for
+  vapor pressure.  ``Pass'' counts entities with individual physical
+  $R^2\geq0.85$.  The strongest support-aware baseline remains adjacent; higher
+  baseline accuracy does not invalidate the separate expression endpoint.
+  Here $\tau=(T-280.584300\,\mathrm{K})/(193.386207\,\mathrm{K})$,
+  $T_r=362.72\,\mathrm{K}$, and $\Delta T^{-1}=1/T-1/T_r$.}
+  \label{tab:temporal-expression}
+  \setlength{\tabcolsep}{4pt}
+  \begin{tabular}{@{}llrrrrl@{}}
+    \toprule
+    Domain & Named structure & $N_e$ & $N_q$ & Physical $R^2\uparrow$ & $\geq.85$ & Best support $R^2\uparrow$ \\
+    \midrule
+    Starry ZT
+      & $c_0+c_1\tau+c_2\tau^2$
+      & 30 & 919 & \textbf{0.988810} & 20/30 & kNN 0.982678 \\
+    Vapor pressure
+      & $c_0+c_1\Delta T^{-1}+c_2\log(T/T_r)$
+      & 84 & 1,745 & \textbf{0.999581} & 83/84 & log-PCHIP 0.999937 \\
+    \bottomrule
+  \end{tabular}
+\end{table*}
+
+% ROLE: ZT interpretation and limitation -- connect coefficient meaning, stability, and paired baseline evidence.
+Here $c_i$ denotes a canonical response coefficient, never a raw neural latent
+coordinate.  For ZT, $c_0$, $c_1$, and $c_2$ encode a reference value,
+first-order
+temperature sensitivity, and curvature.  Entity-bootstrap physical $R^2$ is
+$[0.973306,0.994708]$, and median entity $R^2$ is $0.941739$.  On development
+entities, changing the stratified-support offset gives response-coordinate
+distance Spearman $0.9780$, $0.9733$, and $0.9679$ relative to offset zero; the
+physical curvature rank has median/minimum pairwise Spearman
+$0.9593/0.9397$.  The expression has lower NRMSE than kNN on 16/30 future
+materials, but the paired Wilcoxon test is nonsignificant ($p=0.465$).  Its
+scientific test is therefore the predicted slope reversal near
+$\tau^\star=-c_1/(2c_2)$, not a claim of universal predictive gain.
+
+% ROLE: vapor-pressure interpretation and limitation -- expose the strongest real symbolic result and coefficient conditioning.
+For vapor pressure, the coordinates give reference log pressure $c_0$
+(equivalently $P_r=(1\,\mathrm{kPa})e^{c_0}$), effective reference
+vaporization enthalpy $R(c_2T_r-c_1)$, and an effective temperature correction
+$Rc_2$.  This reading uses an ideal-gas, negligible-liquid-volume,
+finite-temperature-range linearization and therefore defines effective response
+coordinates, not exact calorimetric quantities.  Entity- and DOI-bootstrap
+physical $R^2$ intervals are
+$[0.998880,0.999983]$ and $[0.998562,0.999984]$.  Across four development
+support offsets, whose fits use outer-training-fold median reference
+temperatures rather than the temporal confirmation's frozen $T_r$, the three
+named-coordinate rank correlations have medians
+$0.9991$, $0.9762$, and $0.7974$; joint response-coordinate geometry has
+median/minimum correlation $0.8905/0.8546$.  The weakest correction term is
+limited by design collinearity (each support-design column is divided by its
+$\ell_2$ norm before the condition number; median/p95/maximum
+$135/917/6417$) and is not presented as a calorimetric measurement.  Log-pressure PCHIP has
+higher pooled $R^2$, while the compact expression provides a global named
+response chart and a falsifiable comparison to independent enthalpy data.
+
+\subsection{What the neural representation contributes}
+
+% ROLE: ablation -- distinguish raw q, decoder response, and direct support fitting.
+The neural ablations separate coordinate readability from complete bridge
+success.  On the external vapor-pressure cohort, decoder-functional projection
+reaches physical $R^2=0.990390$, whereas a direct raw-q ridge expression reaches
+only $0.304492$; both are pointwise medians of three seed predictions in physical
+pressure space.  The functional projection nevertheless fails its stronger
+cross-seed geometry gate and is not claim-eligible as the confirmed expression;
+the $0.999581$ result comes from support structure re-q.  The same qualitative
+separation occurs for ZT, where each outer-fold prediction is the pointwise
+median over three seeds, fixed-basis decoder-functional fidelity is high
+but extreme entity-NRMSE tails prevent a universal neural-bridge claim.  These
+ablations show that response projection repairs readability of a learned
+function, not that every trained decoder yields a safe equation prior.
+
+\subsection{Crystal heat capacity stress test}
+
+% ROLE: development evidence -- report all baselines and tails before opening confirmation.
+Crystal heat capacity tests a heterogeneous two-stage response.  Ordinary
+curves use NIST's five-term Shomate form \citep{nist2025webbook}; support-routed
+boundary curves use the nested family
+$A+B_1u+B_2u^2+H/\sqrt{\delta+1-u}$, allowing the degree-one subcase $B_2=0$,
+where $u=(T-T_{\min,e})/(T_{\max,e}-T_{\min,e})$.  Routing uses only the
+spread-support slope ratio (Appendix~\ref{app:protocol}); the sealed confirmation
+package freezes $(\gamma,d,\delta)=(100,2,3\times10^{-4})$.
+Coefficients denote background $A$, normalized slope $B_1$, curvature $B_2$,
+and support-diagnosed boundary enhancement $H$---not microscopic constants.
+DOI-grouped development reaches pooled $R^2=0.859300$ on 247 entities and
+17,704 query rows, with
+238/247 entities above $0.85$, median/p95/maximum NRMSE
+$0.02958/0.21186/1.74495$, and 748 negative predictions.  The
+inverse-square-root atom recurs in 5/5 folds, but only 1--3 training entities per
+fold route to it; entity/DOI bootstrap lower bounds $0.82526/0.81641$ remain
+below the endpoint.
+
+\begin{table}[t]
+  \centering
+  \footnotesize
+  \caption{Crystal-Cp development pooled physical $R^2$ with identical unseen-
+  entity spread support.  CNP/no-q MLP are pointwise five-seed medians; other
+  rows are deterministic.}
+  \label{tab:crystal-development}
+  \begin{tabular}{@{}lr@{}}
+    \toprule
+    Method & Physical $R^2\uparrow$ \\
+    \midrule
+    PCHIP & \textbf{0.958807} \\
+    Linear interpolation & 0.952084 \\
+    Nearest support & 0.919874 \\
+    Support kNN & 0.898820 \\
+    Boundary-stage expression & 0.859300 \\
+    Shomate5 support re-q & 0.638646 \\
+    FPCA & 0.632189 \\
+    CNP & 0.346495 \\
+    No-q temperature MLP & 0.095713 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+% ROLE: terminal development ablation -- separate a useful response chart from a failed learned prior.
+The terminal $5$-fold $\times$ $5$-seed audit passes leakage checks and finds
+more reproducible function than raw-latent geometry (mean Spearman $0.9230$ vs.
+$0.6056$), yet both learned-bridge and GIRD gates fail.  Decoder-functional
+spread $R^2$ is $0.4656$; in four-support inference, conditional GIRD median
+NRMSE on the consensus prior-eligible subset is $0.0874$, worse than direct-
+target dictionary $0.0497$ and $\lambda=0$ support OMP $0.0537$ on that subset.
+Non-recurrent atoms, 0/300 passing sufficient-margin
+certificates, and a failed gauge audit locate the problem in sparse-prior
+identifiability (Appendix~\ref{app:protocol}).  The direct expression still
+reaches $R^2=0.8593$, so this rejects the decoder prior rather than the
+response-coordinate interface.
+
+% ROLE: frozen pending branch -- reserve the only legal place for future evidence.
+\paragraph{Single-use Crystal-Cp result.}
+The 2015--2019 DOI/InChIKey-disjoint cohort is reserved under a single-use
+contract.  The formal 25-cell matrix and all-development packages are terminal;
+a target-blind seal binds 27 methods before any response is opened.  One
+evaluation is authorized.  GIRD remains diagnostic, and the frozen expression
+is unchanged even if it misses $R^2=0.85$.

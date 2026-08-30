@@ -1,0 +1,125 @@
+\appendix
+\section{Frozen Domain Protocols}
+\label{app:protocol}
+
+For Crystal multi-response OMP, step $k$ retains margin $\Delta_k$, residual
+$R_k$, and the largest aligned response displacement $\epsilon$ across seeds and
+support offsets.  The preregistered conservative sufficient condition is
+$\Delta_k>4\lVert R_k\rVert_F\epsilon+2\epsilon^2$; failure is not a necessary
+instability result.  Across 25 cells, median/minimum decoder-projection $R^2$ are
+$0.9967/0.0665$, motifs recur in at most one or two of five folds per seed,
+0/300 certificates pass, and the affine-gauge audit fails.
+
+Table~\ref{tab:domain-protocol} makes explicit the coordinate conventions that
+are deliberately suppressed by a raw latent code.  Temperatures are sorted
+before support selection.  The headline ZT and vapor-pressure least-squares
+fits are unweighted float64 fits with
+\texttt{numpy.linalg.lstsq(rcond=None)}.  The Crystal boundary fitter instead scales
+support columns and solves the full-rank system by explicit float64 SVD.  The
+confirmed ZT and vapor-pressure support matrices have at least five distinct
+temperatures and numerical rank three for their three named columns.
+
+Structure decisions use development query targets and are distinct from
+external support-only inference.  ZT fixes the quadratic endpoint before its
+five entity folds; it is not selected against its baselines.  Vapor compares
+the coarse Clausius--Clapeyron basis with exactly one of
+$\{\log(T/T_r),(T-T_r)/T_r,(1/T-1/T_r)^2\}$ in five DOI-grouped folds.  Lowest
+median entity physical NRMSE wins; candidates within 1\% use that displayed
+order.  This selects $\log(T/T_r)$.  The structure, reference-temperature rule,
+support mask, metric, tie break, and analysis are then frozen before temporal
+targets are opened; an external entity supplies only its support coefficients.
+
+\begin{table}[h]
+  \centering
+  \small
+  \caption{Vapor development selection audit.  Each $T_r$ is the outer-training
+  temperature median.  Entries are held-out entity median physical NRMSE; the
+  decision uses one median over all 282 entity values, not a median of these fold
+  medians.}
+  \label{tab:vapor-selection-audit}
+  \setlength{\tabcolsep}{4pt}
+  \begin{tabular}{@{}rrrrrr@{}}
+    \toprule
+    Fold & $T_r$ (K) & coarse & $v_{\log}$ & $v_T$ & $v_{1/T^2}$ \\
+    \midrule
+    0 & 360.000 & 0.08137 & 0.01105 & 0.03073 & 0.03631 \\
+    1 & 367.900 & 0.04556 & 0.01015 & 0.01223 & 0.01035 \\
+    2 & 362.860 & 0.04135 & 0.01555 & 0.01802 & 0.01591 \\
+    3 & 360.445 & 0.03867 & 0.00548 & 0.00871 & 0.00716 \\
+    4 & 363.090 & 0.02487 & 0.01243 & 0.01263 & 0.01214 \\
+    \midrule
+    All entities & --- & 0.04349 & 0.01105 & 0.01420 & 0.01258 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\begin{center}
+\begin{minipage}{\textwidth}
+  \centering
+  \refstepcounter{table}\label{tab:domain-protocol}
+  \small
+  \textbf{Table \thetable: Frozen real-domain inference details.}
+  ``Every fourth'' means zero-based ordered indices $0,4,8,\ldots$ are support
+  and all remaining rows are hidden queries.  Decoder probes apply only to the
+  neural functional ablations; the headline expressions are fitted directly
+  from support.
+
+  \setlength{\tabcolsep}{3.2pt}
+  \begin{tabular}{@{}p{0.12\textwidth}p{0.21\textwidth}p{0.34\textwidth}p{0.25\textwidth}@{}}
+    \toprule
+    Domain & Support rule & Named response coordinates & Decoder probes / seed aggregation \\
+    \midrule
+    Starry ZT & Every fourth temperature; minimum five support rows.
+      & $[1,\tau,\tau^2]$, where
+        $\tau=(T-280.584300\,\mathrm{K})/(193.386207\,\mathrm{K})$; support-only
+        quadratic fit.
+      & 41 equally spaced temperatures over the entity grid, equal weights;
+        neural OOF uses each outer-training fold's temperature mean and
+        standard deviation, then a pointwise median over three seeds. \\
+    Vapor pressure & Every fourth temperature; minimum five support rows.
+      & $[1,1/T-1/T_r,\log(T/T_r)]$ in $\log(P/1\,\mathrm{kPa})$, with
+        $T_r=362.72\,\mathrm{K}$; support-only fit.
+      & 41 equally spaced temperatures over the entity grid, equal weights;
+        neural confirmation uses the frozen $T_r$ and a pointwise median of
+        three physical-pressure predictions; development stability instead
+        uses outer-training-fold median $T_r$.  The strongest local baseline is
+        PCHIP applied to support log pressure. \\
+    Crystal $C_p$ & Every fourth temperature (spread support); all other rows
+      are queries.
+      & Ordinary branch: five-term Shomate basis.  Boundary branch:
+        $[1,u,u^2,(\delta+1-u)^{-1/2}]$, with the nested degree-one subcase and
+        $u=(T-T_{\min,e})/(T_{\max,e}-T_{\min,e})$.
+      & Headline development expression is deterministic.  CNP and no-q MLP
+        are pointwise medians over five seeds; the neural/GIRD registry remains
+        unopened for confirmation. \\
+    \bottomrule
+  \end{tabular}
+\end{minipage}
+\end{center}
+
+For Crystal routing, let the ordered spread-support slopes be
+$s_i=(C_{p,i+1}-C_{p,i})/(T_{i+1}-T_i)$ and
+\begin{equation}
+  \rho_e =
+  \frac{\max(0,s_{\mathrm{last}})}
+  {\max\!\left\{\operatorname{median}_{i<\mathrm{last}}|s_i|,
+  10^{-8}\max(1,\operatorname{median}|C_p|)/(T_{\max,e}-T_{\min,e})\right\}}.
+\end{equation}
+The boundary family is used when $\rho_e>\gamma$.  The reported OOF estimate
+uses outer-training selections: fold 1 selects
+$(\gamma,d,\delta)=(200,1,0.003)$, folds 2--4 select
+$(100,2,0.0003)$, and fold 5 selects $(50,2,0.0003)$; every fold selects the
+inverse-square-root atom.
+The unopened final package separately freezes
+$(\gamma,d,\delta)=(100,2,0.0003)$.
+
+For all domains, entity NRMSE is
+\begin{equation}
+ \operatorname{NRMSE}_e=
+ \frac{\sqrt{|Q_e|^{-1}\sum_{i\in Q_e}(y_i-\hat y_i)^2}}
+ {\sqrt{|Q_e|^{-1}\sum_{i\in Q_e}(y_i-\bar y_{Q_e})^2}},
+\end{equation}
+so the denominator is the population standard deviation (\texttt{ddof=0}).
+The frozen Starry evaluation manifest, ThermoML single-use lock and source-hash
+ledger, and Crystal single-use confirmation contract bind the corresponding
+support/query tables, evaluators, and source contents by SHA-256.

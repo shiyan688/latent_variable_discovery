@@ -1,0 +1,125 @@
+{
+  "adam_comparator_all_dictionary_chart_stable": false,
+  "adam_comparator_all_selected_omp_steps_certified": false,
+  "coordinate_median_spearman": [
+    {
+      "family": "polynomial",
+      "spearman": 1.0,
+      "support_regime": "four_support"
+    },
+    {
+      "family": "polynomial",
+      "spearman": 1.0,
+      "support_regime": "standard_11"
+    },
+    {
+      "family": "relaxation",
+      "spearman": 0.999240121580547,
+      "support_regime": "four_support"
+    },
+    {
+      "family": "relaxation",
+      "spearman": 0.999240121580547,
+      "support_regime": "standard_11"
+    },
+    {
+      "family": "thermodynamic_chart",
+      "spearman": 0.9909900130264871,
+      "support_regime": "four_support"
+    },
+    {
+      "family": "thermodynamic_chart",
+      "spearman": 0.9909900130264871,
+      "support_regime": "standard_11"
+    }
+  ],
+  "decision_amendment_sha256": "e110948ab67dec54b4b9d28c96c2276eb29912f6e988bd160bc7869236a04df0",
+  "expression_r2_is_separate_from_original_q_recovery": true,
+  "four_support_amendment_sha256": "1296f79ad03d7688157d2a24145f2407d5b27b29d93683845be3107844126919",
+  "four_support_comparisons": {
+    "polynomial": {
+      "gird_gn_selected_beats_direct_target": true,
+      "gird_gn_selected_beats_fpca": false,
+      "gird_gn_selected_beats_ordinary": true
+    },
+    "relaxation": {
+      "gird_gn_selected_beats_direct_target": true,
+      "gird_gn_selected_beats_fpca": false,
+      "gird_gn_selected_beats_ordinary": true
+    },
+    "thermodynamic_chart": {
+      "gird_gn_selected_beats_direct_target": true,
+      "gird_gn_selected_beats_fpca": false,
+      "gird_gn_selected_beats_ordinary": true
+    }
+  },
+  "four_support_test_improvements": {
+    "polynomial": {
+      "at_least_5pct": false,
+      "improvement_fraction": 0.0,
+      "lambda0_median_entity_nrmse": 0.010420956854818116,
+      "selected_median_entity_nrmse": 0.010420956854818116
+    },
+    "relaxation": {
+      "at_least_5pct": true,
+      "improvement_fraction": 0.34898526532900787,
+      "lambda0_median_entity_nrmse": 0.052770865153050336,
+      "selected_median_entity_nrmse": 0.03435461077597177
+    },
+    "thermodynamic_chart": {
+      "at_least_5pct": false,
+      "improvement_fraction": 0.0,
+      "lambda0_median_entity_nrmse": 0.01923969203426127,
+      "selected_median_entity_nrmse": 0.01923969203426127
+    }
+  },
+  "gird_plan_sha256": "c31f1fca60219f2cf2b258bac09e1a590dd7962c5e55d19f659730b743602072",
+  "gird_runner_sha256": "e6559560679583d7725c69cb35a3a2d6619f26f3ef0060fb98ea77a3017b51df",
+  "gn_r2_gates": {
+    "polynomial/four_support": true,
+    "polynomial/standard_11": true,
+    "relaxation/four_support": true,
+    "relaxation/standard_11": true,
+    "thermodynamic_chart/four_support": true,
+    "thermodynamic_chart/standard_11": true
+  },
+  "numerical_amendment_sha256": "d85db0c6d9a5b332aa3499eb9d3f105a2e89a4674b30fe90db0657bd26006613",
+  "predictive_superiority_inferred": false,
+  "primary_gates": {
+    "all_15_family_seed_cells_present": true,
+    "all_30_regime_cells_formally_eligible": true,
+    "all_basis_covariance_audits_pass": false,
+    "all_decoder_functional_generating_coordinate_medians_at_least_0_90": true,
+    "all_dictionary_chart_stability_audited": true,
+    "all_dictionary_recovery_gates_pass": true,
+    "all_gn_functional_and_fused_pooled_r2_at_least_0_85": true,
+    "all_gn_selected_omp_steps_certified": false,
+    "all_query_target_leakage_audits_zero": true,
+    "all_support_rank_diagnostics_explicit_no_fallback": true,
+    "four_support_finite_lambda_audited": false,
+    "four_support_gird_beats_direct_target": true,
+    "four_support_lambda_improves_at_least_5pct": false,
+    "standard_gn_within_1_05_of_best_interpretable_baseline": false
+  },
+  "scope": "independent GIRD controlled-discovery analysis",
+  "source_plan_sha256": "ba2a587bd6f7a2945b118c2316ae8f52e0dce9663abfb2fe03f81a084720ada6",
+  "stable_extension_runner_sha256": "5257d739592caf96249eb6dc5e8bca81734bf744a20e6fa8366fbaa806150fbd",
+  "standard_interpretable_baselines": {
+    "polynomial": {
+      "best_interpretable_median_entity_nrmse": 0.007936326279793519,
+      "gird_gn_selected_median_entity_nrmse": 0.008482832243622729,
+      "within_1_05": false
+    },
+    "relaxation": {
+      "best_interpretable_median_entity_nrmse": 0.020759268698317727,
+      "gird_gn_selected_median_entity_nrmse": 0.024381464203958748,
+      "within_1_05": false
+    },
+    "thermodynamic_chart": {
+      "best_interpretable_median_entity_nrmse": 0.014788451677119726,
+      "gird_gn_selected_median_entity_nrmse": 0.015618208504329361,
+      "within_1_05": false
+    }
+  },
+  "unique_or_causal_latent_recovery_inferred": false
+}

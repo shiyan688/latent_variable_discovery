@@ -1,0 +1,50 @@
+{
+  "benchmark_passed": true,
+  "functional_family_pooled_r2": {
+    "polynomial": 0.9999392726464987,
+    "relaxation": 0.9998066843599671,
+    "thermodynamic_chart": 0.9998379485404115
+  },
+  "functional_vs_generating_coordinate_spearman": {
+    "polynomial": {
+      "c0": 1.0,
+      "c1": 1.0,
+      "c2": 0.9996743378202344,
+      "median": 1.0
+    },
+    "relaxation": {
+      "c0": 0.999348675640469,
+      "c1": 0.999348675640469,
+      "c2": 0.999240121580547,
+      "median": 0.999348675640469
+    },
+    "thermodynamic_chart": {
+      "c0": 0.9996743378202344,
+      "c1": 0.756079027355623,
+      "c2": 0.9598349978289188,
+      "median": 0.9598349978289188
+    }
+  },
+  "maximum_frozen_raw_q_readout_prediction_change": 33.48735767411366,
+  "maximum_gauge_functional_coefficient_change": 2.042810365310288e-14,
+  "maximum_gauge_prediction_change": 4.496403249731884e-15,
+  "maximum_gauge_raw_q_coordinate_change": 4.995821848106606,
+  "predictive_superiority_inferred": false,
+  "primary_gates": {
+    "all_15_cells_formal_success": true,
+    "all_functional_family_r2_at_least_0_85": true,
+    "all_functional_generating_median_spearman_at_least_0_90": true,
+    "all_structure_family_r2_at_least_0_85": true,
+    "exact_query_target_invariance": true,
+    "maximum_gauge_functional_coefficient_change_at_most_1e_5": true,
+    "maximum_gauge_prediction_change_at_most_1e_5": true
+  },
+  "query_target_input_max_difference": 0.0,
+  "scope": "controlled gauge-invariant canonical response benchmark",
+  "structure_family_pooled_r2": {
+    "polynomial": 0.9999701854616386,
+    "relaxation": 0.9999580993721954,
+    "thermodynamic_chart": 0.9999759115079667
+  },
+  "unique_or_causal_latent_recovery_inferred": false
+}

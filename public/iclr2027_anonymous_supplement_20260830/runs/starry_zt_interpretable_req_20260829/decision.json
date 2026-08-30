@@ -1,0 +1,69 @@
+{
+  "analysis_scope": "reviewer-clean Starry ZT strict entity-OOF/support-query development",
+  "selected_formula": "ZT(T)=q0+q1*tau+q2*tau^2; tau=(T-mu_train)/sigma_train",
+  "scientific_interpretation": {
+    "q0": "reference ZT",
+    "q1": "first-order temperature sensitivity",
+    "q2": "temperature curvature"
+  },
+  "selected_pooled_oof_r2": 0.9806678897093667,
+  "selected_physical_rmse": 0.03986818191462735,
+  "entity_bootstrap_r2_95_interval": [
+    0.9617285322081659,
+    0.9915932089497601
+  ],
+  "median_entity_r2": 0.9834366740046159,
+  "fraction_entities_r2_at_least_0_85": 0.875,
+  "maximum_entity_nrmse_ratio_to_linear_req": 1.0998072116897093,
+  "q_response_distance_spearman": 0.7221596242267477,
+  "q_stability": [
+    {
+      "offset": 1,
+      "q_distance_spearman_vs_offset0": 0.9780226950400893
+    },
+    {
+      "offset": 2,
+      "q_distance_spearman_vs_offset0": 0.973299787251469
+    },
+    {
+      "offset": 3,
+      "q_distance_spearman_vs_offset0": 0.9678754817851162
+    }
+  ],
+  "family_summary": [
+    {
+      "family": "support_knn",
+      "pooled_oof_r2": 0.9909697815297788,
+      "physical_rmse": 0.027248081391352975
+    },
+    {
+      "family": "quadratic_req",
+      "pooled_oof_r2": 0.9806678897093667,
+      "physical_rmse": 0.03986818191462735
+    },
+    {
+      "family": "linear_req",
+      "pooled_oof_r2": 0.9667458587165799,
+      "physical_rmse": 0.0522889195379698
+    },
+    {
+      "family": "no_q_global_quadratic",
+      "pooled_oof_r2": 0.4523209126287848,
+      "physical_rmse": 0.2122021980909184
+    },
+    {
+      "family": "no_q_mlp",
+      "pooled_oof_r2": -0.9325736141639847,
+      "physical_rmse": 0.39861608739771415
+    }
+  ],
+  "gates": {
+    "pooled_oof_r2_at_least_0_85": true,
+    "finite_predictions": true,
+    "exact_query_target_input_invariance": true,
+    "no_entity_above_ten_times_linear_req_nrmse": true
+  },
+  "expression_endpoint_passed_on_development": true,
+  "predictive_superiority_inferred": false,
+  "independent_external_confirmation_required_for_confirmatory_claim": true
+}

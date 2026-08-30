@@ -1,0 +1,38 @@
+{
+  "scope": "branch-neutral conceptual overview with two sealed temporal headline values",
+  "claim_boundary": {
+    "interpretability_endpoint": "compact named expression on unseen-entity support-to-query evaluation",
+    "physical_pooled_r2_threshold": 0.85,
+    "original_raw_q_recovery_required": false,
+    "predictive_superiority_inferred": false,
+    "causal_or_unique_law_inferred": false
+  },
+  "temporal_values": {
+    "starry_zt": {
+      "formula": "ZT(T)=q0+q1*tau+q2*tau^2",
+      "entities": 30,
+      "query_rows": 919,
+      "physical_pooled_r2": 0.9888097988570103,
+      "displayed_r2": 0.9888,
+      "source": "runs/starry_zt_temporal_confirmation_20260829/evaluation/decision.json",
+      "source_sha256": "8c28f1513a58ffff6a34128372549258df348d62a57fc351f35ffb994e27e42d"
+    },
+    "thermoml_vapor_pressure": {
+      "formula": "ln(P/1 kPa)=q0+q1*(1/T-1/T_ref)+q2*ln(T/T_ref)",
+      "entities": 84,
+      "dois": 45,
+      "query_rows": 1745,
+      "physical_pooled_r2": 0.9995806913959855,
+      "displayed_r2": 0.9996,
+      "source": "runs/thermoml_single_use_confirmation_20260829/c947fbd6cc82bf8d880a1449f16f859ede8e05b58f6c3e11504cdf24d05c38c4/analysis/decision.json",
+      "source_sha256": "ad29813692139fbcf17e629d2cf4f79d99c2d1052c62950a4873cab82649c605"
+    }
+  },
+  "outputs": {
+    "generator_sha256": "3e9689194c1c05732c63bace8033a1bb9c16714f105943050ee0d50707bae7c7",
+    "variant_a_svg_sha256": "039a2132452cf3638ca459bdcd3ca9e24e86732353359c91be4a1e92d04c40be",
+    "variant_b_svg_sha256": "052e57ae1b277fe1c0d85c70ff5a0943c164938b7eadd538e3d67c3c096f42e9",
+    "variant_a_pdf_sha256": "eab79e0c3d381c1327fc739e4991fc09dbc849fdc0e4a21aeef1983b032190e8",
+    "latex_include_sha256": "cc4a9fbad6b9d164eeef95a5c771f59e307f301940017303e9cf98c4e6769ca5"
+  }
+}

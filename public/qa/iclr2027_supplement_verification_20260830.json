@@ -1,0 +1,17 @@
+{
+  "scope": "isolated anonymous-supplement clean-room verification",
+  "archive": "public/iclr2027_anonymous_supplement_20260830.tar.gz",
+  "archive_sha256": "484a5bf625e7d20e431b1f4f1a74512d8e63017f870c3cd4588dffdd5bc565ca",
+  "clean_root": "public/qa/iclr2027_supplement_cleanroom_20260830",
+  "prebuild_sha256sum_check_exit_code": 0,
+  "prebuild_hash_entries": 100,
+  "preexisting_pdf_removed_before_build": true,
+  "build_command": "bash scripts/build_iclr2027_paper.sh",
+  "build_exit_code": 0,
+  "rebuilt_pdf_sha256": "69b29b6d04375fd683482f7533bf3352ac74b3382551e9f713b5accfdde6ecfc",
+  "expected_source_pdf_sha256": "69b29b6d04375fd683482f7533bf3352ac74b3382551e9f713b5accfdde6ecfc",
+  "byte_identical": true,
+  "pages": 13,
+  "page_9_ends_main_text": true,
+  "page_10_begins_ai_use": true
+}

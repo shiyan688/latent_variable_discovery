@@ -1,0 +1,913 @@
+{
+  "status": "success",
+  "scope": "independent development-only ThermoML crystal-Cp baseline analysis",
+  "v2_expression_endpoint": {
+    "name": "v2_expression_endpoint",
+    "pooled_physical_r2": 0.6386459472518312,
+    "r2_threshold": 0.85,
+    "pooled_r2_pass": false,
+    "nonconstant_pass": true,
+    "finite_and_complete_pass": true,
+    "leakage_pass": true,
+    "status": "FAIL",
+    "coverage_note": null
+  },
+  "selected_spread_expression": "shomate5__lambda_0",
+  "selection_and_coverage": {
+    "selected_candidate_id": "shomate5__lambda_0",
+    "expression_reused": true,
+    "regimes": {
+      "spread": {
+        "reported_candidate_id": "shomate5__lambda_0",
+        "reuses_spread_expression": true,
+        "raw_selected_rows": 17704,
+        "expected_query_rows": 17704,
+        "selected_expression_coverage_complete": true,
+        "coverage_failure": null
+      },
+      "prefix": {
+        "reported_candidate_id": "shomate5__lambda_0",
+        "reuses_spread_expression": true,
+        "raw_selected_rows": 17874,
+        "expected_query_rows": 17897,
+        "selected_expression_coverage_complete": false,
+        "coverage_failure": "selected shomate5__lambda_0 has 17874/17897 valid query rows; no value was imputed"
+      },
+      "four_support": {
+        "reported_candidate_id": "shomate5__lambda_0",
+        "reuses_spread_expression": true,
+        "raw_selected_rows": 0,
+        "expected_query_rows": 22754,
+        "selected_expression_coverage_complete": false,
+        "coverage_failure": "selected shomate5__lambda_0 has 0/22754 valid query rows; no value was imputed"
+      }
+    }
+  },
+  "query_coverage": {
+    "spread": {
+      "expected_query_rows": 17704,
+      "methods": {
+        "expression/constant__lambda_0": {
+          "rows": 17704,
+          "entities": 247,
+          "expected_rows": 17704,
+          "coverage_complete": true,
+          "missing_rows": 0
+        },
+        "expression/constant__lambda_0.0001": {
+          "rows": 17704,
+          "entities": 247,
+          "expected_rows": 17704,
+          "coverage_complete": true,
+          "missing_rows": 0
+        },
+        "expression/constant__lambda_0.01": {
+          "rows": 17704,
+          "entities": 247,
+          "expected_rows": 17704,
+          "coverage_complete": true,
+          "missing_rows": 0
+        },
+        "expression/constant__lambda_1": {
+          "rows": 17704,
+          "entities": 247,
+          "expected_rows": 17704,
+          "coverage_complete": true,
+          "missing_rows": 0
+        },
+        "expression/constant__lambda_1e-06": {
+          "rows": 17704,
+          "entities": 247,
+          "expected_rows": 17704,
+          "coverage_complete": true,
+          "missing_rows": 0
+        },
+        "expression/constant__lambda_1e-08": {
+          "rows": 17704,
+          "entities": 247,
+          "expected_rows": 17704,
+          "coverage_complete": true,
+          "missing_rows": 0
+        },
+        "expression/cubic_t__lambda_0": {
+          "rows": 17704,
+          "entities": 247,
+          "expected_rows": 17704,
+          "coverage_complete": true,
+          "missing_rows": 0
+        },
+        "expression/cubic_t__lambda_0.0001": {
+          "rows": 17704,
+          "entities": 247,
+          "expected_rows": 17704,
+          "coverage_complete": true,
+          "missing_rows": 0
+        },
+        "expression/cubic_t__lambda_0.01": {
+          "rows": 17704,
+          "entities": 247,
+          "expected_rows": 17704,
+          "coverage_complete": true,
+          "missing_rows": 0
+        },
+        "expression/cubic_t__lambda_1": {
+          "rows": 17704,
+          "entities": 247,
+          "expected_rows": 17704,
+          "coverage_complete": true,
+          "missing_rows": 0
+        },
+        "expression/cubic_t__lambda_1e-06": {
+          "rows": 17704,
+          "entities": 247,
+          "expected_rows": 17704,
+          "coverage_complete": true,
+          "missing_rows": 0
+        },
+        "expression/cubic_t__lambda_1e-08": {
+          "rows": 17704,
+          "entities": 247,
+          "expected_rows": 17704,
+          "coverage_complete": true,
+          "missing_rows": 0
+        },
+        "expression/linear_t__lambda_0": {
+          "rows": 17704,
+          "entities": 247,
+          "expected_rows": 17704,
+          "coverage_complete": true,
+          "missing_rows": 0
+        },
+        "expression/linear_t__lambda_0.0001": {
+          "rows": 17704,
+          "entities": 247,
+          "expected_rows": 17704,
+          "coverage_complete": true,
+          "missing_rows": 0
+        },
+        "expression/linear_t__lambda_0.01": {
+          "rows": 17704,
+          "entities": 247,
+          "expected_rows": 17704,
+          "coverage_complete": true,
+          "missing_rows": 0
+        },
+        "expression/linear_t__lambda_1": {
+          "rows": 17704,
+          "entities": 247,
+          "expected_rows": 17704,
+          "coverage_complete": true,
+          "missing_rows": 0
+        },
+        "expression/linear_t__lambda_1e-06": {
+          "rows": 17704,
+          "entities": 247,
+          "expected_rows": 17704,
+          "coverage_complete": true,
+          "missing_rows": 0
+        },
+        "expression/linear_t__lambda_1e-08": {
+          "rows": 17704,
+          "entities": 247,
+          "expected_rows": 17704,
+          "coverage_complete": true,
+          "missing_rows": 0
+        },
+        "expression/quadratic_t__lambda_0": {
+          "rows": 17704,
+          "entities": 247,
+          "expected_rows": 17704,
+          "coverage_complete": true,
+          "missing_rows": 0
+        },
+        "expression/quadratic_t__lambda_0.0001": {
+          "rows": 17704,
+          "entities": 247,
+          "expected_rows": 17704,
+          "coverage_complete": true,
+          "missing_rows": 0
+        },
+        "expression/quadratic_t__lambda_0.01": {
+          "rows": 17704,
+          "entities": 247,
+          "expected_rows": 17704,
+          "coverage_complete": true,
+          "missing_rows": 0
+        },
+        "expression/quadratic_t__lambda_1": {
+          "rows": 17704,
+          "entities": 247,
+          "expected_rows": 17704,
+          "coverage_complete": true,
+          "missing_rows": 0
+        },
+        "expression/quadratic_t__lambda_1e-06": {
+          "rows": 17704,
+          "entities": 247,
+          "expected_rows": 17704,
+          "coverage_complete": true,
+          "missing_rows": 0
+        },
+        "expression/quadratic_t__lambda_1e-08": {
+          "rows": 17704,
+          "entities": 247,
+          "expected_rows": 17704,
+          "coverage_complete": true,
+          "missing_rows": 0
+        },
+        "expression/shomate5__lambda_0": {
+          "rows": 17704,
+          "entities": 247,
+          "expected_rows": 17704,
+          "coverage_complete": true,
+          "missing_rows": 0
+        },
+        "expression/shomate5__lambda_0.0001": {
+          "rows": 17704,
+          "entities": 247,
+          "expected_rows": 17704,
+          "coverage_complete": true,
+          "missing_rows": 0
+        },
+        "expression/shomate5__lambda_0.01": {
+          "rows": 17704,
+          "entities": 247,
+          "expected_rows": 17704,
+          "coverage_complete": true,
+          "missing_rows": 0
+        },
+        "expression/shomate5__lambda_1": {
+          "rows": 17704,
+          "entities": 247,
+          "expected_rows": 17704,
+          "coverage_complete": true,
+          "missing_rows": 0
+        },
+        "expression/shomate5__lambda_1e-06": {
+          "rows": 17704,
+          "entities": 247,
+          "expected_rows": 17704,
+          "coverage_complete": true,
+          "missing_rows": 0
+        },
+        "expression/shomate5__lambda_1e-08": {
+          "rows": 17704,
+          "entities": 247,
+          "expected_rows": 17704,
+          "coverage_complete": true,
+          "missing_rows": 0
+        },
+        "support_knn/k_1": {
+          "rows": 17704,
+          "entities": 247,
+          "expected_rows": 17704,
+          "coverage_complete": true,
+          "missing_rows": 0
+        },
+        "support_knn/k_2": {
+          "rows": 17704,
+          "entities": 247,
+          "expected_rows": 17704,
+          "coverage_complete": true,
+          "missing_rows": 0
+        },
+        "support_knn/k_4": {
+          "rows": 17704,
+          "entities": 247,
+          "expected_rows": 17704,
+          "coverage_complete": true,
+          "missing_rows": 0
+        },
+        "support_linear/support_linear": {
+          "rows": 17704,
+          "entities": 247,
+          "expected_rows": 17704,
+          "coverage_complete": true,
+          "missing_rows": 0
+        },
+        "support_nearest/support_nearest": {
+          "rows": 17704,
+          "entities": 247,
+          "expected_rows": 17704,
+          "coverage_complete": true,
+          "missing_rows": 0
+        },
+        "support_pchip/support_pchip": {
+          "rows": 17704,
+          "entities": 247,
+          "expected_rows": 17704,
+          "coverage_complete": true,
+          "missing_rows": 0
+        }
+      }
+    },
+    "prefix": {
+      "expected_query_rows": 17897,
+      "methods": {
+        "expression/constant__lambda_0": {
+          "rows": 17897,
+          "entities": 247,
+          "expected_rows": 17897,
+          "coverage_complete": true,
+          "missing_rows": 0
+        },
+        "expression/constant__lambda_0.0001": {
+          "rows": 17897,
+          "entities": 247,
+          "expected_rows": 17897,
+          "coverage_complete": true,
+          "missing_rows": 0
+        },
+        "expression/constant__lambda_0.01": {
+          "rows": 17897,
+          "entities": 247,
+          "expected_rows": 17897,
+          "coverage_complete": true,
+          "missing_rows": 0
+        },
+        "expression/constant__lambda_1": {
+          "rows": 17897,
+          "entities": 247,
+          "expected_rows": 17897,
+          "coverage_complete": true,
+          "missing_rows": 0
+        },
+        "expression/constant__lambda_1e-06": {
+          "rows": 17897,
+          "entities": 247,
+          "expected_rows": 17897,
+          "coverage_complete": true,
+          "missing_rows": 0
+        },
+        "expression/constant__lambda_1e-08": {
+          "rows": 17897,
+          "entities": 247,
+          "expected_rows": 17897,
+          "coverage_complete": true,
+          "missing_rows": 0
+        },
+        "expression/cubic_t__lambda_0": {
+          "rows": 17897,
+          "entities": 247,
+          "expected_rows": 17897,
+          "coverage_complete": true,
+          "missing_rows": 0
+        },
+        "expression/cubic_t__lambda_0.0001": {
+          "rows": 17897,
+          "entities": 247,
+          "expected_rows": 17897,
+          "coverage_complete": true,
+          "missing_rows": 0
+        },
+        "expression/cubic_t__lambda_0.01": {
+          "rows": 17897,
+          "entities": 247,
+          "expected_rows": 17897,
+          "coverage_complete": true,
+          "missing_rows": 0
+        },
+        "expression/cubic_t__lambda_1": {
+          "rows": 17897,
+          "entities": 247,
+          "expected_rows": 17897,
+          "coverage_complete": true,
+          "missing_rows": 0
+        },
+        "expression/cubic_t__lambda_1e-06": {
+          "rows": 17897,
+          "entities": 247,
+          "expected_rows": 17897,
+          "coverage_complete": true,
+          "missing_rows": 0
+        },
+        "expression/cubic_t__lambda_1e-08": {
+          "rows": 17897,
+          "entities": 247,
+          "expected_rows": 17897,
+          "coverage_complete": true,
+          "missing_rows": 0
+        },
+        "expression/linear_t__lambda_0": {
+          "rows": 17897,
+          "entities": 247,
+          "expected_rows": 17897,
+          "coverage_complete": true,
+          "missing_rows": 0
+        },
+        "expression/linear_t__lambda_0.0001": {
+          "rows": 17897,
+          "entities": 247,
+          "expected_rows": 17897,
+          "coverage_complete": true,
+          "missing_rows": 0
+        },
+        "expression/linear_t__lambda_0.01": {
+          "rows": 17897,
+          "entities": 247,
+          "expected_rows": 17897,
+          "coverage_complete": true,
+          "missing_rows": 0
+        },
+        "expression/linear_t__lambda_1": {
+          "rows": 17897,
+          "entities": 247,
+          "expected_rows": 17897,
+          "coverage_complete": true,
+          "missing_rows": 0
+        },
+        "expression/linear_t__lambda_1e-06": {
+          "rows": 17897,
+          "entities": 247,
+          "expected_rows": 17897,
+          "coverage_complete": true,
+          "missing_rows": 0
+        },
+        "expression/linear_t__lambda_1e-08": {
+          "rows": 17897,
+          "entities": 247,
+          "expected_rows": 17897,
+          "coverage_complete": true,
+          "missing_rows": 0
+        },
+        "expression/quadratic_t__lambda_0": {
+          "rows": 17897,
+          "entities": 247,
+          "expected_rows": 17897,
+          "coverage_complete": true,
+          "missing_rows": 0
+        },
+        "expression/quadratic_t__lambda_0.0001": {
+          "rows": 17897,
+          "entities": 247,
+          "expected_rows": 17897,
+          "coverage_complete": true,
+          "missing_rows": 0
+        },
+        "expression/quadratic_t__lambda_0.01": {
+          "rows": 17897,
+          "entities": 247,
+          "expected_rows": 17897,
+          "coverage_complete": true,
+          "missing_rows": 0
+        },
+        "expression/quadratic_t__lambda_1": {
+          "rows": 17897,
+          "entities": 247,
+          "expected_rows": 17897,
+          "coverage_complete": true,
+          "missing_rows": 0
+        },
+        "expression/quadratic_t__lambda_1e-06": {
+          "rows": 17897,
+          "entities": 247,
+          "expected_rows": 17897,
+          "coverage_complete": true,
+          "missing_rows": 0
+        },
+        "expression/quadratic_t__lambda_1e-08": {
+          "rows": 17897,
+          "entities": 247,
+          "expected_rows": 17897,
+          "coverage_complete": true,
+          "missing_rows": 0
+        },
+        "expression/shomate5__lambda_0": {
+          "rows": 17874,
+          "entities": 246,
+          "expected_rows": 17897,
+          "coverage_complete": false,
+          "missing_rows": 23
+        },
+        "expression/shomate5__lambda_0.0001": {
+          "rows": 17897,
+          "entities": 247,
+          "expected_rows": 17897,
+          "coverage_complete": true,
+          "missing_rows": 0
+        },
+        "expression/shomate5__lambda_0.01": {
+          "rows": 17897,
+          "entities": 247,
+          "expected_rows": 17897,
+          "coverage_complete": true,
+          "missing_rows": 0
+        },
+        "expression/shomate5__lambda_1": {
+          "rows": 17897,
+          "entities": 247,
+          "expected_rows": 17897,
+          "coverage_complete": true,
+          "missing_rows": 0
+        },
+        "expression/shomate5__lambda_1e-06": {
+          "rows": 17897,
+          "entities": 247,
+          "expected_rows": 17897,
+          "coverage_complete": true,
+          "missing_rows": 0
+        },
+        "expression/shomate5__lambda_1e-08": {
+          "rows": 17897,
+          "entities": 247,
+          "expected_rows": 17897,
+          "coverage_complete": true,
+          "missing_rows": 0
+        },
+        "support_knn/k_1": {
+          "rows": 17897,
+          "entities": 247,
+          "expected_rows": 17897,
+          "coverage_complete": true,
+          "missing_rows": 0
+        },
+        "support_knn/k_2": {
+          "rows": 17897,
+          "entities": 247,
+          "expected_rows": 17897,
+          "coverage_complete": true,
+          "missing_rows": 0
+        },
+        "support_knn/k_4": {
+          "rows": 17897,
+          "entities": 247,
+          "expected_rows": 17897,
+          "coverage_complete": true,
+          "missing_rows": 0
+        },
+        "support_linear/support_linear": {
+          "rows": 17897,
+          "entities": 247,
+          "expected_rows": 17897,
+          "coverage_complete": true,
+          "missing_rows": 0
+        },
+        "support_nearest/support_nearest": {
+          "rows": 17897,
+          "entities": 247,
+          "expected_rows": 17897,
+          "coverage_complete": true,
+          "missing_rows": 0
+        },
+        "support_pchip/support_pchip": {
+          "rows": 17897,
+          "entities": 247,
+          "expected_rows": 17897,
+          "coverage_complete": true,
+          "missing_rows": 0
+        }
+      }
+    },
+    "four_support": {
+      "expected_query_rows": 22754,
+      "methods": {
+        "expression/constant__lambda_0": {
+          "rows": 22754,
+          "entities": 247,
+          "expected_rows": 22754,
+          "coverage_complete": true,
+          "missing_rows": 0
+        },
+        "expression/constant__lambda_0.0001": {
+          "rows": 22754,
+          "entities": 247,
+          "expected_rows": 22754,
+          "coverage_complete": true,
+          "missing_rows": 0
+        },
+        "expression/constant__lambda_0.01": {
+          "rows": 22754,
+          "entities": 247,
+          "expected_rows": 22754,
+          "coverage_complete": true,
+          "missing_rows": 0
+        },
+        "expression/constant__lambda_1": {
+          "rows": 22754,
+          "entities": 247,
+          "expected_rows": 22754,
+          "coverage_complete": true,
+          "missing_rows": 0
+        },
+        "expression/constant__lambda_1e-06": {
+          "rows": 22754,
+          "entities": 247,
+          "expected_rows": 22754,
+          "coverage_complete": true,
+          "missing_rows": 0
+        },
+        "expression/constant__lambda_1e-08": {
+          "rows": 22754,
+          "entities": 247,
+          "expected_rows": 22754,
+          "coverage_complete": true,
+          "missing_rows": 0
+        },
+        "expression/cubic_t__lambda_0": {
+          "rows": 22754,
+          "entities": 247,
+          "expected_rows": 22754,
+          "coverage_complete": true,
+          "missing_rows": 0
+        },
+        "expression/cubic_t__lambda_0.0001": {
+          "rows": 22754,
+          "entities": 247,
+          "expected_rows": 22754,
+          "coverage_complete": true,
+          "missing_rows": 0
+        },
+        "expression/cubic_t__lambda_0.01": {
+          "rows": 22754,
+          "entities": 247,
+          "expected_rows": 22754,
+          "coverage_complete": true,
+          "missing_rows": 0
+        },
+        "expression/cubic_t__lambda_1": {
+          "rows": 22754,
+          "entities": 247,
+          "expected_rows": 22754,
+          "coverage_complete": true,
+          "missing_rows": 0
+        },
+        "expression/cubic_t__lambda_1e-06": {
+          "rows": 22754,
+          "entities": 247,
+          "expected_rows": 22754,
+          "coverage_complete": true,
+          "missing_rows": 0
+        },
+        "expression/cubic_t__lambda_1e-08": {
+          "rows": 22754,
+          "entities": 247,
+          "expected_rows": 22754,
+          "coverage_complete": true,
+          "missing_rows": 0
+        },
+        "expression/linear_t__lambda_0": {
+          "rows": 22754,
+          "entities": 247,
+          "expected_rows": 22754,
+          "coverage_complete": true,
+          "missing_rows": 0
+        },
+        "expression/linear_t__lambda_0.0001": {
+          "rows": 22754,
+          "entities": 247,
+          "expected_rows": 22754,
+          "coverage_complete": true,
+          "missing_rows": 0
+        },
+        "expression/linear_t__lambda_0.01": {
+          "rows": 22754,
+          "entities": 247,
+          "expected_rows": 22754,
+          "coverage_complete": true,
+          "missing_rows": 0
+        },
+        "expression/linear_t__lambda_1": {
+          "rows": 22754,
+          "entities": 247,
+          "expected_rows": 22754,
+          "coverage_complete": true,
+          "missing_rows": 0
+        },
+        "expression/linear_t__lambda_1e-06": {
+          "rows": 22754,
+          "entities": 247,
+          "expected_rows": 22754,
+          "coverage_complete": true,
+          "missing_rows": 0
+        },
+        "expression/linear_t__lambda_1e-08": {
+          "rows": 22754,
+          "entities": 247,
+          "expected_rows": 22754,
+          "coverage_complete": true,
+          "missing_rows": 0
+        },
+        "expression/quadratic_t__lambda_0": {
+          "rows": 22754,
+          "entities": 247,
+          "expected_rows": 22754,
+          "coverage_complete": true,
+          "missing_rows": 0
+        },
+        "expression/quadratic_t__lambda_0.0001": {
+          "rows": 22754,
+          "entities": 247,
+          "expected_rows": 22754,
+          "coverage_complete": true,
+          "missing_rows": 0
+        },
+        "expression/quadratic_t__lambda_0.01": {
+          "rows": 22754,
+          "entities": 247,
+          "expected_rows": 22754,
+          "coverage_complete": true,
+          "missing_rows": 0
+        },
+        "expression/quadratic_t__lambda_1": {
+          "rows": 22754,
+          "entities": 247,
+          "expected_rows": 22754,
+          "coverage_complete": true,
+          "missing_rows": 0
+        },
+        "expression/quadratic_t__lambda_1e-06": {
+          "rows": 22754,
+          "entities": 247,
+          "expected_rows": 22754,
+          "coverage_complete": true,
+          "missing_rows": 0
+        },
+        "expression/quadratic_t__lambda_1e-08": {
+          "rows": 22754,
+          "entities": 247,
+          "expected_rows": 22754,
+          "coverage_complete": true,
+          "missing_rows": 0
+        },
+        "expression/shomate5__lambda_0.0001": {
+          "rows": 22754,
+          "entities": 247,
+          "expected_rows": 22754,
+          "coverage_complete": true,
+          "missing_rows": 0
+        },
+        "expression/shomate5__lambda_0.01": {
+          "rows": 22754,
+          "entities": 247,
+          "expected_rows": 22754,
+          "coverage_complete": true,
+          "missing_rows": 0
+        },
+        "expression/shomate5__lambda_1": {
+          "rows": 22754,
+          "entities": 247,
+          "expected_rows": 22754,
+          "coverage_complete": true,
+          "missing_rows": 0
+        },
+        "expression/shomate5__lambda_1e-06": {
+          "rows": 22754,
+          "entities": 247,
+          "expected_rows": 22754,
+          "coverage_complete": true,
+          "missing_rows": 0
+        },
+        "expression/shomate5__lambda_1e-08": {
+          "rows": 22754,
+          "entities": 247,
+          "expected_rows": 22754,
+          "coverage_complete": true,
+          "missing_rows": 0
+        },
+        "support_knn/k_1": {
+          "rows": 22754,
+          "entities": 247,
+          "expected_rows": 22754,
+          "coverage_complete": true,
+          "missing_rows": 0
+        },
+        "support_knn/k_2": {
+          "rows": 22754,
+          "entities": 247,
+          "expected_rows": 22754,
+          "coverage_complete": true,
+          "missing_rows": 0
+        },
+        "support_knn/k_4": {
+          "rows": 22754,
+          "entities": 247,
+          "expected_rows": 22754,
+          "coverage_complete": true,
+          "missing_rows": 0
+        },
+        "support_linear/support_linear": {
+          "rows": 22754,
+          "entities": 247,
+          "expected_rows": 22754,
+          "coverage_complete": true,
+          "missing_rows": 0
+        },
+        "support_nearest/support_nearest": {
+          "rows": 22754,
+          "entities": 247,
+          "expected_rows": 22754,
+          "coverage_complete": true,
+          "missing_rows": 0
+        },
+        "support_pchip/support_pchip": {
+          "rows": 22754,
+          "entities": 247,
+          "expected_rows": 22754,
+          "coverage_complete": true,
+          "missing_rows": 0
+        }
+      }
+    }
+  },
+  "zero_perturbation": {
+    "rows": 26428,
+    "prediction_max_abs_difference": 0.0,
+    "coefficient_max_abs_difference": 0.0,
+    "query_targets_used_for_fit": false,
+    "query_targets_used_for_development_selection": true
+  },
+  "paired_selected_expression_vs_pchip": [
+    {
+      "regime": "spread",
+      "expression_candidate_id": "shomate5__lambda_0",
+      "paired_entities": 247,
+      "expression_wins": 38,
+      "ties": 0,
+      "pchip_wins": 209,
+      "expression_win_fraction": 0.15384615384615385,
+      "median_expression_minus_pchip_nrmse": 0.011248663627963246,
+      "mean_expression_minus_pchip_nrmse": 0.027684785112509585,
+      "coverage_failure": 0
+    },
+    {
+      "regime": "prefix",
+      "expression_candidate_id": "shomate5__lambda_0",
+      "paired_entities": 246,
+      "expression_wins": 10,
+      "ties": 0,
+      "pchip_wins": 236,
+      "expression_win_fraction": 0.04065040650406504,
+      "median_expression_minus_pchip_nrmse": 32.73839630198627,
+      "mean_expression_minus_pchip_nrmse": 458.27080435930077,
+      "coverage_failure": 1
+    },
+    {
+      "regime": "four_support",
+      "expression_candidate_id": "shomate5__lambda_0",
+      "paired_entities": 0,
+      "expression_wins": 0,
+      "ties": 0,
+      "pchip_wins": 0,
+      "expression_win_fraction": NaN,
+      "median_expression_minus_pchip_nrmse": NaN,
+      "mean_expression_minus_pchip_nrmse": NaN,
+      "coverage_failure": 247
+    }
+  ],
+  "bootstrap": {
+    "seed": 20260829,
+    "draws": 10000,
+    "selected_expression_candidate_id": "shomate5__lambda_0",
+    "entity_units": 247,
+    "doi_units": 159,
+    "entity_bootstrap": {
+      "expression_r2": {
+        "valid_draws": 10000,
+        "invalid_draws": 0,
+        "q025": 0.5434807973437448,
+        "q50": 0.649407351720638,
+        "q975": 0.9994945131794529
+      },
+      "pchip_r2": {
+        "valid_draws": 10000,
+        "invalid_draws": 0,
+        "q025": 0.8422645335096819,
+        "q50": 0.9613938103634352,
+        "q975": 0.9999406305959705
+      },
+      "r2_difference_expression_minus_pchip": {
+        "valid_draws": 10000,
+        "invalid_draws": 0,
+        "q025": -0.42399594578597644,
+        "q50": -0.31386791733846686,
+        "q975": -0.0001562920164181057
+      }
+    },
+    "doi_bootstrap": {
+      "expression_r2": {
+        "valid_draws": 10000,
+        "invalid_draws": 0,
+        "q025": 0.5268183136468759,
+        "q50": 0.6473914775398363,
+        "q975": 0.999487562669103
+      },
+      "pchip_r2": {
+        "valid_draws": 10000,
+        "invalid_draws": 0,
+        "q025": 0.8160581600479786,
+        "q50": 0.9611097265170809,
+        "q975": 0.9999369265874838
+      },
+      "r2_difference_expression_minus_pchip": {
+        "valid_draws": 10000,
+        "invalid_draws": 0,
+        "q025": -0.43752546252139707,
+        "q50": -0.31303735752295847,
+        "q975": -0.00019538594526856428
+      }
+    }
+  },
+  "four_support_selected_expression_coverage_failure": "selected shomate5__lambda_0 has 0/22754 valid query rows; no value was imputed",
+  "no_confirmation_access": true,
+  "runtime_seconds": 27.449960689991713
+}

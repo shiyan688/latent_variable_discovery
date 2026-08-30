@@ -1,0 +1,28 @@
+{
+  "gn_omp_certificates": {
+    "failed_cell_ids": [
+      {
+        "family": "thermodynamic_chart",
+        "seed": 1,
+        "support_regime": "four_support"
+      },
+      {
+        "family": "thermodynamic_chart",
+        "seed": 1,
+        "support_regime": "standard_11"
+      }
+    ],
+    "failed_regime_cells": 2,
+    "total_regime_cells": 30
+  },
+  "scope": "GIRD nested-selection and OMP-certificate evidence",
+  "selection_protocol": {
+    "fold_count": 5,
+    "fpca_rank_ridge_uses_same_outer_training_folds": true,
+    "lambda_rule": "smallest_finite_value_within_1_percent_of_best_median_score",
+    "outer_training_fold_assignment": "entity_id_modulo_5",
+    "seed_aggregation": "pointwise_median_prediction_over_5_seeds_before_metrics"
+  },
+  "source_analyzer_sha256": "35427ce65a318bfd65936dbea9988687e2487997859322392e046d408a2748a5",
+  "source_runner_sha256": "e6559560679583d7725c69cb35a3a2d6619f26f3ef0060fb98ea77a3017b51df"
+}

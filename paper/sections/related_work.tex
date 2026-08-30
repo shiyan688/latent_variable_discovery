@@ -1,0 +1,65 @@
+\section{Related Work}
+\label{sec:related-work}
+
+% ROLE: support-conditioned function representation.
+\paragraph{Few-shot function representations.}
+Conditional Neural Processes encode a context set to predict targets of a new
+function, while MetaFun performs iterative functional updates and function
+contrastive learning optimizes transferable function-level representations
+\citep{garnelo2018conditional,xu2020metafun,gondal2021function}.  MetaSDF and
+Functa learn shared priors over implicit functions or compact modulations and
+adapt instance-specific representations from observations; Functa also
+demonstrates MAP completion from partial observations
+\citep{sitzmann2020metasdf,dupont2022functa}.  These methods establish that
+support-conditioned function prediction, low-dimensional task variables, and
+test-time adaptation are not new.  Our question begins where their predictive
+objective ends: if a task representation will enter a scientific equation,
+which response-derived coordinate is invariant enough to name?  We therefore
+evaluate CNP and functional baselines directly and interpret coefficients of a
+declared physical response basis rather than an unconstrained context vector.
+
+% ROLE: identifiability and canonicalization boundary.
+\paragraph{Latent identifiability and invariant structure.}
+Unsupervised disentanglement is generally non-identifiable without inductive
+bias, although conditional nonlinear-ICA models identify latent sources up to
+specified equivalence classes under explicit auxiliary-variable and generative assumptions
+\citep{locatello2019challenging,khemakhem2020variational}.  Recent work shifts
+attention from individual latent variables to invariant metric structures, and
+canonicalization provides a broader framework for constructing invariant or
+equivariant representations
+\citep{syrota2025metric,ma2024canonicalization}.  Canonicalization can itself be
+discontinuous for common group actions, motivating weighted frames and careful
+scope statements \citep{dym2024equivariant}.  We neither claim generic
+canonicalization nor recovery of true sources.  Our narrower object is the
+equivalence class induced by agreement on declared physical probes; its fixed
+linear projection is continuous in the probe response, whereas the independent
+support optimizer retains explicit affine, rank, and conditioning assumptions.
+
+% ROLE: scientific equation discovery boundary.
+\paragraph{Learned coordinates and symbolic equations.}
+SINDy autoencoders jointly learn nonlinear coordinates and sparse governing
+dynamics, and neural-to-symbolic extraction recovers compact relations from
+structured learned components
+\citep{champion2019data,cranmer2020discovering}.  Parametric equation models
+share symbolic structure while coefficients vary across parameterized
+instances, and UPINNs
+convert neural representations of unknown differential-equation terms into
+symbolic expressions from sparse observations
+\citep{zhang2022parametric,podina2023universal}.  LaSR uses an LLM-induced
+library of abstract textual concepts to guide evolutionary symbolic regression
+and improve benchmark performance \citep{grayeli2024lasr}.  Accordingly, neither
+symbolic regression, fixed basis projection, nor shared equations with varying
+coefficients is our novelty.  Our distinction is the audited interface around
+them: exact prediction-preserving chart intervention, support-only coefficients
+for unseen entities, response-space rank diagnostics, and single-use temporal
+expression evaluation with interpolation baselines and entity tails.
+
+% ROLE: positioning summary.
+Together, these lines imply a deliberately bounded contribution.  We combine a
+support-conditioned learned response, a basis-relative invariant explanatory
+object, and sealed symbolic transfer; we do not assert that latent variables are
+always unidentifiable, that our basis is a unique natural coordinate system, or
+that a neural prior must improve prediction.  On the Crystal development
+registry the frozen GIRD incremental gates do not pass, so we retain it as a
+controlled diagnostic of when support and decoder information disagree rather
+than presenting it as an improved predictor.

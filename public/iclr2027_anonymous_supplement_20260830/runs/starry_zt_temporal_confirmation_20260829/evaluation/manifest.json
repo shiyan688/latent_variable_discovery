@@ -1,0 +1,19 @@
+{
+  "plan_sha256": "9b3943b7d5662f01d9cafd023fecb73b5346de272f349df77841ee1f57648817",
+  "evaluator_sha256": "d1773e314598149d0603011236dbb7bfe28d5c695b38a52915dfff2d7b6055a8",
+  "selection_manifest_sha256": "91f920e27bf41d9d5caa1aff6010261fa3e3a6ed5c14b93f90ea6eab63fdde9c",
+  "selection_decision_sha256": "184319c401e3d97e0433e418d238ef96343abf1dba01d765a17210702d7ef709",
+  "selection_table_sha256": "899749c3289d39209d01c86b2badd7310f889520b4f64fd0ee8086788f980d0a",
+  "latest_curves_sha256": "b82fd98e8595b4c4712e3e21fe992320131826913bfd333c82011c921d9cb16a",
+  "development_train_sha256": "31b899bd1e5e4c3c762af15de537b439296901096b57306417f3a466ddf7abfc",
+  "development_test_sha256": "f56b6e8a7da79aeebd91953758296cf894ec79b71f154ae9c91a7512723e5ce3",
+  "files": {
+    "consumption_receipt.json": "40b4ef53aa22556a651911247200eb07b4727de6f7ca7906b9fd474887057bde",
+    "confirmation_data_used.csv": "5ae133f28a5cf1c9bfacdc9168bd0f07518cdb269a8643b99f2f401f13633d23",
+    "interpretable_q.csv": "380e3822784767362e6daebb822549e62aea1f50fa5888d208653cd202b131bb",
+    "query_predictions.csv": "888f0156dcac18dc07beee5ab1dc4092d1892149e081bed1740e90ae69d62962",
+    "family_summary.csv": "d7bd8efe1a990533d3d79756a0707629c5015b8edcf332ae169bdaab3dd62adc",
+    "per_entity_metrics.csv": "1db1261bf434c4be7049128c59509e27f06a932a386078e5440d026cf6333799",
+    "decision.json": "8c28f1513a58ffff6a34128372549258df348d62a57fc351f35ffb994e27e42d"
+  }
+}

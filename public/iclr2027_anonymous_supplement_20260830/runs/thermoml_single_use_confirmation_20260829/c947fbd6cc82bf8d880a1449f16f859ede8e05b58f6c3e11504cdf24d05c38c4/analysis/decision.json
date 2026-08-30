@@ -1,0 +1,140 @@
+{
+  "scope": "single-use 84-compound/45-DOI ThermoML temporal confirmation",
+  "formula": "ln(P/1 kPa)=q0+q1*(1/T-1/T_ref)+q2*ln(T/T_ref)",
+  "temperature_reference_k": 362.72,
+  "entities": 84,
+  "dois": 45,
+  "query_rows": 1745,
+  "expression_gates": {
+    "pooled_physical_r2_at_least_0_85": true,
+    "finite_positive_predictions": true,
+    "exact_query_target_invariance": true,
+    "stagewise_thermodynamic_interpretation_frozen": true
+  },
+  "expression_temporal_confirmation_passed": true,
+  "selected_expression_pooled_physical_r2": 0.9995806913959855,
+  "selected_expression_pooled_log_r2": 0.9999682724882966,
+  "selected_expression_entity_bootstrap_physical_r2_95_interval": [
+    0.9988799795026485,
+    0.9999828886161073
+  ],
+  "selected_expression_doi_bootstrap_physical_r2_95_interval": [
+    0.9985623044914905,
+    0.9999838505993093
+  ],
+  "selected_expression_median_entity_physical_r2": 0.999599712228225,
+  "selected_expression_fraction_entities_physical_r2_at_least_0_85": 0.9880952380952381,
+  "selected_expression_maximum_entity_physical_nrmse": 0.43588083997261573,
+  "selected_expression_beats_pchip_entity_fraction": 0.44047619047619047,
+  "selected_vs_pchip_paired_wilcoxon_p": 0.7515136078459091,
+  "maximum_selected_to_pchip_entity_nrmse_ratio": 37.72043721605393,
+  "neural_development_bridge_passed": false,
+  "neural_confirmation_claim_eligible": false,
+  "external_neural_gates": {
+    "functional_physical_r2_at_least_0_85": true,
+    "minimum_physical_projection_fidelity_at_least_0_95": true,
+    "functional_geometry_more_stable_than_raw": false,
+    "exact_query_target_invariance": true
+  },
+  "external_neural_diagnostics_passed": false,
+  "neural_bridge_temporal_confirmation_passed": false,
+  "minimum_decoder_physical_projection_fidelity_r2": 0.9566778733970682,
+  "median_raw_q_distance_geometry_spearman": 0.9074399848883322,
+  "median_functional_q_distance_geometry_spearman": 0.455970599856053,
+  "query_target_input_max_difference": 0.0,
+  "predictive_superiority_inferred": false,
+  "single_use_consumed": true,
+  "refit_or_post_confirmation_selection_performed": false,
+  "family_summary": [
+    {
+      "family": "support_pchip_log",
+      "pooled_physical_r2": 0.9999368090060105,
+      "pooled_log_r2": 0.9999355048749141,
+      "median_entity_physical_r2": 0.9996246629315574,
+      "fraction_entities_physical_r2_at_least_0_85": 0.9761904761904762,
+      "median_entity_physical_nrmse": 0.019371202180966444,
+      "maximum_entity_physical_nrmse": 0.4838748204633007
+    },
+    {
+      "family": "support_linear_log",
+      "pooled_physical_r2": 0.9998608932487022,
+      "pooled_log_r2": 0.9999183095522882,
+      "median_entity_physical_r2": 0.9994691083750582,
+      "fraction_entities_physical_r2_at_least_0_85": 0.9523809523809523,
+      "median_entity_physical_nrmse": 0.023040543989477316,
+      "maximum_entity_physical_nrmse": 1.2871264215667269
+    },
+    {
+      "family": "structure_v_log",
+      "pooled_physical_r2": 0.9995806913959855,
+      "pooled_log_r2": 0.9999682724882966,
+      "median_entity_physical_r2": 0.999599712228225,
+      "fraction_entities_physical_r2_at_least_0_85": 0.9880952380952381,
+      "median_entity_physical_nrmse": 0.020006874553872768,
+      "maximum_entity_physical_nrmse": 0.43588083997261573
+    },
+    {
+      "family": "support_antoine",
+      "pooled_physical_r2": 0.9995803294609297,
+      "pooled_log_r2": 0.999973686479023,
+      "median_entity_physical_r2": 0.9996896440472147,
+      "fraction_entities_physical_r2_at_least_0_85": 1.0,
+      "median_entity_physical_nrmse": 0.017590775608307914,
+      "maximum_entity_physical_nrmse": 0.20185660252534807
+    },
+    {
+      "family": "raw_decoder",
+      "pooled_physical_r2": 0.992615581326088,
+      "pooled_log_r2": 0.9986107875789733,
+      "median_entity_physical_r2": 0.990401261055096,
+      "fraction_entities_physical_r2_at_least_0_85": 0.9761904761904762,
+      "median_entity_physical_nrmse": 0.09797158733562542,
+      "maximum_entity_physical_nrmse": 16.96313373897925
+    },
+    {
+      "family": "functional_v_log",
+      "pooled_physical_r2": 0.990389912504702,
+      "pooled_log_r2": 0.9986228039431413,
+      "median_entity_physical_r2": 0.9888169408892794,
+      "fraction_entities_physical_r2_at_least_0_85": 0.9761904761904762,
+      "median_entity_physical_nrmse": 0.10568170418863393,
+      "maximum_entity_physical_nrmse": 16.92478845273644
+    },
+    {
+      "family": "support_nearest_log",
+      "pooled_physical_r2": 0.9903353693097979,
+      "pooled_log_r2": 0.9960322918424269,
+      "median_entity_physical_r2": 0.9117903422318502,
+      "fraction_entities_physical_r2_at_least_0_85": 0.7023809523809523,
+      "median_entity_physical_nrmse": 0.2969996915070787,
+      "maximum_entity_physical_nrmse": 0.8922162703214105
+    },
+    {
+      "family": "raw_q_ridge_expression",
+      "pooled_physical_r2": 0.3044923988955639,
+      "pooled_log_r2": 0.8534618429801751,
+      "median_entity_physical_r2": -0.34721718172249894,
+      "fraction_entities_physical_r2_at_least_0_85": 0.14285714285714285,
+      "median_entity_physical_nrmse": 1.1604808802195108,
+      "maximum_entity_physical_nrmse": 1459.8034666509864
+    },
+    {
+      "family": "no_q_global_selected_formula",
+      "pooled_physical_r2": -0.080490301776182,
+      "pooled_log_r2": -0.17200987884693442,
+      "median_entity_physical_r2": -2.197657519008935,
+      "fraction_entities_physical_r2_at_least_0_85": 0.0,
+      "median_entity_physical_nrmse": 1.7881870287012194,
+      "maximum_entity_physical_nrmse": 1362570455.5550258
+    },
+    {
+      "family": "no_q_mlp",
+      "pooled_physical_r2": -106007741131832.3,
+      "pooled_log_r2": -0.5606108079687511,
+      "median_entity_physical_r2": -1.9507104990931325,
+      "fraction_entities_physical_r2_at_least_0_85": 0.0,
+      "median_entity_physical_nrmse": 1.717561894110648,
+      "maximum_entity_physical_nrmse": 650301127169.5116
+    }
+  ]
+}

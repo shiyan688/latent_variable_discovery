@@ -1,10 +1,10 @@
 ---
 document_type: agent_handoff_memory
 project: latent_variable_search
-last_updated: 2026-08-29 00:28 CST
+last_updated: 2026-08-30 10:26 CST
 current_branch: research/latent-q-stagec-20260826
 base_commit: 2b13869
-live_status_source: runs/nasa_meta_selected_q_prior_20260826/status.json
+live_status_source: runs/thermoml_crystal_cp_neural_gird_development_20260829/launcher_status.json
 ---
 
 # Agent memory: latent-variable search
@@ -1515,3 +1515,1271 @@ The strict result remains FAIL because nine entities still exceed the frozen ten
 A fresh read-only Luna reviewer estimated only `20%` probability (range `15%--30%`) of the current package entering ICLR's top half. Its strongest rejection is that the independently confirmed Starry equation is support structure re-q rather than a formula automatically transferred from learned raw q; direct raw-q reading fails, the neural bridge still has 9/80 strict tail failures, and prediction superiority over kNN is not significant. The correct defense is not to dispute these facts: keep the expression-existence endpoint separate, present gauge failure and canonicalization as the method insight, disclose tails/baselines, and avoid SOTA or true-law language.
 
 The reviewer suggested a secondary scale-aware neural-bridge audit on the already consumed 30-material temporal cohort. This suggestion is explicitly rejected because the consumption receipt and both bridge plans forbid reopening those targets. The only valid stronger confirmation requires a genuinely new target-blind cohort with the complete decoder/calibration/projection package frozen first. Without such data, the correct paper action is to use the honest spine recorded in `ICLR_FRESH_REVIEW_AUDIT_20260829.md` and treat the neural bridge as supportive development evidence. The active top-50 goal is therefore not complete.
+
+## 88. Independent ThermoML expression development passes; confirmation remains sealed (2026-08-29 03:10 CST)
+
+The independent-domain follow-up uses the official NIST ThermoML 2020 archive and pure-substance liquid vapor-pressure curves. A target-blind audit initially selected 373 development and 116 temporal-confirmation compounds, but development materialization correctly failed before writing data because 101 selected development tables contained duplicate temperatures. No duplicate pressure was averaged or silently removed. A target-blind protocol correction now retains only tables with `rows == unique_temperatures`; the invalid first cohort seal is preserved at `runs/thermoml_vapor_pressure_cohorts_20260829_invalid_duplicate_temperature_protocol/`. The corrected cohort has 282 development compounds/142 DOI/9,794 rows and 84 temporal-confirmation compounds/45 DOI/2,372 rows, with zero InChIKey and DOI overlap. Confirmation JSON targets have not been opened.
+
+The corrected plan SHA-256 is `8793f712b6a32aa514906ffb13ae7169d0de8556f9bda342b1202d94b0bb2deb`; cohort selection-manifest SHA-256 is `ed866c015e4017532a31251f62ff57ee26311f78232acbc729ec7ae91d8525c4`; development data SHA-256 is `9ebc8ea5a8b870cb98cc829c1700d4ebdad806c043014a0a5051ada8629411b6`. The materialized development data contain 2,554 support and 7,240 strict query rows, all positive, spanning `5.13e-15` to `8932.1` kPa. A pre-result amendment, SHA-256 `18e15a3bad4e5fc00464e1c4829062bbc5e7fed477d96781d1629b6884526faf`, records the user's durable expression criterion: stage-wise scientific interpretation plus strict unseen-entity pooled physical R² at least 0.85, finite positive predictions, and exact zero query-target leakage. Original-q recovery, a unique true law, prediction superiority, log-R², per-entity fraction, bootstrap, and PCHIP tail ratios are separate stronger evidence or diagnostics.
+
+The frozen DOI-grouped five-fold structure loop selected
+`ln(P/1 kPa)=q0+q1*(1/T-1/T_ref)+q2*ln(T/T_ref)`. The main term is Clausius--Clapeyron; `q0` is reference log pressure, `-R*q1` is an effective vaporization-enthalpy scale, and the logarithmic-temperature term is a stage-wise integrated heat-capacity/temperature-dependent-enthalpy correction. On all 7,240 development queries it reaches physical pooled R² `0.9998666486`, log pooled R² `0.9999766070`, median entity physical R² `0.9998779623`, and 282/282 entities at R² at least 0.85. Entity-bootstrap physical R² is `[0.9997200908,0.9999383972]`; DOI-cluster bootstrap is `[0.9996869835,0.9999598639]`; query-target perturbation changes support coefficients/predictions by exactly zero. The development expression endpoint passes. Authoritative decision/manifest SHA-256 are `928ee5bc4f21c156a00a49737dca0729b8e9a52f7fb23a165a870b7727adaa26` and `88a17aa99a58a9c265b6b6cace7fbd89e94f1544853e2f5b4669c07b36cd2485`.
+
+Strong same-support baselines are now complete except the condition-only no-q MLP. Physical pooled R² values are selected expression `0.9998666486`, support Antoine `0.9998448263`, support PCHIP `0.9998136925`, support linear log-P `0.9996213216`, support nearest `0.9801594990`, and no-q global selected formula `-0.0985381654`. PCHIP has slightly lower median entity NRMSE (`0.0090324` versus expression `0.0110470`), while the expression passes entity R² 0.85 for 282/282 versus PCHIP 280/282 and has a much lower maximum entity NRMSE (`0.2711` versus `1.5794`). The expression beats PCHIP on 52.84% of entities. The legacy maximum expression/PCHIP NRMSE ratio is `141.49`, failing its old 10x diagnostic because several PCHIP denominators are nearly zero; the worst-ratio expression entity itself has NRMSE only `0.0153`. Do not mislabel this denominator pathology as an expression catastrophic tail, and do not infer broad predictive superiority. Baseline result/manifest SHA-256 are `d6ac603aaee7b66d6e63734586ce83e6b646537f13821b6c39ebaee994af0524` and `8bc59c2a666a5f3015a12c2948780bc37ccbfece6da3e3552c6f096e0e2218c4`.
+
+Next boundary: do not open the 84 temporal-confirmation targets yet. First freeze the all-development reference temperature, selected expression, support fitting, complete baseline/no-q MLP behavior, and ThermoML neural-to-equation decoder/calibration/projection package. Only then create a single-use confirmation receipt and evaluate the unchanged package once. The current `.venv` was minimally populated with NumPy/Pandas/SciPy using repository-local `runs/_runtime_cache/uv`; the earlier full `uv sync --extra experiments` was interrupted during the large Torch wheel and installed nothing.
+
+## 89. ThermoML neural bridge formal development chain active on CPU (2026-08-29 03:18 CST)
+
+The operational supplement `THERMOML_NEURAL_BRIDGE_EXECUTION_PLAN_20260829.md` was frozen at SHA-256 `19265c4bc28ff7dba3f2a019af488b2db9c7b80fdbd3172607ed4c07f48611cb` before neural development results. It fixes log-pressure training/projection, 41 physical-range probes, physical projection-fidelity scoring, training-entity LOOCV raw-q ridge selection, exact support calibration, artifacts, and the rule that formal cells cannot mix CPU and CUDA. Formal runner SHA-256 is `e0374be1c4e271de8938f17e65ba05673cf34d018b2f99ea721fd6b71aa222bf`; four-worker launcher SHA-256 is `5860e20c30b25a1f88c233bf0e95202e33b64a42f83d3bccf690db22a0d77ec4`.
+
+A non-counted fold0/seed0 two-epoch CPU smoke completed with exact zero query-target input difference, 1,450 query rows, structure re-q physical R² `0.9999720`, raw decoder `0.08051`, functional selected-expression projection `0.08040`, and minimum/median physical decoder projection fidelity `0.8091/0.9710`. The low two-epoch neural score is only a wiring check and must not be quoted as scientific evidence. Smoke manifest/summary SHA-256 are `6d3d041743c8d5068a3870da308ad375a65f2fa019af46f910579b3d3059b180` and `c4815e431ac5466c71bfbce46bdb892a3d4d6d4320d5aa3a327516c68aaf36de`.
+
+The container still cannot communicate with the NVIDIA driver (`torch.cuda.is_available=false`, zero devices), so formal execution is uniformly CPU, not VRAM-capped. Tmux `thermoml_vp_bridge_20260829` runs 15 cells (5 DOI folds x 3 seeds), 1,000 epochs, four deterministic 1,200-step support-calibration starts, four workers x four Torch threads. At this timestamp fold0 seeds0--2 and fold1 seed0 have `manifest.running.json`; 0/15 are terminal and the launcher reports no failure. Authoritative live status is `runs/thermoml_vapor_pressure_neural_bridge_20260829/launcher_status.json`; logs/caches/checkpoints are repository-local. The 84-compound temporal confirmation remains sealed and unopened.
+
+## 90. Matched ThermoML no-q baseline active; aggregate validators frozen (2026-08-29 03:27 CST)
+
+`THERMOML_NO_Q_MLP_PLAN_20260829.md` is frozen at SHA-256 `9a5ba993425ffb9cabe2e4156cd12a3d4ee3ff37c0812f78e7b21e5a86fd0edf`. It uses the identical DOI folds/seeds, temperature-only explicit input, log-pressure target, `(256,128)` network, Adam `1e-3`, 1,000 epochs, batch 256, and per-minibatch label-balanced MSE. It sees neither entity ID/q nor heldout support/targets. Formal runner SHA-256 is `cebe5b206975e991922dc33619f4900fdce9096abebbb10449ec1dd92d9058ea`; launcher SHA-256 is `77911e7bff98843971fd16205de0c076bcd5698f5771c3eef84fb7ede1a60c67`.
+
+A non-counted two-epoch fold0/seed0 no-q smoke passed with exact input-only query-target invariance, 1,450 queries, physical R² `-0.07104`, log R² `0.00496`, and 0.60 s training. These scores are wiring-only. Smoke manifest/summary SHA-256 are `7566b14206c14017a8c54aff57a1abb769b471af6831fd385dac6f33f491078d` and `a76d80c69112c97eef6d55000408c55867ce46c4b682da7a66b0b3bc2fb11dfc`. Tmux `thermoml_noq_20260829` now runs four CPU cells concurrently; 0/15 are terminal, 0 failed, 11 pending at this timestamp. Live status is `runs/thermoml_no_q_mlp_development_20260829/launcher_status.json`.
+
+The independent neural and no-q aggregate analyzers are frozen and compile-clean at SHA-256 `f6a86fdaaef286e4f7d748915b9cf4d2fcfbc9647548ba01217411547e7c9719` and `e56b05066e1c8f783219a4d9649a800c001a24410679f7e2fc57cc8ef2b6886c`. The neural analyzer verifies every cell/artifact hash, uniform device and three-seed coverage, exact reproduction of the already sealed structure re-q predictions, physical/log metrics with entity and DOI bootstrap, decoder projection fidelity, raw-vs-functional cross-seed distance geometry, and leakage. It cannot run until all 15 cells are terminal. The no-q analyzer similarly requires all 15 matched cells and exact heldout-boundary evidence. The aborted `uv sync` byproducts `latent_variable_discovery.egg-info/` and untracked `uv.lock` were confirmed as newly generated environment artifacts and removed; no pre-existing worktree change was cleaned.
+
+## 91. ThermoML physical q is support-stable, with explicit collinearity boundary (2026-08-29 03:34 CST)
+
+The diagnostic plan `THERMOML_Q_STABILITY_PLAN_20260829.md` was frozen before offset results at SHA-256 `b99d58d317667be7a9bf27bb3ad5264ca380625066729f400bf649bcada2200a`. It keeps the selected `v_log` expression and DOI-fold reference temperatures fixed, then fits offsets 0--3 separately. Pooled physical R² remains `0.99986665/0.99985821/0.99979710/0.99985493`; pooled log R² remains `0.99997661/0.99992770/0.99992453/0.99991362`. No confirmation target was opened.
+
+Across all six offset pairs, median/minimum three-coordinate physical-q distance Spearman is `0.89054/0.85462`. Named-coordinate median Spearman is `0.99905` for reference log pressure, `0.97619` for effective reference vaporization enthalpy `R(q2*T_ref-q1)`, and `0.79736` for effective heat-capacity correction `R*q2`. Offset-0 q distance has Spearman `0.56476` with normalized 41-point empirical log-pressure response-curve distance. Effective vaporization enthalpy median and 5--95% range are `56.23` and `23.12--128.74 kJ/mol`; effective heat-capacity correction is `-58.08` and `-224.55--12.53 J/(mol K)`.
+
+The scaled design condition number is nontrivial: median `134.99`, 95th percentile `917.23`, maximum `6417.15`. Therefore the durable scientific claim is that reference pressure and effective enthalpy are highly stable response coordinates and the heat-capacity term is a weaker but reproducible curvature correction. Do not treat every entity's q2 as a precise calorimetric measurement or ignore local `1/T` versus `ln T` collinearity. Result/manifest SHA-256 are `4cc10db7d988f400f93574ff9a514dd05ed28f5c5c2b06b1dac08bd4caaaccb9` and `09b708dadded230ed9a6673a8f98ec7988ddf0bab7436962c01bcd2ebbdd4241`; analyzer SHA-256 is `2e84960b2e175bec31fb968cb8bacb3e3251ce35103954fab920f550c585ef11`.
+
+## 92. Matched ThermoML no-q MLP terminal: support-derived state is essential (2026-08-29 03:43 CST)
+
+The matched no-q chain reached 15/15 terminal success with 0 failures. Every cell used the identical DOI fold, 1,000 epochs, `(256,128)` widths, batch 256, Adam `1e-3`, label-balanced log-pressure MSE, and CPU device; every manifest states that heldout support values and heldout targets were unused. Three-seed pointwise median physical pooled R² is `-0.0992534`, log pooled R² `0.0150536`, median entity physical R² `-3.00575`, median/max entity NRMSE `2.00142/1145.62`, and only 1/282 entities reaches R² at least 0.85. Entity-bootstrap physical R² is `[-0.127666,-0.076710]`; DOI-cluster bootstrap is `[-0.142172,-0.069640]`; query-target input difference is exactly zero.
+
+This closes a fairness concern: the selected support expression's `0.9998666` is not reproduced by a same-architecture, same-epoch temperature-only network. Entity-specific support contributes indispensable reference-pressure, effective-enthalpy, and curvature information. Do not infer that the expression is universally prediction-optimal; PCHIP and Antoine remain the relevant support-aware comparators. Authoritative no-q decision/manifest SHA-256 are `35a237cb60747207a1056449317ed4a34cb0a7da25a986a30086420b6ac89fe4` and `73a6a7bdbcff59802596c634f19b0807d5fc3f7a67a3a3767ac71a770e5c5d57`.
+
+## 93. New pytest scratch migrated from `/tmp`; repo-local test temp enforced (2026-08-29 03:52 CST)
+
+A fresh audit found no new project experiment, dataset, model, plot, log, or cache payload under `/tmp`. The only clearly attributable new material was 24 small pytest fixture files under `/tmp/pytest-of-wangyg` (96 KiB before migration), created by the MATR Batch2 analyzer tests after the earlier migration. With no pytest process active, the complete fixture root was moved recoverably to `runs/_tmp_archive_20260829/pytest-of-wangyg`; the source path is absent and the archived root contains all 24 files.
+
+Future pytest-owned temporary paths are now fixed by `pyproject.toml` to `runs/_runtime_cache/pytest`. The one explicit `tempfile.TemporaryDirectory` test also uses that repository-local parent. The targeted protocol/metrics suite passed 15/15 under repository-local pytest, Python, Matplotlib, and XDG caches, and `/tmp/pytest-of-wangyg` did not reappear. The empty legacy Claude task directory, active Codex synthetic mount points, IPC sockets, general user caches, and unrelated projects were not moved. Durable rule remains unchanged: project outputs and fixtures go under `runs/`, external datasets under `data/external/`, and caches under `runs/_runtime_cache/`; never place project material in `/tmp`.
+
+## 94. ThermoML single-use temporal confirmation passes the expression endpoint (2026-08-29 04:23 CST)
+
+The 15-cell ThermoML neural development bridge and all three all-development seeds reached terminal success before confirmation was opened. Development decoder-functional `v_log` projection has physical pooled R² `0.9911733`, raw decoder `0.9905813`, direct raw-q ridge expression `0.2204505`, and support structure re-q `0.9998666`. Functional median entity R² is `0.993419` and 96.8% of entities reach 0.85, but the frozen full neural bridge fails: minimum decoder physical projection fidelity is `-0.283982`, functional/raw distance-geometry stability is `0.610664/0.783578`, functional wins only 2/15 seed pairs, and maximum functional/structure NRMSE ratio is `2704.995`. The neural decision/manifest SHA-256 are `de2f4106f9815c7f87a622cc63972b2316d382f82cb909658910a5f60be7ffff` and `f0162c97e999921596ae690677a29ea13a19a8485d7b727706050625be7b09b3`. Do not claim a complete neural-to-canonical bridge.
+
+The all-development package was sealed before target access. Its package-seal SHA-256 is `c947fbd6cc82bf8d880a1449f16f859ede8e05b58f6c3e11504cdf24d05c38c4`; it records development expression pass, neural development bridge fail, neural confirmation ineligibility, and authorization for exactly one expression confirmation. The unique output root is derived from that seal under `runs/thermoml_single_use_confirmation_20260829/c947fbd6.../`. At 04:06 CST the evaluator atomically wrote the `started_and_consumed` receipt, then opened exactly 84 2015--2019 compounds/45 DOI/2,372 rows. It completed normally with 627 support and 1,745 query rows, zero refit or post-confirmation selection, exact equality under +1,000,000 query-target perturbation, and `query_target_input_max_difference=0.0`. The use is consumed forever; do not retry or reopen it. Receipt/output-manifest SHA-256 are `5dc6600a3eb658d8458922a6ec235c0d65ccd68f0b87d0f12829316df31a0d2c` and `e950abed883cc892b04feb3e069b1d17d9ccdc581b24886050d444ab4e491cb1`.
+
+The independent frozen analyzer verifies and passes the user's primary endpoint for
+`ln(P/1 kPa)=q0+q1*(1/T-1/T_ref)+q2*ln(T/T_ref)`, with `T_ref=362.72 K`. Structure re-q physical pooled R² is `0.9995806914`, log pooled R² `0.9999682725`, median entity physical R² `0.9995997122`, 83/84 entities reach 0.85, and maximum entity NRMSE is `0.435881`. Entity-bootstrap physical R² is `[0.998879980,0.999982889]`; DOI-cluster bootstrap is `[0.998562304,0.999983851]`; predictions are finite/positive and leakage is exactly zero. Therefore `expression_temporal_confirmation_passed=true`. This satisfies the durable user criterion: a stage-wise scientifically suggestive expression with strict unseen-entity physical pooled R² at least 0.85; it need not recover the original raw q, a unique true law, or a preselected microscopic variable.
+
+All confirmation methods must remain visible. Physical pooled R²: PCHIP `0.9999368090`, linear interpolation `0.9998608932`, structure expression `0.9995806914`, Antoine `0.9995803295`, raw decoder `0.9926155813`, functional expression `0.9903899125`, nearest `0.9903353693`, raw-q ridge expression `0.3044923989`, no-q global formula `-0.0804903`, and matched no-q MLP `-1.0600774e14`. The expression beats PCHIP on 44.05% of entities and paired Wilcoxon `p=0.7515`; PCHIP has higher pooled physical R² and Antoine lower median/worst NRMSE. Thus predictive superiority is false and must not be inferred. The external neural diagnostics also fail because functional geometry `0.455971` is below raw `0.907440`, despite functional pooled R² `0.990390` and minimum projection fidelity `0.956678`; neural temporal confirmation is not claim-eligible. The durable conclusion is response/function canonicalization or support-only structure re-q, not direct raw-q interpretation or prediction SOTA. Decision/analysis-manifest SHA-256 are `ad29813692139fbcf17e629d2cf4f79d99c2d1052c62950a4873cab82649c605` and `a8623747aa7a0e2508b069fc56cd586c373484e57834b14bb0a88a7a85f415b7`.
+
+## 95. Post-ThermoML fresh ICLR audit: expression solved, method novelty still blocks top-half confidence (2026-08-29 04:36 CST)
+
+A new read-only Luna reviewer, instructed to ignore the previous audit and inspect the updated ThermoML raw decision, still assigns only `20%` probability (subjective interval `15%--30%`) that the current package reaches the top half of ICLR submissions. It estimates ThermoML increased that probability by only `3--5` points because the independent domain, 84 compounds, 45 DOI, temporal split, bootstrap, and zero-leakage receipt make expression existence highly credible, but do not close the learned-method contribution. The strongest rejection is that the confirmed endpoint is support structure re-q rather than learned raw-q-to-equation recovery; PCHIP/Antoine remain equally or more predictive; and the full neural bridge fails. This audit is archived in `ICLR_POST_THERMOML_AUDIT_20260829.md`.
+
+The top-50 goal remains active even though the user's mandatory interpretable-expression goal is now genuinely achieved. Do not spend the next cycle merely accumulating another similar high-R² curve fit. The highest-value route is to formalize decoder-response canonicalization as a gauge-invariant method with an explicit theorem/stability bound and a controlled gauge intervention benchmark showing that prediction-equivalent raw q coordinates change while fixed-basis functional coordinates do not. A later genuinely new target-blind entity/domain comparison should include test-time auto-decoder, support encoder/CNP, kNN, FPCA or function-space baselines, tails, stability, and compute. If a new cohort does not pass a full neural-to-functional bridge, limit the paper to gauge diagnosis, decoder-function projection evidence, and support-only structure re-q.
+
+## 96. Gauge-invariant canonical-response benchmark frozen and active (2026-08-29 04:46 CST)
+
+The next method-focused experiment was frozen before formal results in `GAUGE_INVARIANT_CANONICAL_RESPONSE_BENCHMARK_PLAN_20260829.md`, SHA-256 `ba2a587bd6f7a2945b118c2316ae8f52e0dce9663abfb2fe03f81a084720ada6`. It uses three fixed-basis synthetic response families, 96 training and 48 identical unseen test entities per family, five optimization seeds, support positions 0/4/.../40, 30 strict query positions, a three-dimensional auto-decoder, 1,500 epochs, four-start 1,200-step support-only calibration, and 25 exact affine latent-gauge interventions per cell. The primary theorem test requires prediction and decoder-functional coefficients to change by at most `1e-5` under the exact gauge, all functional and structure family query R² values at least 0.85, median functional-vs-generating coordinate Spearman at least 0.90, and exact query-target invariance. It explicitly does not claim automatic basis discovery, unique/causal latent recovery, nonlinear-gauge universality, or prediction superiority.
+
+`LATENT_Q_INTRO_MOTIVATION_THEORY_RELATED_WORK.md` now states and proves: (1) fixed-basis decoder-response coefficients are constant on the latent-gauge equivalence class; (2) an exact first-layer affine counterfactual `Wq'=Wq A^-1`, `a'=a-Wq A^-1 b`; (3) decoder projection coefficient error is bounded by the weighted response error divided by the smallest weighted-basis singular value; and (4) function-induced coefficient geometry is invariant to invertible basis-coordinate changes. This formalizes why original raw q recovery is unnecessary while still exposing basis misspecification and collinearity.
+
+Runner/analyzer/launcher/test SHA-256 are `163e5d833152850e775c70ca2ffcdfc0aa9122be82884bfcae0db3aeb5b12b1f`, `bbf800f9970ef36e6c77330615402a6545dd7f75109b63fafd27051ff3484d15`, `7fb46740acda906813441bc6e3b5938bacc08975b98da3b7ded0f1a3963b7849`, and `c309964f6b68f3ec1fc9516dc3152ab6422542b83f7f4b116c745f446b7e787a`. Six focused tests and compile/diff checks pass. The non-counted 2-epoch/2-step smoke took 6.77 seconds, had maximum gauge prediction change below `5e-16`, functional coefficient change below `1e-15`, material raw-q/readout change, and zero query-target perturbation difference. No ThermoML confirmation target was read.
+
+Formal execution is active in tmux `gauge_canonical_20260829`, output `runs/gauge_invariant_canonical_response_benchmark_20260829/`, with eight concurrent CPU cells on a 128-core host (load about 11 at launch, user CPU about 0.3 core before launch, 638 GiB available memory). The container still cannot use CUDA, so all formal cells are uniformly CPU. The launcher runs all 15 cells and invokes the independent analyzer only after all succeed. At launch the first eight logs exist and are empty because each cell writes only at terminal completion. Do not promote smoke or partial cells to scientific claims; inspect the 15 manifests and final `analysis/decision.json` first.
+
+## 97. Exact gauge algebra passes; strict audit narrows the claim and freezes calibration extension (2026-08-29 04:57 CST)
+
+The formal exact-affine benchmark completed 15/15 CPU cells with 15/15 formal eligibility, zero failures, six focused tests passing, and terminal independent analysis. Five-seed median decoder-functional physical pooled R² is `0.9999392726` for polynomial, `0.9998066844` for relaxation, and `0.9998379485` for the thermodynamic chart; support structure re-q is `0.9999701855/0.9999580994/0.9999759115`. Median functional-vs-generating coordinate Spearman is `1.0/0.9993487/0.9598350`. Across 375 exact affine interventions, maximum prediction change is `4.4964e-15` and maximum functional coefficient change `2.0428e-14`, while raw-q coordinates change by up to `4.99582` and an intentionally unsynchronized frozen raw readout changes predictions by up to `33.4874`. Query-target input difference is exactly zero. Every frozen primary gate passes; predictive superiority and unique/causal recovery remain false. Decision/analysis-manifest SHA-256 are `2d31a2f3b0e3d95018a2bd1c99f9bbf575bc59cc351ebc984c97268de25bca59` and `2d77ffae6d2dfd9960310c48f2e90cfa0ce5e42706d420366556d14bf5d43a3e`.
+
+A fresh Sol xhigh mathematical audit judged the core algebra correct but the empirical claim too broad. The original benchmark calibrates q first, then hand-constructs `q'=Aq+b`; it therefore proves an algebra/implementation gate, not that independently rerunning Adam on transformed coordinates returns a paired response. The audit also identified missing theoretical conditions and analyzer mismatches: global entity-independent `T`, response equivalence rather than directly observed full functions, `W^(1/2)Phi` full rank, basis-relative rather than absolute canonicality, calibration-selector caveat, true-coefficient residual bound, support rank/query residual terms, and function-induced rather than raw coefficient Euclidean geometry. `LATENT_Q_INTRO_MOTIVATION_THEORY_RELATED_WORK.md` now includes these corrections, the exact affine architecture assumptions, and ideal-gas/finite-temperature ThermoML assumptions. Do not cite the exact-gauge experiment as independent calibration equivariance or as sufficient ICLR novelty.
+
+Before inspecting any formal scientific metric, the separate `GAUGE_EQUIVARIANT_CALIBRATION_AMENDMENT_20260829.md` was frozen at SHA-256 `b274f1abaee71990c5a78152d92070262caa6c37572367c60167c7bbe8fbc91f`. It requires independent original/transformed calibration from each chart's transformed training-embedding centroid, comparing mapped-start Adam with a response-metric Gauss--Newton method. The latter uses 30 full-rank support-Jacobian steps and coordinate-free support-loss line search; under `J'=J A^-1` its step transforms as `delta'=A delta`. The extension also requires basis-H covariance, probe-response geometry, per-entity projection/support bounds, narrow-support diagnostics, synchronized raw readout, and exact query-target invariance. Primary gates include maximum independently recalibrated GN response/functional difference `<=1e-6`, all family functional R² `>=0.85`, basis errors `<=1e-8`, and zero deterministic-bound violations. This is a new output root and cannot overwrite or reinterpret the algebra result.
+
+## 98. Expression endpoint reconfirmed; target-blind next-domain audit identifies crystal heat capacity (2026-08-29 05:13 CST)
+
+The user reconfirmed the durable expression endpoint without adding a stricter latent-recovery condition: a comparatively interpretable expression is successful when its strict unseen-entity/support-query prediction in physical units reaches pooled `R² >= 0.85` and the relation offers a plausible stage-wise scientific clue. It need not equal the initial raw `q`, recover the originally imagined physical quantity, or be the unique true law. Decoder-functional coordinates and structure-recalibrated `q` are both eligible. This is already stated exactly in `COMPLETE_RESEARCH_REPORT_20260809.md` sections 22.4 and 24, so the report was not redundantly rewritten. Predictive superiority over PCHIP, kNN, FPCA, no-q MLP, or other support-aware baselines remains an independent stronger claim and cannot be inferred from this expression endpoint.
+
+A response-value-blind ThermoML metadata audit discarded every `PropertyValue`/`nPropValue` before candidate selection and excluded the already used vapor-pressure property. Under the conservative single-component, single-property, temperature-only, positive-temperature, exact `Crystal` phase, fixed `101.325 kPa`, DOI/InChIKey-disjoint temporal protocol, crystal molar heat capacity is the strongest new domain: 247 development compounds/159 DOI/23,742 rows through 2014 and 86 confirmation compounds/62 DOI/11,447 rows in 2015--2019, with at least 20 unique temperatures per curve. Crystal molar entropy is a secondary eligible domain at 114/46 development/confirmation compounds; strict-phase molar enthalpy has only 86 development compounds and does not meet the 100-compound floor. The first-choice frozen physical family should be Shomate-like `Cp(T)=A+B t+C t^2+D t^3+E/t^2`, `t=T/1000`, compared in physical units against support-nearest, support-linear, PCHIP, support-ridge in the identical fixed basis, an all-development no-q global formula, and a temperature-only no-q MLP. No response value has been inspected, so this remains target-blind candidate selection rather than a scientific result.
+
+## 99. Independent calibration formal failure exposes finite-precision condition; stable amendment and GIRD frozen (2026-08-29 05:45 CST)
+
+The first independent recalibration extension is terminal at 15/15 formal CPU cells and its independent analyzer is terminal. Formal runner/analyzer SHA-256 are `13f9d21d1525582a2bb874add150bf5679f41642486b62dbbf8c63a2e3286024` and `3e48417ba04ed991a2e091c2c9ee7bdc80e5de06f4fa7a018e5b5bf215db3492`; eight focused tests passed before launch. All three original-chart Gauss--Newton functional-expression pooled physical R2 values pass (`0.99993927/0.99980668/0.99995121` for polynomial/relaxation/thermodynamic chart), all support Jacobians are rank three, basis-H coordinate/fitted-response/pair-response maximum errors are `2.88e-14/2.12e-13/1.88e-13`, both deterministic bounds have zero violations, and every query-target perturbation field is exactly zero.
+
+The overall frozen benchmark nevertheless fails and must remain reported as a failure. Maximum independently recalibrated Gauss--Newton query-response and functional-coordinate differences are `0.0448353507` and `0.1504709407`, above `1e-6`. Failure is concentrated in thermodynamic-chart seeds 3/4, whose Jacobian condition reaches `61438.78`. The original implementation forms `J^T J`, squaring conditioning; the worst paired path agrees early, begins floating divergence near iterations 19--20 and selects different line-search steps at iterations 26--29. Polynomial/relaxation remain near `1e-8` or lower. Thus exact-arithmetic equivariance is not yet a robust finite-precision implementation. Authoritative decision/analysis-manifest SHA-256 are `2214a5ff161573d2d9ba767e1d8dd60134ab536500979dd068c59dd4038d49f0` and `17ce41703ea7d305d598dc14d877d28c29580f057c1f2bd23b620ab5152e4fc4`. Do not overwrite or relabel this root.
+
+The post-failure numerical amendment `GAUGE_EQUIVARIANT_CALIBRATION_NUMERICAL_AMENDMENT_20260829.md`, SHA-256 `d85db0c6d9a5b332aa3499ebd3f105a2e89a4674b30fe90db0657bd26006613`, was frozen before any corrected formal result. It uses direct float64 SVD/QR least squares, response-loss acceptance margin `1e-12*max(1,loss)`, exactly 15 iterations and a separate root while preserving every original scientific threshold. It adds exact step-scale pairing and at least 100x improvement gates. The new stable runner/analyzer/launcher/tests are respectively SHA-256 `299d47d830ae7a8e4402db81bbf94a60ac64b23450ed04c55e2dd7b5294316f7`, `6307f8e4398e9e91bf707e03d2a1b2d4af12e095f6737fcf3c11d83b76cdc469`, `4661006234cca4f39a2b939d2ffef4d8fdb13a84a146046db7edf4bb52ca9b8e`, and `8a8d653b3bdb91bed32d2696f14cc8a15e71e5080554c6e8c3b9f2b6079f7ccb`. Formal eligibility is bound to the exact stable formal root; the portable launcher derives its root from its own location and accepts `PYTHON_BIN`. Four focused tests pass, compilation/shell syntax/`git diff --check` pass. In two non-counted all-48 worst-cell diagnostics (current code, thermodynamic seed3), 15-step maximum response/functional differences were `3.6567271433e-10/6.2327461664e-09`, with exact line-search step scales across all gauges, full GN rank, and zero query-target perturbation. No corrected formal run has started.
+
+The next paper method is frozen as Gauge-Invariant Response Dictionary Discovery in `GIRD_METHOD_EXPERIMENT_PLAN_20260829.md`, SHA-256 `c31f1fca60219f2cf2b258bac09e1a590dd7962c5e55d19f659730b743602072`. It selects at most five symbolic atoms by deterministic heterogeneous-design multi-response OMP from independently calibrated decoder probe responses, then performs basis-covariant decoder/support coefficient fusion. The decisive method gate is not another high pooled R2: in an exact four-support stress, finite `lambda>0` must improve median entity NRMSE by at least 5% over `lambda=0` and beat an identical direct-target dictionary. Synthetic controlled, vapor-pressure development-only and prospective crystal-Cp experiments are separated; the consumed vapor-pressure confirmation is never reopened. The matched ordinary symbolic-regression control is now frozen explicitly as per-entity support-only OMP over the identical atom library/conditioning/budget, distinct from the shared direct-target dictionary.
+
+The target-blind crystal-Cp protocol is now version `thermoml_crystal_cp_target_blind_v2_gird`, SHA-256 `2ae03f71e6ffe9cfee3df0a61c8c7e49e9777268d0d9ccb6f1da8538e2203618`. It includes the exact 12-atom physical library, K/lambda grids, four-support split, Shomate/PCHIP/direct-target/SR/FPCA/CNP/auto-decoder/no-q baselines, three separate endpoints and a single-use temporal seal. No selected Cp response value has been read or materialized. `COMPLETE_RESEARCH_REPORT_20260809.md` section 25.3--25.4 and the theory document now preserve the formal failure, condition-number diagnosis, numerical amendment and GIRD boundary.
+
+## 100. `/tmp` storage re-audited; persistent materials remain under the public project tree (2026-08-29 06:07 CST)
+
+At the user's direction, `/tmp` was checked again before moving anything. No top-level path owned by this project and named for `lvs`, `matr`, `starry`, `thermoml`, `gird`, `gauge`, `latent`, or `pytest-of-wangyg` is present, and a content scan found no file referencing this repository, the gauge-calibration experiments, GIRD, or the ThermoML crystal-Cp plan. Therefore there was no new project payload to move and no unrelated `/tmp` entry was touched. The previously migrated recoverable material remains under the public repository at `runs/_tmp_archive_20260828/` (41 MiB) and `runs/_tmp_archive_20260829/` (133 KiB); runtime caches remain at `runs/_runtime_cache/`.
+
+Durable rule: all persistent project scripts, experiment outputs, downloads, fixtures, logs, figures, and audit artifacts must be written below `/public/home/wangyg/latent_variable_search`; use `runs/`, `data/external/`, and `runs/_runtime_cache/` according to role. `/tmp` is not a project storage location. Current agents were explicitly notified of this rule. System IPC, sandbox mount points, unrelated projects, and ambiguous legacy files in `/tmp` must not be moved into this repository.
+
+## 101. Stable independent-calibration formal run launched; GIRD decision statistics tightened pre-result (2026-08-29 06:20 CST)
+
+The stable SVD/QR extension passed a second main-agent audit before launch. The launcher now checks that the explicit interpreter imports Torch/NumPy/Pandas before creating the formal root, waits for and records every owned child failure, and never runs the analyzer after a cell failure. The analyzer enforces the frozen 30 query positions, exact per-entity Adam/GN iteration sets, full method/gauge/basis/bound/geometry coverage, and recomputes all raw original-versus-query-perturbed path, calibration and prediction differences rather than trusting the runner summary. The raw recomputed maxima are part of the final leakage gate and a separate analysis artifact. Four focused tests, bytecode compilation, shell syntax, explicit environment import, and `git diff --check` passed. Final pre-launch hashes are runner `5257d739592caf96249eb6dc5e8bca81734bf744a20e6fa8366fbaa806150fbd`, analyzer `809b7514719ac7d31ce324c4536d7c5c1418c39fbdcba47e6b33d8dae09ca233`, launcher `ca693834509fef5772d13c8a49380bc4000c462c93711d5e6a3bec34e93cc663`, and test `fb4307a87d506e267f39835813f8a4ec793076b8a1b7affa9d7bd5fdacfb5a0a`.
+
+The exact formal root was absent immediately before launch. At 06:20 CST tmux `gauge_stable_20260829` started the 15 formal CPU cells with `MAX_PARALLEL=8` and the explicit interpreter `/public/home/wangyg/latent_variable_search/.venv-lvs-gpu/bin/python`. Host load was about 13--15 on 128 cores with about 618 GiB memory available. The first eight launcher logs were created and the tmux session was live. Do not promote partial cells; wait for all 15 manifests, `analysis/decision.json`, its manifest, and `launcher.done`, then reconcile every gate with raw artifacts. The old failed normal-equation root remains authoritative negative evidence and must not be overwritten.
+
+Main-agent review found that the first GIRD implementation did not yet meet the frozen plan: its analyzer reread runner-written OMP winners instead of independently recomputing from raw response/design inputs, used pooled rather than entity-normalized NRMSE for the decisive comparison, omitted several controlled gates, and misinterpreted the four-fold lambda rule. No formal GIRD root was created. Before any formal GIRD result, `GIRD_CONTROLLED_DECISION_STATISTIC_AMENDMENT_20260829.md` was frozen at SHA-256 `e110948ab67dec54b4b9d28c96c2276eb29912f6e988bd160bc7869236a04df0`. It fixes five-seed pointwise aggregation, entity-specific NRMSE, fold-specific lambda selection, a primary GN-only 4/5 finite-positive-lambda rule, deployment lambda selection, outer 48-entity median-NRMSE comparisons, exact remaining controlled gates, direct float64 least-squares handling of rank-deficient lambda-zero fits, and raw-input independent recomputation. The GIRD runner/analyzer are being revised against this amendment and remain ineligible to launch until the stable extension passes and their final hashes/tests are independently reviewed.
+
+## 102. Stable independent calibration passes; expression criterion reaffirmed (2026-08-29 06:31 CST)
+
+The stable SVD/QR formal extension is terminal at 15/15 cells and `launcher.done` exists. Independent manifest verification found 13/13 analysis artifacts and every cell-declared file hash exact, with no mismatches. All ten frozen primary gates pass. Five-seed pointwise-median functional-expression physical pooled R2 is `0.9999392728/0.9998066804/0.9999526932` for polynomial/relaxation/thermodynamic chart. The maximum independently recalibrated stable-GN query-response and functional-coordinate differences are `3.6567271433e-10` and `6.2327462011e-09`; every paired line-search step scale is exactly identical. The old response difference was `0.0448353507`, giving improvement factor `122610599.4`. Basis coordinate/fitted-response/pair-response errors are at most `2.92e-14/2.10e-13/1.87e-13`, deterministic bounds have zero violations, and all raw query-target perturbation maxima are exactly zero. Predictive superiority and unique/causal latent recovery remain explicitly false.
+
+Two analyzer-only infrastructure failures occurred after all scientific cells had completed. The first referenced an undefined perturbation-artifact constant; the second applied GN-only finiteness requirements to intentionally NaN Adam diagnostic columns. Both logs are preserved under `launcher_logs/`; neither created an analysis directory nor reran a scientific cell. The corrected analyzer independently recomputes the raw perturbation audit and uses method-specific finiteness checks. Final SHA-256 values are runner `5257d739592caf96249eb6dc5e8bca81734bf744a20e6fa8366fbaa806150fbd`, analyzer `f0badabe855f01c3335955a013f051b430fa5eed98f1a9b8e4ca06bc2a74d557`, launcher `ca693834509fef5772d13c8a49380bc4000c462c93711d5e6a3bec34e93cc663`, test `e3afda79fdaccad9fd11635d5e656199cb2a2ad82ad28b362f41688db91c5bef`, decision `f3b1a222cf9e56b4209f0e6183dbd80792ae96738a905c06759fa4f655a1a1a0`, and analysis manifest `980bd9e7540cf733fbdeb5aba33ea7339b46c3968d53918836e6ab8eaf9fcc30`.
+
+The user again reaffirmed the durable scientific endpoint: a compact expression counts as interpretable when strict unseen-entity/support-query physical pooled `R2 >= 0.85` and the relation offers stage-wise scientific inspiration. It need not recover the initial raw q, a preselected physical quantity, or a unique true law. Decoder-functional and structure-recalibrated q are eligible. This criterion was already frozen before the relevant real-data outcomes, so no frozen protocol was changed. Predictive superiority remains a separate stronger endpoint and must not be silently required or inferred.
+
+## 103. GIRD preformal audit completed; one non-counted smoke exposes a hard lambda-zero risk (2026-08-29 06:52 CST)
+
+No formal GIRD root existed during the audit. The runner now binds the exact passing stable-extension runner, decision and analysis-manifest hashes (`5257d739...50fbd`, `f3b1a222...a1a0`, `980bd9e7...cc30`). The inner lambda-selection paths no longer reuse one Adam prior for every method: each inner validation entity is recalibrated from support only with the matching 15-step stable GN or 300-step Adam method, while the true-basis reference uses the primary GN prior. The raw bundle records separate method/fold/entity probe priors with exact finite masks, and the independent analyzer verifies the 15/300-step coverage, GN ranks, paths, raw OMP inputs, lambdas, coefficient fits and predictions. The lambda helper now records the score of the 1%-tie-selected lambda rather than incorrectly attaching the absolute best score.
+
+The analyzer now follows the controlled decision amendment exactly: the primary four-support comparison requires beating the direct-target dictionary; ordinary per-entity symbolic regression and FPCA remain reported comparators rather than silently added hard gates. Adam remains a diagnostic comparator; the primary OMP certificate gate is scoped to the GN response path, while Adam certificate status is separately written. The function-subspace recovery calculation now uses principal angles correctly when a selected dictionary is a higher-dimensional superset of the three-dimensional generating subspace, while a lower-rank candidate still fails. Recovery is independently recomputed from raw atom designs rather than trusted from runner flags. Twelve focused tests, compilation, launcher import/help and `git diff --check` pass.
+
+One repository-local, non-counted polynomial seed-0 smoke completed both exact support regimes. It has zero query-target effect, correct separate inner-prior coverage, passing GN OMP certificates and generating-subspace containment. It selected five atoms containing `{1,x,x^2}`. Importantly, both standard-11 and four-support selected `lambda=0` for this one smoke cell. This is not a formal aggregate and must not be promoted, but it is a transparent warning that the frozen four-support 5% fusion gate may fail for an easy polynomial family whose support already identifies the true quadratic response. No atom, support position, lambda, threshold or scientific gate was changed after seeing this. The formal experiment must run unchanged and any failure must remain visible.
+
+Final preformal SHA-256 values are runner `c8744aa8025dc94d83c43f3a3c2a19d43ecceb7a57505c2f5436376b91f5d3e7`, analyzer `7310d5f72525fa9a907d2781a52f74ffe8ae54191844d64bc177d3d384b37f62`, launcher `91f5df4f7e45f6f3ccf757d18b98e882b106c31aa53e8ed0127e342db74f6ba7`, runner test `34556cb60e4fe7448245af03a9e4ff82b9512b0aee6c17aed5e2507a7cb42168`, and analyzer test `d091b5391ec351513b50624e4752b9d9fa795b70fb28f09d3850e8945c939034`. The portable launcher runs 15 family/seed cells with configurable `PYTHON_BIN`/`MAX_PARALLEL`, collects all failures, invokes the analyzer only after all cells succeed and writes `launcher.done` only after analysis succeeds. The formal root remains absent immediately before launch.
+
+## 104. Formal controlled GIRD launched unchanged (2026-08-29 06:42 CST)
+
+Immediately before launch, the exact formal root was absent, host load was `15.83/14.57/14.92` on 128 cores, user processes consumed about 0.4 CPU core, and about 626 GiB memory was available. NVIDIA access remains unavailable inside this container (`nvidia-smi` cannot communicate with the driver), so this controlled experiment is CPU-only. Tmux `gird_controlled_20260829` launched the exact frozen 15 family/seed cells with `MAX_PARALLEL=8` and `/public/home/wangyg/latent_variable_search/.venv-lvs-gpu/bin/python`. The first eight runner processes were confirmed active. No partial result may be promoted; wait for all 15 parent manifests/results, independent `analysis/decision.json`, its manifest and `launcher.done`. If the frozen polynomial four-support lambda gate fails as warned by the non-counted smoke, preserve it rather than changing the formal protocol.
+
+## 105. Controlled GIRD terminal: conditional fusion gain, universal gate failure (2026-08-29 07:10 CST)
+
+The first launch failed after writing only all 15 `standard_11` results because a relative extension root was passed into an absolute `Path.relative_to` call.  The complete failed root is preserved as `runs/gird_controlled_discovery_20260829_infrastructure_failure_relative_extension_root_20260829_0644/`.  The runner was changed only to resolve the extension root at the system boundary and a regression test was added.  A clean absent formal root then completed all 15 family/seed parents and all 30 `standard_11`/`four_support` regimes.  No scientific cell was rerun after those 30 regimes became terminal.
+
+The launcher analyzer exposed several analyzer-only defects: an undefined validation variable, a missing independently reconstructed validation count, an unbound fit-diagnostic frame, lambda-zero grid rows conflated with appended selected rows, a bad Pandas row/column index, and a relative run-root manifest path.  The original failure log and two pre-final analysis directories are preserved.  The final analyzer additionally recomputes and verifies dictionary validation rather than merely loading it.  Fourteen focused tests pass, compilation and `git diff --check` pass, and independent manifest reconciliation found zero cell or analysis hash mismatches.  Final runner/analyzer/decision/analysis-manifest SHA-256 values are `e6559560679583d7725c69cb35a3a2d6619f26f3ef0060fb98ea77a3017b51df`, `66b57f74c9200a647d0a65d6fc988ad4ad8ed3e262816c52fc40751c4fafb1c0`, `cf473722eae2cbeeda28b30e1584e120c0f06c45e1269761b2774050e18d77b1`, and `f2ff6b10d48b9bbc347de471a2a15b9c45d0c0818e65499aaff9b4b9fcee2198`.
+
+The frozen universal GIRD gate fails.  Four-support polynomial selects lambda zero and stays at median entity NRMSE `0.010421`; thermodynamic chart also selects lambda zero and stays at `0.019240`.  Relaxation is the constructive positive case: selected fusion lowers median entity NRMSE from `0.052771` to `0.034355`, a `34.90%` improvement.  All three selected GIRD methods beat the direct-target dictionary but lose to FPCA.  All six GN functional/fused pooled physical R2 gates exceed `0.85`; functional-to-generating-coordinate median Spearman is `1.0/0.999240/0.990990` by family.  GN dictionary selection is identical under every independently recalibrated affine chart in 30/30 regimes, while Adam is stable in only 6/30.  Real remaining failures are: basis covariance whenever rank-deficient four-support fitting selects lambda zero, two of 30 GN regimes with an uncertified OMP selected margin, and standard-support GIRD lying about 5.6--17.4% above the best frozen interpretable control.
+
+Durable interpretation: do not claim universal fusion gain or prediction superiority.  The next justified method hypothesis is conditional, rank/conditioning-aware fusion: use a gauge-invariant decoder prior when support fitting is underdetermined or ill-conditioned, and safely back off when support alone identifies the curve.  Because this hypothesis was induced by the terminal controlled outcome, it requires a separately frozen experiment on unseen synthetic families or a new real cohort.  The user's expression endpoint remains independent: strict unseen-entity/support-query physical pooled `R2 >= 0.85` plus a compact stage-wise suggestive expression is sufficient; original raw-q recovery and prediction SOTA are not required.
+
+## 106. Crystal-Cp execution is unblocked at the protocol level, but response access remains sealed (2026-08-29 07:21 CST)
+
+A fresh target-blind Luna red-team audit read no crystal-Cp response and found that the conceptual temporal/identity firewall was sound, but the execution chain was not yet launchable: the old ThermoML auditor only covers vapor pressure/viscosity, the expected crystal counts had not been reproduced by a formal selector, and Cp-specific materialization, baselines, neural/GIRD analysis, package seal and single-use confirmation code were absent.  It also identified underspecified CNP episodes, FPCA grid, PCHIP extrapolation, no-q selection, calibration starts, exact affine gauges, and the misleading `ordinary_symbolic_regression` name for a support-only OMP control.  Existing vapor-pressure scripts must not be relabeled or reused as Cp evidence.
+
+Before any selected Cp response was opened, `THERMOML_CRYSTAL_CP_RANK_AWARE_GIRD_AMENDMENT_20260829.md` was frozen at SHA-256 `fffb406998900ff38131ee58bd9d98364ea05c3a334bf4b639c0456696c77639`.  It replaces only the universal four-support fusion gate.  A held-out entity is classified from support temperatures/model derivatives alone as support-identified, prior-eligible, or jointly unidentified.  The conditional rule uses exactly `lambda=0` when the symbolic support matrix is full-rank/well-conditioned, a development-selected finite lambda only when the symbolic support system is rank-deficient/ill-conditioned but the decoder calibration Jacobian remains identifiable, and retains jointly unidentified entities in all overall metrics.  A conditional-gain claim needs at least three contributing DOI folds, 20 prior-eligible entities from five DOI groups, at least 5% paired median-NRMSE improvement over visible lambda zero, and a win over the matched direct-target dictionary.  Insufficient stratum size is `NOT TESTED`, never a pass.
+
+The companion `THERMOML_CRYSTAL_CP_EXECUTION_CONTRACT_20260829.md`, SHA-256 `ec37eff5ab2c5847735e4b3d8db4098fd4db2bcbf67792e4b54a4fb8ba43ea15`, freezes the response firewall, exact support indices, endpoint-tangent PCHIP extrapolation, kNN ties, normalized-grid FPCA, no-q selection, full-curve/sparse-support auto-decoder pathway audit, four deterministic Hadamard calibration starts, stable 15-step SVD/QR GIRD calibration, CNP episode/update accounting, eight exact affine-gauge families, and the `support_OMP` name.  The hash supersedes the immediately prior unexecuted contract draft solely because its prefix count was corrected from ceiling to the parent plan's exact `max(5,floor(n/4))`.  The parent target-blind plan remains unchanged at SHA-256 `2ae03f71e6ffe9cfee3df0a61c8c7e49e9777268d0d9ccb6f1da8538e2203618`; all three documents must be bound by future manifests.
+
+At the same transition, the legacy 2,910-job campaign remained `completed_all` with zero failures and no related tmux/process was active.  A host-level read-only refresh showed GPUs 2, 3, and 4 at zero MiB and GPU 5 at four MiB, while 0/1/6/7 were occupied; no card was claimed because metadata selection is CPU-only.  A Cp selector and a CPU expression/local-baseline runner are being implemented in separate new files with synthetic fixtures.  No formal Cp output root exists, no development response has been materialized, and confirmation remains unopened.
+
+The theory document now contains the exact response-metric shrinkage decomposition behind this rule.  After whitening coefficients by the probe Gram and writing a support singular direction as `z=s_i u*+epsilon`, `u_f=u*+eta`, fused risk is `(s_i^2 sigma^2 + lambda^2 tau_i^2)/(s_i^2+lambda)^2`, with isotropic oracle `lambda*=sigma^2/tau^2`.  Small support singular values amplify the support-only risk; large singular values justify backing off; a zero singular value means the decoder prior supplies an otherwise unidentified function direction.  This is a motivation and applicability condition, not a guarantee of real-data gain, so the frozen nested DOI validation and comparator gates remain necessary.
+
+The formal target-blind selector then completed against all 11,923 source JSON files.  It lexically replaces `PropertyValue`/`nPropValue` payloads with null before JSON decoding; no response scalar enters the selection object graph.  A first implementation-level count discrepancy was diagnosed before any output existed: the frozen counts describe the deterministically selected one-table-per-InChIKey cohorts, whereas the initial check was mistakenly applied to the pre-dedup table pools.  Moving only the check to the already frozen post-tie-break layer yielded the exact expected selected counts without changing any cohort rule: development `247 compounds / 159 DOI / 23,742 rows`, confirmation `86 / 62 / 11,447`.  The visible eligible pools are `355 tables / 247 compounds / 162 DOI / 29,019 rows` and `147 / 86 / 65 / 15,349`; these explain the earlier diagnostic and are preserved.
+
+Independent hash and identity reconciliation passed for all six selector artifacts, five DOI folds, and both selections.  Development/confirmation InChIKey and DOI overlaps are exactly zero.  Formal selector, selection-manifest, development-selection and confirmation-selection SHA-256 values are `d0668d13bcb3a56df4604151f96170c5a03a0703eed491504782345750a93727`, `8760bb5e2b09e5636178b97e3a7a7f9699c8e896a44b0cfa88a57116caeced33`, `a48e66da7b13e070f3f7c0b8622364ce448a0c350d54bf5e570b7ba84840e9c0`, and `f937b660fb9294821fc08f0b7a84ebc8d43f01c1e5c93bcb555d0cf5cd1d0ddd`.  Fold entity counts are `44/52/64/47/40`, with source rows balanced at `4,738--4,765`.  Confirmation response remains unopened; only development materialization is now authorized.
+
+## 107. Crystal-Cp development opened; smooth Shomate fails pooled but reveals a transition-aware structure (2026-08-29 08:00 CST)
+
+The development-only materializer passed its synthetic firewall tests and then opened only the 159 development source files selected by the sealed cohort.  Development/confirmation source overlap is exactly zero; no confirmation source was opened.  It materialized `247 entities / 159 DOI / 23,742 rows` with exact sealed temperature sequences and support indices.  Spread/prefix/four support counts are `6,038/5,845/988`, leaving `17,704/17,897/22,754` queries.  All heat capacities are finite and positive, spanning `4.8342e-6` to `57,525 J/K/mol`; no outcome-based row was removed.  Materializer/data-manifest/data SHA-256 values are `0e05a363abadec461e1326c0d5b7a1ee1d988d286752737ff29c2df85e894896`, `d88172109a7a244195f13dfa01516cfe6cb16cd038ca797dfd61d2d50694208a`, and `f73d3c676932304c8e5c21e79e7bc9c678e20c84db8d60b59a8e60feee400e4e`.
+
+The first formal v2 CPU baseline attempt was deliberately interrupted before any file was written because its leakage audit repeatedly searched an ever-growing prediction table, producing quadratic runtime.  Its empty root is preserved as `runs/thermoml_crystal_cp_baselines_development_20260829_infrastructure_failure_quadratic_perturbation_lookup_20260829_0740/`.  The audit was changed only to compare each prediction with its support-only recomputation at generation time; the two fixture tests then passed in about eight seconds.  A clean absent formal root completed in `109.6 s`.  Final runner/result/manifest/prediction SHA-256 values are `66c80056a31907ef5a4b9ab84bf65770bef50ee27ba088d92c0cd311787ed6d7`, `bae3b633a8cbb98b050e04f3b40b59017796946a42e20ead1a136eef141d30da`, `54f9b384ff57064778ad9131134b4cd284f53ce6e4a5623b77295783880b7d6f`, and `719cdae0d651e9785fe8ac4385606055755fc9e710b21224df165627d5850feb`.  The spread-selected expression is Shomate5 with lambda zero; the same package, rather than an oracle re-selection, is reused in prefix/four-support stress.  Query-target perturbation changes candidate predictions/coefficients by exactly zero.  The independent analyzer is now terminal; its script/decision/analysis-manifest SHA-256 values are `9e5b1fe11c6b919064f81f966f293e7c0623dec59c475cb31695a881fcce99e3`, `a90390db591b0e5a10086ac35f67ce4b015d4a555f86d5a6ea46a19b67152638`, and `61f9535c67f19d943fb4c056eef41300d0dccc81945403f20ae397aa2f659de1`; two analyzer tests pass and the readable report is `runs/thermoml_crystal_cp_baselines_development_20260829/analysis/BASELINE_RESULTS.md`.
+
+Independent analysis shows the central scientific split.  The v2 spread Shomate expression has physical pooled R2 `0.6386459473`, so the user's pooled `0.85` expression endpoint fails in this exact version, even though median entity NRMSE is `0.02958` and 238/247 entities have individual R2 at least 0.85.  Same-support linear and PCHIP reach pooled R2 `0.95208/0.95881`; PCHIP median entity NRMSE is `0.00872`.  The Shomate failure is not broad: one entity contributes `88.56%` of its SSE and the top three contribute about `99.95%`.  Entity- and DOI-bootstrap 95% intervals for Shomate-minus-PCHIP pooled R2 are respectively `[-0.4240,-0.000156]` and `[-0.4375,-0.000195]`, and Shomate beats PCHIP on only 38/247 spread entities.  The dominant curves are Crystal-labelled upper-bound anomalies: SRS-1,2,3,4,5-pentanepentol rises to `57,525`, 1,4-diphenyl-2,3-dithiabutane to `22,786`, and methyl butanoate has a narrow `8,659.7` peak.  The first two expose a strong positive final support secant, suggesting an effective transition-stage term rather than dataset exclusion.  Prefix Shomate has one visible entity coverage failure and the unchanged five-term lambda-zero Shomate fit has zero valid four-support predictions; neither is imputed or hidden.
+
+A bounded development exploration tested normalized upper-bound log/pole atoms added to low-degree smooth backgrounds, without opening confirmation.  A support-only router based on the last positive secant divided by earlier median absolute secants plus a quadratic inverse-square-root boundary atom raised direct full-development pooled R2 to about `0.985` while retaining median NRMSE about `0.0297`; this was exploratory and is not confirmatory.  Before any formal nested result, `THERMOML_CRYSTAL_CP_TRANSITION_STRUCTURE_AMENDMENT_20260829.md` was frozen at SHA-256 `ee10462ad90d748d6f255a219ef2a05e222a19f545372ef3925c12c5aa018eee`.  It binds the complete explored gamma/degree/log-or-pole/delta grid, exact support-only stage ratio, SVD fitting, five outer DOI folds, constrained training-only selection, OOF gates, all-development final package, honest failure rules and the stage-wise interpretation `smooth lattice/background + effective near-boundary transition anomaly`.  No entity may be removed; confirmation remains single-use and unopened.
+
+## 108. Crystal-Cp transition v3 fails narrowly; maximum-margin v4 frozen (2026-08-29 08:41 CST)
+
+The transition runner was independently red-teamed before scientific execution.  The audit found no confirmation access or fold-target leakage, but required an independent analyzer and exposed missing critical tests.  During the first main-agent launch, the script failed before data access or formal-root creation because the repository root was not on `sys.path`; only the import boundary was repaired.  The expanded suite then exposed and fixed a real pre-result gate bug: the runner had compared the number of per-entity metric rows with the expected number of query points.  The final runner/analyzer tests cover DOI isolation, the strict router boundary, the full 1% tie-break, v2 hash/coverage/value mismatches, exact support roles/indices, raw-result recomputation and perturbation; 10/10 pass with an independent repository-local basetemp, compilation and `git diff --check`.
+
+The exact frozen v3 formal root is terminal.  Runner/result/raw-decision SHA-256 values are `df48cb6674de34949f54cb768c7ff85dd03e606ffd3a28e7d578ca24609426e1`, `aec86dba8c9dc33f3942b473f08f8b2bf9479e84dcef496b1fe688af7e08ebaa`, and `8aa9ec409020d681bcbdceecd43e6fa39de337a687f7799f5070f761db817764`.  The independent analyzer, decision and manifest hashes are `807ba64be6db6cdf31f51b57a65dc2aabf0260ef7535d7fe2231c032b5681764`, `1d32cb2ed88509af08b21e81acf845f6811064d9fcf9bd4381c1bd337c8b5d13`, and `25d82c1c66735646db1ceacf55845598090310f516e841898f85e419569643db`.  Independent OOF pooled physical R2 is `0.8395842717`, so v3 fails the exact `0.85` endpoint; all other frozen gates pass, including exact 247/17,704 coverage, finite fits, median/p95 tails, individual-pass count, negative-prediction count, 4/5 effective motif recurrence and exact query-target invariance.  Entity/DOI bootstrap 95% intervals are `[0.75495,0.99976]` and `[0.72208,0.99976]`.  Confirmation remains unopened.
+
+The failure is localized to a risk-equivalent threshold tie.  In outer fold zero, gamma 200 and 500 route the same one training anomaly, but the old larger-gamma tie-break chooses 500; both strongest anomalies are held out and the second has support-only stage ratio `405.97`, so it is missed.  One post-v3 development exploration replaced only that last tie by a maximum empirical log-stage margin while retaining the full formula/grid/constraints.  It yielded pooled OOF R2 `0.8593003362`, 748 negative predictions, thresholds `200/100/100/100/50`, inverse-square-root atoms in every fold, degree one in fold zero and degree two elsewhere.  This is explicitly development-induced, not untouched evidence.
+
+`THERMOML_CRYSTAL_CP_ROUTER_MARGIN_AMENDMENT_20260829.md`, SHA-256 `07194d41108d177405d63682135dd9f1bbf2e419d7d72894dfcf81d4ee4920ae`, now freezes the single v4 change: among otherwise tied candidates choose gamma maximizing `min_i |log(1+r_i)-log(1+gamma)|`, then larger gamma on an exact tie.  Before any formal v4 result, a symmetric synthetic test exposed last-bit float64 inequality between mathematically equal log margins; the amendment now treats absolute margin differences at most `1e-12` as the exact numerical tie.  This portability clarification does not change any declared real-data selection.  The all-development package is declared in advance as gamma 100, degree-two inverse-square-root, delta 0.0003.  A formal v4 run may only reproduce/audit this development result; the unchanged one-shot 2015--2019 cohort is the decisive generalization evidence.  No further symbolic-family change is allowed after v4 confirmation.
+
+Before any crystal-Cp neural result, `THERMOML_CRYSTAL_CP_NEURAL_IMPLEMENTATION_CLARIFICATION_20260829.md` was frozen and later expanded pre-run after an independent static red-team; its current SHA-256 is `7e04a98a50f381da296e96c93ebc1c717dd80b12687b35b53695ef2985343aff`.  It fixes HSIC plus `rich_rff_kme` for the 0.05 orthogonality term, retains minimum-norm stable-GN diagnostic predictions for rank-deficient Jacobians while classifying them as jointly unidentified, and forbids formal neural launch until its decoder-functional/support re-q basis binds the final eligible symbolic package.  The pre-run expansion applies the same stage-ratio formula to four supports using the last slope versus the median of the first two, treats absent/insufficient finite-lambda votes as `NOT_TESTED` rather than a cell crash, requires typed hashes of the v4 amendment/analysis/final package/fold selections, and assigns cross-seed/support-offset OMP certificates to the aggregate analyzer.  No crystal-Cp neural smoke or formal result existed before either clarification.  A host-level read-only GPU refresh showed cards 2--5 empty at 4 MiB with no compute processes; cards 0/1/6/7 were occupied by other users and were not touched.
+
+## 109. Crystal-Cp maximum-margin v4 passes the development expression gate (2026-08-29 08:58 CST)
+
+Before formal v4 execution, a symmetric synthetic test found that two mathematically equal log margins differed in the final float64 bit.  The protocol was clarified pre-result to treat absolute margin differences at most `1e-12` as an exact numerical tie and then choose larger gamma.  The amendment's final SHA-256 is `07194d41108d177405d63682135dd9f1bbf2e419d7d72894dfcf81d4ee4920ae`; this portability rule changed none of the declared real-data selections.  Four v4 runner/analyzer tests, compilation and `git diff --check` passed, and the exact formal root was absent before launch.
+
+The v4 formal reproduction and independent analyzer are terminal.  Runner/analyzer/result/raw-decision/analysis-decision/analysis-manifest SHA-256 values are `3fa244e55a2238aad238f63b16f3c725e538853885f9efe6c1bc4e68907fc9d2`, `f08aa890aef8e7043f41adc0115b1facc396712b74a2899aee40449e5c7fbb47`, `6b29fc84fcfc67270252f53c10a1c8993c56bebef95f4186db2e381fb7c22a39`, `81f6d834e999cc18e339649946c2e235a45ecf2e1194d0de8ecc8ae1c52aac77`, `09c9cb17cf64cc5e6f5bc3b9958ed07ed7fda56245b545961c4312647503e0e8`, and `6c023c8ba342c0244e9680a0fc88f4b94001d8cf326d77330c3eea5e5458c1a0`.  All raw and analysis manifest file hashes reconcile exactly.
+
+Independent development OOF physical pooled R2 is `0.8593003362`; all ten frozen gates pass with exact 247-entity/17,704-query coverage, finite fits, 748 negative predictions, unchanged median/p95 and individual-pass constraints, 4/5 degree-two inverse-square-root recurrence, and exact million-unit query-target invariance.  The fold thresholds reproduce exactly as `200/100/100/100/50`; the all-development sealed structure is gamma 100, degree two, inverse-square-root atom, delta `0.0003`.  Entity/DOI bootstrap 95% intervals are `[0.82526,0.99976]` and `[0.81641,0.99976]`, so the point endpoint passes but uncertainty does not justify replacing the still-required untouched temporal confirmation.  Confirmation remains unopened.
+
+The intended stage-wise expression is now concrete: ordinary entities use the smooth Shomate background; support-detected boundary-stage entities use `Cp=A+B1*u+B2*u^2+H/sqrt(delta+1-u)`, `u=(T-Tmin)/(Tmax-Tmin)`, with shared `delta=0.0003`.  The polynomial is a smooth lattice/background coordinate; `H` is an effective near-boundary anomaly amplitude and the implied boundary is `Tc=Tmax+delta*(Tmax-Tmin)`.  It is a stage-wise explanatory coordinate, not a unique critical law or raw-q recovery.
+
+## 110. Crystal-Cp train-only FPCA is terminal and does not explain the transition result (2026-08-29 09:12 CST)
+
+The frozen `FPCA_support_ridge` comparator is now terminal on the complete development cohort without opening confirmation.  For each outer DOI fold it fits a 101-point normalized-temperature PCA basis only on complete outer-training curves; held-out coefficients use only the declared support targets.  The component grid is `2/3/4/5/8`, the ridge grid is `0/1e-6/1e-4/1e-2/1`, exact query coverage is `17,704/17,897/22,754` for spread/prefix/four-support, and query-target perturbation changes predictions by exactly zero.  Two focused tests, compilation, diff-check, the formal run and an independent raw-output analyzer all passed.
+
+The selected spread configuration is three components with ridge `1e-4`; pooled physical R2 is `0.6321885368`, median entity NRMSE `0.355030`, p95 `9.685081`, and 128/247 entities reach individual R2 at least `0.85`.  Prefix reaches pooled R2 `0.2864901930`; four-support reaches `-1.3877600725` despite a lower median entity NRMSE `0.170674`, because the pooled metric is dominated by large boundary failures.  Thus a generic train-only low-rank functional coordinate does not reproduce the v4 transition expression's `0.8593003362` pooled result.  This is a useful positive control for the scientific story: the compact support-routed boundary term captures structure missed by unconstrained smooth FPCA, while FPCA remains a non-symbolic comparator and its failure is not an expression claim.
+
+Runner/analyzer/raw-manifest/analysis-decision/analysis-manifest SHA-256 values are `1e7a278df8221a9212c988d391664694b30e42cf8ab14e0c0e70bcc67367f72f`, `170a4e7746d4326b312fa73c0388fb1d519bda3a10286188d86c2a2931facf8f`, `31cd416618896f08e99168e284d67094f0fc998f8e95cec64e100e42ca3d81f3`, `ea03cf8feaeb4aa118d934484b25eb86ed061267a2a4cb63b09c79ed3397b28e`, and `f21899226e3d36daf2bcbb4564fee7148c91e1907cd718be7a0aa1e40c27df6e`.  The readable result is `runs/thermoml_crystal_cp_fpca_development_20260829/analysis/FPCA_RESULTS.md`.
+
+## 111. Crystal-Cp matched no-q formal launch (2026-08-29 09:14 CST)
+
+The matched `no_q_temperature_mlp` execution chain was independently implemented and then corrected before formal launch after main review found that the first draft scored only the spread regime.  The final runner trains once per fold/seed and performs one held-out full-curve inference, then writes the exact spread/prefix/four-support query views with coverage `17,704/17,897/22,754`.  Each regime has an independent copied-data `+1,000,000` query-target reload probe.  The analyzer requires five seed predictions for every `(regime,source_row_id)`, computes the pointwise median separately by regime, and reports entity/DOI bootstrap, tails and support-range strata.  The architecture/budget remains `(256,128)`, 1,000 epochs, Adam `1e-3`, batch 256, one full deterministic training-row pass per epoch and inverse-entity-row-count weighted physical-target MSE after outer-train-only standardization.  It has no entity ID, support, q or query-target input.
+
+Runner/launcher/analyzer SHA-256 values are `5b2d919be05c97fccc8c83474970dd5fa934ca45a1fe21a589fc9b08f3c2db0b`, `88d0ac810cb90c3207acb568241195a549a6d307b733d6cbdd2c52529b71ac74`, and `dff9f69eec2b3eafde22bb08ce87214ffaa0dd7a090c5646bbbb3adbd45b0aa7`.  Main-agent compilation/diff-check and all three focused tests passed.  Immediately before launch, host GPUs 2--5 were each at 4 MiB with no compute process; 0/1/6/7 were occupied by other users and untouched.  Formal tmux `crystal_cp_noq_20260829` is active at `runs/thermoml_crystal_cp_no_q_temperature_mlp_development_20260829/`: first observation `0 completed / 4 active / 21 pending / 0 failed`.  Confirmation remains unopened.  Do not report partial scores as terminal evidence.
+
+## 112. Expression endpoint reaffirmed independently of raw q and predictive superiority (2026-08-29 09:38 CST)
+
+The user reconfirmed the paper's primary interpretability endpoint: a compact expression is successful when strict unseen-entity/support-query evaluation in physical units reaches pooled `R2 >= 0.85` and the expression offers a credible stage-wise scientific clue. It need not recover the initially learned raw `q`, a preselected physical variable, or a unique true law. Decoder-functional coordinates, structure-recalibrated q, and other response-aligned low-dimensional coordinates are eligible.
+
+This clarification changes no frozen threshold or already sealed protocol; it fixes claim hierarchy. Starry ZT has already passed this endpoint in an untouched temporal cohort. Crystal-Cp v4 passes it on development OOF data (`R2=0.8593003362`) through the readable smooth-background plus near-boundary-anomaly structure, but its untouched temporal confirmation remains mandatory before claiming external generalization. Beating PCHIP/kNN/CNP/FPCA/no-q MLP, recovering the original raw-q gauge, and identifying a unique mechanistic law are separate stronger endpoints. Failure of one of those stronger endpoints must not erase a valid expression result, while an expression pass must not be presented as predictive superiority.
+
+## 113. Crystal-Cp matched no-q terminal analysis (2026-08-29 09:43 CST)
+
+The formal no-q chain is terminal at 25/25 successful CUDA cells with zero failures and exact spread/prefix/four-support query coverage `17,704/17,897/22,754`. The independent analyzer passes every integrity gate and confirms exact query-target perturbation invariance. Five-seed pointwise-median pooled physical R2 is `0.0957131964` for spread, `0.0965977177` for prefix, and `0.1220088881` for four-support. Spread median/p95 entity NRMSE is `3.583923/39.649466`, and only 14/247 entities reach individual R2 at least `0.85`. The matched temperature-only MLP therefore does not explain the transition expression's development OOF `0.8593003362`; entity-specific support information is essential.
+
+The first independent analyzer invocation stopped before creating its analysis root because CUDA-saved float32 predictions and CPU checkpoint replay differed at backend rounding level. The final audit compares outer-train-standardized predictions with `rtol=1e-6, atol=5e-6`, records the maximum standardized difference `3.5762787e-6` and maximum physical difference `0.00343035`, and retains exact artifact hashes. This is a reproducibility-tolerance clarification, not a scientific-result change. Analyzer/decision/analysis-manifest SHA-256 values are `df6f4a9d380a1f723550c290ead37b14992b52b4711ed684f357992bfef002c2`, `6f2bd61f82f20cfa843e600c779a912fbdb595cbaab9d388118f41f27e7b845a`, and `f281e39e65e11aa863747f89d052b4befb8f013f156db3c299b9ef01f805afd1`. The readable result is `runs/thermoml_crystal_cp_no_q_temperature_mlp_development_20260829/analysis/NO_Q_TEMPERATURE_MLP_ANALYSIS.md`. Confirmation remains unopened.
+
+## 114. Crystal-Cp support-CNP formal launch (2026-08-29 09:49 CST)
+
+The 25-cell `support_cnp` matrix is formally active on physical GPUs 2--5 at `runs/thermoml_crystal_cp_support_cnp_development_20260829/`. Immediately before the successful launch, host-level `nvidia-smi` showed all four selected cards at 4 MiB, 0% utilization and no compute PID; cards 0/1/6/7 were occupied by other users and untouched. The first live state is `0 completed / 4 running / 21 pending / 0 failures`, with fold0 seeds0--3 on GPUs 2--5 and about 717 MiB observed per card. The isolated host-visible tmux socket is `lvs_crystal_cp_cnp_20260829`, session `crystal_cp_cnp_20260829`. Confirmation remains unopened and no partial score is a terminal claim.
+
+Two pre-training infrastructure failures are preserved. The first reused a default tmux server without NVIDIA device visibility and created only an empty `logs/` directory. The second host-visible launch exposed a shared-machine guard bug: compute processes on unrequested GPUs 0/1/6/7 were mapped into a PID dictionary containing only requested GPUs 2--5, raising `KeyError('0')` before any cell. Their empty roots were moved to `runs/thermoml_crystal_cp_support_cnp_development_20260829_infrastructure_failure_tmux_gpu_namespace_20260829_0945/` and `runs/thermoml_crystal_cp_support_cnp_development_20260829_infrastructure_failure_foreign_gpu_pid_keyerror_20260829_0948/`. The launcher now ignores process rows outside the requested GPU set; the existing scheduling test includes a foreign busy GPU and the full focused suite passes 4/4. Current launcher/test SHA-256 values are `56553eab89f6ae9404f177850d5a4dc50193e33d128646abd3a51de42f4a2609` and `9bd9e0699f3fe733bb9d2474640af789f8d7749397537315064225b728596911`.
+
+## 115. Crystal-Cp neural/GIRD real-data smoke passes before formal launch (2026-08-29 09:53 CST)
+
+A repository-local, non-counted fold0/seed0 CPU smoke completed successfully at `runs/_smoke_thermoml_crystal_cp_neural_gird_real_20260829/`. It used two epochs, three Adam calibration steps, two stable-GN steps and one affine gauge; `scientific_selection_eligible=false`. The cell produced every expected checkpoint, q, support/query, calibration-path, decoder-probe, canonical-coordinate, dictionary, GIRD, gauge and prediction artifact. It records 203 outer-training and 44 outer-test entities, 150 optimizer/q/backward steps, 38,004 processed examples, 163,422 prediction rows, global-regularizer scale sum `1.0000000000000009`, zero query-target perturbation difference, and `four_support_conditional_status=READY_FOR_ANALYSIS` with four contributing lambda folds. Training/calibration wall times were `5.25/22.70 s` on CPU; these shortened timings and all smoke metrics are plumbing evidence only. The formal neural/GIRD root remains absent and must not be launched until the active support-CNP matrix releases GPUs 2--5 and availability is rechecked.
+
+## 116. Crystal-Cp support-CNP first transition (2026-08-29 09:58 CST)
+
+The formal support-CNP controller has completed its first four of 25 cells with zero failures and dispatched the next four, leaving 17 pending. Fold0 seeds 0--3 each finished 1,000 epochs with exactly 13,000 optimizer updates and 13,000 backward calls; their training wall times were 523--531 seconds. Host-visible GPUs 2--5 remain occupied only by the next CNP cells at about 821--823 MiB each and 10--12% utilization. Cards 0/1/6/7 remain occupied by unrelated users and were not touched.
+
+The four early fold0 spread pooled physical R2 values are `0.08324/0.06762/0.06194/0.07668`; prefix values are about `0.013--0.015`, and four-support values are negative. All query-target perturbation differences are exactly zero. These are partial, single-fold per-seed observations and must not be promoted to a terminal comparison; the independent analyzer remains gated on 25/25 completion and pointwise five-seed aggregation.
+
+## 117. Crystal-Cp confirmation transaction design and CNP second transition (2026-08-29 10:08 CST)
+
+The support-CNP controller has now completed 8/25 cells, keeps four active, has 13 pending and zero failures. GPU/process observations remain healthy and each cell takes about 8.8 minutes. No partial score has been promoted.
+
+A read-only design review of the eventual Crystal-Cp confirmation established a mandatory pre-confirmation step that was not yet implemented: OOF fold checkpoints cannot be reused as temporal-confirmation models. After CNP and neural/GIRD development analyses become terminal, five-seed all-development CNP, auto-decoder/GIRD and no-q packages plus the selected FPCA/dictionaries must be generated and sealed. The confirmation runner must then follow the already proven ThermoML transaction pattern: verify the seal and code hashes; derive a unique root from the seal hash; atomically write and fsync an exclusive consumed lock and first hash-chain receipt before opening any selected response; materialize exactly 86 entities/62 DOI/11,447 rows; build separate redacted inference views for spread/prefix/four-support; run separate million-unit perturbation probes; and append either a terminal-success or failed-and-consumed receipt. A failed first attempt is still consumed and cannot be retried.
+
+Metadata-only confirmation coverage is already fixed without response access: spread support/query `2,890/8,557`, prefix `2,829/8,618`, and four-support `344/11,103`. The v4 transition expression is eligible only for the frozen spread endpoint because its stage detector requires at least five support points; it must not be retrofitted to the four-support regime. Final confirmation code, method registry, all-development checkpoints and their hashes cannot be sealed until CNP and neural/GIRD development are terminal.
+
+## 118. Canonical-response claim gate supersedes the old MATR-centered gate (2026-08-29 10:16 CST)
+
+`ICLR_CANONICAL_RESPONSE_CLAIM_GATE_20260829.md` is now the authoritative claim hierarchy and ICLR stopping rule. The older `ICLR_CLAIM_EVIDENCE_GATE_20260828.md` is intentionally retained as a historical record rather than silently overwritten. The new gate separates support-state evidence, affine-gauge/canonicalization evidence, the user-defined interpretable-expression endpoint, and the independent stronger predictive-superiority endpoint. It records Starry ZT and ThermoML vapor-pressure temporal confirmations, Crystal-Cp v4 development evidence and uncertainty, the pending CNP/neural/confirmation gaps, prohibited title/abstract claims, and the exact transactional confirmation requirements. The main report links this gate from its leading 2026-08-29 narrative notice.
+
+At the same timestamp, formal support-CNP progressed to 12/25 completed, four running, nine pending and zero failures. No partial score was promoted and confirmation remains unopened.
+
+## 119. CNP checkpoint replay tolerance audited before terminal analysis (2026-08-29 10:21 CST)
+
+A read-only CPU replay of the completed fold0/seed0 CUDA checkpoint exposed that the original analyzer's physical-unit absolute tolerance `1e-5` was not a valid backend-reproduction gate. The CPU/CUDA maximum differences in outer-train-standardized target units were only `4.77e-7/4.77e-7/5.72e-6` for spread/prefix/four-support, while multiplication by the physical target scale produced maximum physical differences up to about `0.00332`. The previous gate would therefore have rejected an identical checkpoint solely because of float32 backend rounding.
+
+The independent analyzer now compares replay in the exact standardized coordinate optimized during training with fixed `rtol=1e-6, atol=1e-5`, and records both the maximum standardized and maximum physical differences in the formal decision. This changes no model, prediction, metric, method selection or scientific gate. A focused regression test verifies that a `6e-6` standardized discrepancy passes even when the physical scale amplifies it above `1e-3`, while a `2e-5` discrepancy fails. The complete focused suite is `5 passed`; compilation and `git diff --check` pass. Current analyzer/test SHA-256 values are `a0837b29f9aace0d0a38fcc58eb71fcc3c9af9374599eb1bb08e628a5a05cacc` and `49fab1a774caec15395a40b084ded66e41f3116cd8e58b567a8d33fbb43a1aa6`.
+
+## 120. Support-CNP terminal analysis and neural/GIRD formal launch (2026-08-29 11:00 CST)
+
+The formal support-CNP matrix reached 25/25 successful cells with zero failures. All cells used the frozen DeepSets `(128,128)` support encoder, `(256,128)` query head, 1,000 epochs, exact entity batches and episode schedule; total training time is 13,434.45 seconds across cells and total optimizer/backward calls are both 320,000. Confirmation remained unopened.
+
+The independent analyzer required two additional non-scientific repairs before it could run. First, its exact query coverage gate compared equal ID sets in CSV order rather than as sorted multisets. Second, it mechanically constructed `four_support_role`, although the sealed column is `four_role`. Both failures occurred before `analysis/` creation. The analyzer now uses an explicit frozen regime-to-role mapping and sorted exact multiset comparison; duplicate IDs still fail. Regression tests cover reordered IDs, duplicate IDs and the exact three-column mapping. Together with the standardized replay audit, the final focused suite is 6/6 passed. Final analyzer/test SHA-256 values are `d6a3f438d7875c5beab843ae359ce1093db2736b64ef282b03aa07b4cddba7a2` and `576e3b49b4f4e814ae09b7fbd8a3b3cdb0f940ca9b48dc97bf396bc81b94892a`; decision/analysis-manifest hashes are `0fefb4afc47aabd5ca14dd38fca7465184f129925fe570bb51a11ce4568bcc80` and `19cfcca06d11b38a6a40c264fd11c3793f09fbb6603a8c7b3991a2f6d09dcae9`.
+
+All CNP integrity gates pass with exact spread/prefix/four-support query coverage `17,704/17,897/22,754`, five predictions per query point, finite predictions, 247 entities, exact query-target invariance and checkpoint replay. Five-seed pointwise-median pooled physical R2 is `0.3464951730` for spread, `0.2744412333` for prefix and `0.0464183028` for four-support. Spread median entity R2 is `0.867179`, 126/247 entities reach individual R2 at least 0.85, median/p95/max NRMSE is `0.364446/2.840361/20.590272`, and 1,375 predictions are negative. Entity/DOI bootstrap pooled-R2 intervals are `[0.161913,0.991570]` and `[0.136919,0.991619]`. Across entities the median five-seed prediction-rank Spearman is 1.0 but the 5th percentile is about 0.649; within-seed support-offset prediction-rank Spearman median/5th percentile is `1.0/0.99756`, with median offset-pair RMSE `1.7767` physical units.
+
+Durable interpretation: learned support conditioning is substantially stronger than the support-blind no-q MLP (`0.3465` versus `0.0957`) but remains far below the v4 stage expression (`0.8593`) and local PCHIP/linear/kNN. The gap is concentrated in high-amplitude/tail entities. This closes the missing fair learned support-aware baseline; it does not by itself prove that explicit raw q is necessary. The main report and `ICLR_CANONICAL_RESPONSE_CLAIM_GATE_20260829.md` now include the terminal CNP result.
+
+Immediately after CNP released the cards, host `nvidia-smi` showed GPUs 2--5 at 4 MiB with no compute PID. Fourteen neural/GIRD focused tests, compilation and all frozen runner/launcher/analyzer/adapter hashes passed; its formal root was absent. The 25-cell neural/GIRD matrix was then launched on GPUs 2--5 in isolated tmux socket `lvs_crystal_cp_neural_gird_20260829`, session `crystal_cp_neural_gird_20260829`. First state is four active fold0 seeds, 21 pending, zero failures; each PID established a CUDA context using about 698 MiB. Runner/launcher/analyzer/adapter hashes are `d296d75b56dc5857cba8c4c53d25ed610d57e7cb91f0622154ce2e44a3c7d723`, `13fbbd6bc4136c7226e037f95d438ed3e0a4ab184f745e00bbe34e61819589ba`, `b1bb7826bcaf003c37823c4f243e6360856a6eef677fbe02a782d0784a0bd210` and `0b402d6c6b7fe7b474e11046ec0c158e12bf1f5def5695d4bc0658119a30ee80`.
+
+## 121. Expression endpoint and Crystal-Cp confirmation contract review (2026-08-29 11:10 CST)
+
+The user again fixed the durable success criterion: a compact symbolic expression is interpretable enough for the paper when strict unseen-entity support-to-query evaluation reaches physical pooled `R2 >= 0.85` and its named terms provide a credible stage-wise scientific clue. The coordinate may be decoder-functional, support-recalibrated, or otherwise response-aligned. It need not equal the first learned raw `q`, a preselected physical quantity, a unique law, or the true microscopic mechanism. Predictive superiority over PCHIP/kNN/CNP/FPCA/no-q remains a separate stronger endpoint and cannot be inferred from this criterion.
+
+`THERMOML_CRYSTAL_CP_SINGLE_USE_CONFIRMATION_CONTRACT_20260829.md` now freezes the transaction boundary, exact 86-entity/62-DOI/11,447-row cohort, three metadata-only support/query regimes, redaction and million-unit perturbation tests, receipt-before-target-access order, failure-consumes-once rule, and spread-only eligibility of v4. Main-agent review found and corrected two draft inconsistencies before acceptance: the comparison package now states five sealed neural seeds rather than three, and the primary expression gate requires finite complete predictions rather than all-positive predictions. Negative predictions remain mandatory diagnostics; they cannot be used to remove entities or change the frozen `R2 >= 0.85` point gate. The synthetic contract suite passes 3/3 and opens no confirmation response or formal confirmation root.
+
+At the same timestamp, the neural/GIRD formal run remained healthy at 0/25 terminal cells, four active fold0 seeds, 21 pending and zero failures. GPUs 2--5 each used about 799 MiB at 31--35% utilization; the four cell processes each used about 97% CPU after roughly 15 minutes. No partial metrics were promoted and confirmation remained unopened.
+
+## 122. All-development CNP packager accepted and paired v4/CNP tail advantage quantified (2026-08-29 11:16 CST)
+
+The independent all-development support-CNP packager now trains five seeds on all 247 development entities/159 DOI/23,742 rows with the exact formal DeepSets `(128,128)` encoder, `(256,128)` query head, three-regime episode schedule, 1,000 epochs and 16,000 optimizer/backward calls per seed. It never references confirmation selection/source/response paths. Main-agent review strengthened `verify_package`: it now validates formal coverage and budget, every seed's provenance and terminal summary, every nested artifact hash, reconstructs the CNP, loads the checkpoint, checks finite weights and verifies checkpoint/JSON normalizer equality. A nested-training-history tamper regression was added. The component package explicitly sets `authorize_confirmation_evaluator=false` and requires a later joint component/code seal. The final support-CNP packager/test SHA-256 values are `410636116d6de7ba1beaf6816c9a981f477d86bdc68aa903ec1741bbad39e7a9` and `61e05a7a672940b9e4ac1b22973a0a5cda19a126b28ad4bb7c2c51eed4240c0c`. Formal all-development training has not started and must wait for the current neural/GIRD development matrix to release or share the authorized GPUs safely.
+
+A source-row-exact read-only pairing of terminal development artifacts adds an important descriptive comparison. The CNP spread median file SHA-256 is `670b5c863452316bb49ba222e45fdae880f023c19cb5c2810fd0215d2d98c029`; the v4 OOF point file SHA-256 is `02234fe74379d02a94a645e92016666a50f7546719d0b3002e78c5a6190ea122`. After filtering v4 to `method=transition_selected`, both contain the same unique 17,704 query `source_row_id` values and identical targets. Using each entity's query-target standard deviation as the common NRMSE denominator, v4 is lower on 243/247 entities (`98.38%`); after grouping entity NRMSE by DOI median, v4 is lower on 156/159 DOI (`98.11%`). CNP versus v4 median NRMSE is `0.364446/0.029578`, p95 is `2.840361/0.211864`, and maximum is `20.590272/1.744952`. This supports a broad paired tail advantage over the generic learned support encoder, not predictive superiority over PCHIP/linear/kNN and not raw-q necessity. Confirmation remains unopened.
+
+## 123. All-development neural/GIRD trainer and component registry accepted (2026-08-29 11:23 CST)
+
+Development-only infrastructure now exists for the eventual five-seed all-development auto-decoder/GIRD refit. Its contract freezes all 247 entities/23,742 rows, q=4, `(256,128)`, 1,000 epochs, label-balanced physical MSE, q-L2/HSIC/continuity regularizers, stable GN, 41 probes, OMP/rank/condition rules and the sealed v4 basis adapter. The formal trainer fails before creating its output root until a new `analysis/all_development_decision.json` binds the terminal 25-cell launcher, independent aggregate decision and manifest. It has no defaults for per-regime decoder/direct-target K, spread/prefix lambda, four-support conditional state or claim status; none may be inferred from partial cells or smoke data. After K is frozen, atom identity is deterministically recomputed on all development entities and is an artifact, not another selection.
+
+Each seed will save a loadable model/embedding checkpoint, label map, normalizer, q prior, four Hadamard starts, stable-GN q/path/Jacobian/probes, decoder/direct-target dictionary inputs, complete OMP paths and selected dictionaries. The packager verifies every nested hash and produces a pointwise-five-seed registry for raw auto-decoder, decoder-functional, support structure re-q, all fixed-lambda GIRD endpoints, selected/conditional GIRD, support OMP, decoder-only and direct-target dictionaries. The component seal explicitly keeps `authorize_confirmation_evaluator=false`; a later joint baseline/code seal is still required.
+
+Main-agent review added three reproducibility gates before acceptance: formal Torch inter-op threads now match the 25-cell runner; every all-development seed must have exactly `1000*ceil(23742/256)=93,000` theta steps, q steps and backward passes plus 23,742,000 processed examples; and package verification binds manifest/checkpoint seed identity. A terminal ledger was added per seed. After the terminal-decision review described in section 126, the final focused and compatibility suite passes 26/26, compilation and diff-check pass, and both neural/GIRD and CNP formal all-development roots remain absent. Current plan/preparer/trainer/packager/preparer-test/trainer-test SHA-256 values are `7351d585d4e6ad17ae8686d1d41b8397586bcb8c99803b6d2238839c14ef012f`, `1c66eed8401f33997e5914cb3b2ce60b27acd06bd690a5ca1c0365881286ed80`, `0d5f5f2f173f2287292d26171fad34720447edb151346c8b4e42e65f22ec3b58`, `ed8368bcad31ef77629b61dbc89099d7157d3edf4432fe520bc50e561523d508`, `19460d6370c4ca0728454f960c79bdceecdabe7444a2d643e6b3efb197f463ae` and `d80c0fb98629acaa57c0c6c0f158d2b9d7de65b4349a15684d09778afe801100`. At this timestamp the formal development matrix remained 0 completed, four active, 21 pending and zero failures; confirmation remained unopened.
+
+## 124. All-development matched no-q component accepted (2026-08-29 11:29 CST)
+
+The all-development matched no-q packager now trains five temperature-only `(256,128)` seeds on all 247 development entities/159 DOI/23,742 rows for 1,000 epochs, Adam `1e-3`, batch 256 and inverse-entity-row-count weighted standardized physical-target MSE. Each formal seed must make exactly 93,000 optimizer/backward updates. It records an all-development-only normalizer, checkpoint, history, summary, terminal ledger, seed manifest and package-level nested hash inventory. It has no entity ID, support, q or query-target input and never references confirmation selection/source/response.
+
+Main-agent review corrected the initially untested handoff by using the existing `.venv-lvs-gpu` environment; the combined all-development/formal no-q and CNP suite passes 16/16, compilation and diff-check pass. The no-q checkpoint now preserves the exact outer-runner top-level temperature/target normalizer fields as well as the structured normalizer, and package verification actually reconstructs the MLP, loads the state dict, checks finite weights and verifies checkpoint/JSON normalizer equality. Both no-q and CNP component packages explicitly keep `authorize_confirmation_evaluator=false`. Final no-q packager/test SHA-256 values are `7d00b8c2a6b95bd222ae0e2f0f34b23d08629afdd501db013f65c7db091768f1` and `76c82f82ee003f8c7d414930d22c007db5410740ff96cd03b1de6380851a14b2`. Its formal root remains absent and confirmation remains unopened.
+
+One infrastructure warning is external to the project: `/tmp` briefly reached 100% inode usage and caused an `apply_patch` sandbox-mount failure even though project pytest temp/caches stayed repository-local. No unrelated `/tmp` material was removed or moved. The inode pressure later dropped to 96% without intervention, and all project verification completed under `runs/_runtime_cache`.
+
+## 125. GIRD algorithm box and all-development FPCA component accepted (2026-08-29 11:38 CST)
+
+`LATENT_Q_INTRO_MOTIVATION_THEORY_RELATED_WORK.md` now states GIRD as one reproducible algorithm rather than scattered diagnostics. Development cross-fits the decoder by entity/DOI, calibrates inner-heldout q in response space, selects a shared named dictionary by deterministic multi-response OMP, chooses K/lambda/rank gates only through nested development folds, then refits the decoder on all development entities after those degrees of freedom are frozen. At inference, an unseen entity's support yields a decoder-functional prior and a structure design in the same probe-Gram metric; the method falls back exactly to lambda zero when support identifies the dictionary, enables a frozen finite prior only when structure support is ill-conditioned and decoder support is identifiable, and keeps lambda zero/infinity, direct-target dictionary, FPCA, CNP, interpolation and no-q endpoints visible. Raw q is diagnostic rather than a named scientific output. This algorithm box separates decoder learning, readable coordinates and neural-prior incremental value, so failure of the stronger bridge cannot erase a valid external expression and an expression cannot impersonate a bridge pass.
+
+The all-development FPCA component packager is independently ready. It verifies the exact terminal OOF raw manifest, selection, decision, analysis manifest, runner/analyzer and sealed data hashes, then refits the 101-point normalized-temperature basis on all 247 development entities/159 DOI/23,742 rows without any confirmation access. It copies the frozen OOF configurations without reselection: spread/prefix `(3 components, ridge 1e-4)` and four-support `(3, ridge 0)`. A main-agent read-only validation gives components shape `(101,101)`, basis rank 101 and minimum support ranks `3/2/3` for spread/prefix/four-support; prefix rank deficiency is retained and regularized rather than hidden. The component saves mean/components/grid/singular values/normalizer/config/rank diagnostics with nested hashes and keeps `authorize_confirmation_evaluator=false` pending the joint seal. Focused plus compatibility tests pass 6/6, compilation/diff-check pass, and the formal root remains absent. Packager/test SHA-256 values are `9a315966da454ec13d603eb469498e988779b20292cc1651618bc4c69c0eb40d` and `35f8942c86624493a31beab1f182f3a58b6dc49cef1939e6a0e6625a33d19166`. Confirmation remains unopened.
+
+## 126. Pragmatic expression endpoint reaffirmed and terminal-decision semantics corrected (2026-08-29 11:46 CST)
+
+The user explicitly reaffirmed the pragmatic paper endpoint: a compact expression with strict unseen-entity support-to-query physical pooled `R2 >= 0.85` is sufficiently interpretable when its terms offer a credible stage-wise clue. It does not need to equal the first/raw q, recover a preselected physical variable, identify a unique law, or be microscopically correct. This is already the authoritative endpoint in the canonical claim gate and main report. Predictor superiority remains a separate stronger endpoint, so a stronger PCHIP/kNN score cannot erase a valid interpretable-expression result, and an expression pass cannot be relabeled as predictive SOTA.
+
+Before any terminal neural/GIRD aggregate or all-development output existed, main review found two implementation-only defects in the new decision extractor. The aggregate analyzer emits conditional scientific verdicts `PASS/FAIL/NOT_TESTED`, while cells emit evidence-availability states `READY_FOR_ANALYSIS/NOT_TESTED`; the first extractor draft incorrectly expected the cell vocabulary at aggregate level. The corrected frozen rule copies `PASS/FAIL/NOT_TESTED` into `claims.conditional_gird_status`, maps aggregate `PASS` or `FAIL` to deployment `READY_FOR_ANALYSIS`, and keeps `NOT_TESTED` undeployed. A regression test proves that a failed scientific claim still freezes the available comparator rather than deleting it. The extractor also now permits its already-existing formal `analysis/` parent while still requiring the output itself to be absent. No data, metric, selection, threshold or result changed.
+
+The corrected selection-rule SHA-256 is `8de7ee18c6dcb9d4bf82a6bb928b613ddc909282e015d3efaef9981b4df6668d`. The four-file neural/decision compatibility suite plus cell/shell tests passes 26/26; compilation and `git diff --check` pass. The live neural/GIRD matrix remains `0 completed / 4 active / 21 pending / 0 failures`, with fold0 seeds 0--3 on GPUs 2--5 using 790 MiB per process at about 9--11% instantaneous GPU utilization. Other users' jobs on GPUs 0/1/6/7 remain untouched. The legacy extended campaign remains terminal at 2910/2910 with zero failures. Confirmation remains unopened, and no partial neural score has been promoted.
+
+## 127. Formal all-development FPCA sealed and independent ICLR gap audit returned (2026-08-29 11:54 CST)
+
+The formal all-development FPCA component is now terminal at `runs/thermoml_crystal_cp_all_development_fpca_20260829/`. It uses all 247 development entities/159 DOI/23,742 rows and copies the already frozen OOF choices without reselection: spread/prefix `(K=3,ridge=1e-4)` and four-support `(K=3,ridge=0)`. Independent `verify_package(..., expected_formal=True)` passes and the combined single-use-contract plus four-component package suite passes 27/27. Component-seal and manifest SHA-256 values are `e94291df93fd99118e9769cf0ac922d155011428658ca5907cd752daa188ed14` and `768a1cdc319b446fb8d5334f4fbaa154fa0e94d9bccd32d70cac99955417c193`. The seal retains `authorize_confirmation_evaluator=false`; confirmation remains unopened.
+
+A fresh read-only ICLR gap audit, which opened no confirmation source and used no GPU, identified the two decisive remaining method-level risks even if Crystal-Cp temporal R2 passes 0.85. First, the strongest equations currently come from response projection or support-only structure re-q rather than a demonstrated end-to-end raw-q bridge; the active neural/GIRD terminal result must decide whether the learned decoder prior adds measurable value. Second, the theory is basis-relative affine-gauge canonicalization, not arbitrary nonlinear identifiability or automatic recovery of true physical variables. Other durable risks are lack of prediction superiority over PCHIP/kNN, formula families varying across case studies, and pooled R2 hiding entity tails/development-selection risk. Recommended main line: gauge-aware response-space canonicalization for support-conditioned scientific curves, with prediction SOTA, unique raw-q recovery, causal mechanism and universal law explicitly prohibited unless new evidence supports them.
+
+## 128. Joint Crystal-Cp confirmation seal boundary frozen (2026-08-29 11:56 CST)
+
+`THERMOML_CRYSTAL_CP_JOINT_CONFIRMATION_SEAL_PLAN_20260829.md` now freezes the final target-blind assembly boundary; SHA-256 is `200350b7276e975a84f7de234712ffe6fd8811b89430045118eac28086a44758`. The required inputs are the metadata-only 86-entity cohort seal and archive hash, v4 expression package/audit, terminal local-baseline selection/audit, five-seed CNP/no-q/neural-GIRD components, the already terminal FPCA component, and the final evaluator/analyzer/code/test/document hashes. It explicitly copies kNN sizes spread/prefix/four-support `2/1/2` from development without reselection. The fixed joint root remains absent; assembly cannot open an archive member or selected source JSON and cannot authorize a second attempt.
+
+The plan keeps the expression and predictive endpoints separate, freezes the full method registry, and requires component-level `authorize_confirmation_evaluator=false` until one complete joint seal supersedes it. Only the joint seal may set `sole_authorized_confirmation_attempt=true`; its hash names the consumed root. The evaluator itself still must not be constructed until all 25 development cells and all-development components are terminal, as required by the single-use contract. At the latest host check the first four neural/GIRD cells had about one hour of continuously increasing CPU time at roughly 99% each, so they were progressing rather than stalled; state remained 0 completed, 4 active, 21 pending, 0 failures.
+
+## 129. Guarded four-GPU all-development continuation is active (2026-08-29 12:04 CST)
+
+A new minimal orchestrator, `scripts/launch_thermoml_crystal_cp_all_development_4gpu_20260829.py`, now binds the reviewed development analyzer/preparer, CNP/no-q/neural-GIRD/FPCA sources, exact formal roots and the existing GPU availability guard. It refuses to act unless development is cleanly terminal at exactly 25/25 with no active/pending/failures and no confirmation access. It then runs the frozen aggregate analyzer and all-development decision extractor if absent, verifies the terminal FPCA component, requires all four requested GPUs idle, and dispatches the CNP bundle, no-q bundle and five neural seeds without overwriting or retrying a failed task. After the seven GPU tasks succeed, it packages neural/GIRD and independently verifies the formal CNP, no-q and FPCA packages plus the exact neural seal.
+
+The orchestrator and focused-test SHA-256 values are `65ef0af355579514c143cad86195f17ece85fb2fc40279661446477caada29d5` and `04737fa542b1a52975edb91815de7e650e94a8660b44af797e3deae30e671f7c`; the combined launcher/decision/component suite passes 30/30, compilation and diff-check pass. Host tmux socket/session `lvs_crystal_cp_all_dev_20260829:crystal_cp_all_dev_20260829` is active with `--wait-for-development`. While waiting it creates no campaign/component root and occupies no additional GPU; this was verified immediately after launch. On development `completed_all`, it will proceed only after the same reviewed source hashes and idle-GPU gate still pass. Its log is repository-local at `runs/_runtime_cache/launch_logs/crystal_cp_all_development_20260829.log`. Confirmation remains unopened.
+
+## 130. Canonical-map invariance strengthened beyond affine charts without overclaiming calibration (2026-08-29 12:06 CST)
+
+The theory now separates two scopes that the previous prose could invite reviewers to conflate. Proposition 1A defines probe-response equivalence directly: any two model/state representations that produce the same fixed physical probe response have exactly the same fixed-basis canonical coefficients, regardless of latent dimension, architecture, redundancy, invertibility or whether an explicit chart map exists. Thus the canonical map factors through the probe-response quotient; this representation-invariance theorem is not limited to affine gauges. It remains basis/probe relative and says nothing about causal or unique physical variables or response equality outside the probes.
+
+The independently rerun support-to-q calibration algorithm has the narrower scope already established experimentally: global affine chart, full-rank support Jacobian, fixed response-space line search and stable QR/SVD Gauss--Newton. It is not claimed equivariant under arbitrary nonlinear test-time reparameterizations. The canonical claim gate and main report now state this split explicitly. Current theory/claim-gate/main-report SHA-256 values are `8dd6ded237b5dd33f3027dbdbb6301a65243424e28364a63e0a54f44f307c69b`, `721811d620ed00ecfdd5c27daef6455009efaaadef3f0ad75dbd2519a2ff62ce` and `6beaf4a8a4e1f452dbd039250615a3d678f7f6e969429de5f2b7bb3f1c35c9c8`. This addresses the ICLR audit's concern that the paper might accidentally present a conditionally affine calibration result as the entire invariance theorem, while preserving all empirical limitations.
+
+## 131. Pragmatic endpoint integrated into the reviewed ICLR paper plan (2026-08-29 12:22 CST)
+
+The user's durable criterion was integrated without changing its threshold: strict unseen-entity support-to-query physical pooled `R2 >= 0.85` plus a compact expression and credible stage-wise clue is the mandatory interpretability endpoint. It does not require the initial/raw q, a preselected physical variable, a unique true law or a microscopic mechanism. Decoder-functional and support structure-recalibrated coordinates are eligible. Predictive superiority remains a separate stronger endpoint.
+
+The new root-level `PAPER_PLAN.md` and its timestamped source `PAPER_PLAN_20260829_121500.md` define the ICLR story as gauge-aware response-space canonicalization. The confirmed core branch is `support -> named basis -> stable structure re-q`; the optional learned-prior branch is `support -> calibrated decoder response -> canonical prior -> rank-aware GIRD`. Starry ZT and ThermoML vapor pressure are the two one-shot temporal confirmations. Crystal-Cp remains a pending third-domain stress test, and its terminal learned-prior increment is the go/no-go gate for promoting GIRD to a headline method contribution. The plan fits exactly 9.00 pages including title/abstract, limits the main body to three figures and two tables, and assigns all numbers to raw evidence roots.
+
+An independent GPT-5.6-Sol xhigh outline review scored logical flow `8/10`, claim--evidence alignment `7/10`, experimental completeness `6/10`, prior-work positioning `5/10` and nine-page feasibility `4/10`, with a pre-revision Weak Reject/Borderline recommendation. The minimum fixes were applied: support re-q and neural-functional evidence are explicitly separated; the external functional `R2=0.9904` is diagnostic rather than the confirmed vapor-pressure expression; GIRD is optional until real incremental value passes; unverified priority wording was removed; the stage-wise clue requirement was operationalized as a named basis, coefficient stability and a falsifiable hypothesis; and the figure/table count was reduced. The reviewer judged the `R2 >= 0.85` expression-fidelity endpoint coherent and the prediction-SOTA separation clean. The remaining ICLR risk is algorithmic novelty if the frozen real decoder-prior increment is negative.
+
+At 12:22 CST the authoritative neural/GIRD launcher JSON remained actively updated at `0 completed / 4 active / 21 pending / 0 failures`, with `confirmation_targets_opened=false`. This execution container could not access the NVIDIA driver or the host tmux namespace, so no GPU-occupancy claim was made from local `nvidia-smi`; the live JSON, raw results and guarded host orchestration remain the source of truth.
+
+The initial reviewed paper-plan snapshot had SHA-256 `167ca32b1d7b3340f663f6323be09c3bb65f65d280bcd2329e5eb56ccb5ceb4e`; section 132 records the later literature-audited revision. The same operational staged-clue definition was synchronized to the canonical claim gate and beginner-readable main report; their pre-literature-audit SHA-256 values were `95cf545d922418fa5d774d467d44051a8840babec246ac1bb38d113cda0a1094` and `688d14ac21301e4529d8d8e6e98d2f61e972268cbebce7a44b9c479dadf23454`.
+
+## 132. Verified closest-work boundary closes the paper-positioning gap (2026-08-29 12:33 CST)
+
+`ICLR_CLOSEST_WORK_NOVELTY_MATRIX_20260829.md` now records a primary-source search across support-conditioned function prediction, implicit/function-level representations, latent identifiability, canonicalization and neural-to-symbolic equation discovery. It verifies CNP, MetaFun, Function Contrastive Learning, MetaSDF, Functa, Locatello, Khemakhem nonlinear ICA, Syrota metric structures, Ma canonicalization, Dym continuity/impossibility, Champion SINDy autoencoder, Cranmer neural-symbolic extraction, parametric equation discovery, UPINN and LASR. An independent Luna audit additionally surfaced the Khemakhem/Ma/Dym boundary, and main-agent verification used official PMLR/NeurIPS proceedings.
+
+Durable novelty boundary: latent codes, support-conditioned function prediction, test-time adaptation, function representations, generic canonicalization, fixed-basis projection, shared equations with varying coefficients, and neural-to-symbolic extraction are all prior art. It is also false to say that latent variables are unconditionally never identifiable: auxiliary-variable generative assumptions can restore identifiability in a different model class. The defensible candidate is the narrower combination of declared physical probe-response equivalence, exact chart intervention, unseen-entity support-only named equation coordinates, optional rank-aware learned-prior fusion and sealed temporal symbolic evaluation with prediction baselines/tails kept separate. No `first` priority wording is authorized.
+
+The theory document and paper plan now include this boundary. Generic canonicalization is not the contribution; the phrase must be `support-conditioned response-space canonicalization on declared physical probes`. Fixed linear projection is continuous in the probe response, while the independent support-to-response optimizer retains its narrower rank/conditioning and affine-chart guarantees. GIRD remains optional and can become a headline algorithmic contribution only if the frozen real decoder-prior increment passes.
+
+Final SHA-256 values after the literature audit are: paper plan (timestamped and fixed identical) `fc92a691f0a17c2112e3715d68686b675cf95541aae6969b8dbb718cfd7de5e7`; closest-work matrix `556ba794ac99825152a1abc0d9ebd176bd6612233326c7e7d470b1d221f9e3fc`; theory/related-work document `8afda99a6b5a1dcd09d90455c47cf305b519bdbcd3c1fe06048d622bb3158a41`; canonical claim gate `9f454406ada291b8c83aea8f2d4da25ee81d8698aac50afc59d37329d0156a46`. The paper-plan page sum remains exactly 9.00.
+
+At 12:32 CST the authoritative neural/GIRD JSON remained `0 completed / 4 active / 21 pending / 0 failures`, with continuous launcher updates and `confirmation_targets_opened=false`. No partial metric was inspected or promoted.
+
+## 133. Pragmatic expression criterion and paper-branch rule frozen (2026-08-29 12:36 CST)
+
+The user again fixed the mandatory endpoint as a comparatively interpretable and scientifically suggestive compact expression with strict unseen-entity support-to-query physical pooled `R2 >= 0.85`. It need not recover the initial/raw q, a preselected physical variable, a unique law or a microscopic mechanism. Decoder-functional and support/structure-recalibrated coordinates remain eligible. A credible stage-wise clue is operationally evidenced by a predeclared named basis, coefficient stability across seeds or support offsets, and at least one falsifiable domain hypothesis. Predictive superiority and causal truth remain separate stronger claims.
+
+`ICLR_RESULT_TO_NARRATIVE_DECISION_RULE_20260829.md` was frozen before any formal Crystal-Cp cell produced a terminal `result.json`. It prevents post-result story shopping with three branches: GIRD becomes headline only if both the exact 25-cell development gate and single-use temporal incremental-value gate pass; otherwise the paper uses the canonical-response diagnostic branch; a failed Crystal-Cp v4 external expression remains an explicit boundary failure and cannot be relabeled by a neural result. No branch changes the `R2 >= 0.85` expression endpoint or requires original-q recovery.
+
+Decision-rule SHA-256 is `b354d50f75fb467fe3b2abd87cb3f6a8d67f40b98c6efb3dd724ef5830520ec5`. The synchronized timestamped/fixed paper plans have SHA-256 `7b9b5fb74076e8a9943f8b1a9bf383143b24b06233f6006d1d48c2ea59bd5275`.
+
+At this observation the authoritative file was `runs/thermoml_crystal_cp_neural_gird_development_20260829/launcher_status.json` rather than `campaign_status.json`. It reported state `running`, `0 completed / 4 active / 21 pending / 0 failures`, GPUs 2--5 assigned to fold0 seeds 0--3, and `confirmation_targets_opened=false`. The legacy extended campaign remained terminal at 2910/2910 with zero failures. No partial neural metric was inspected or promoted.
+
+## 134. Stage-wise hypotheses audited and Crystal-Cp v4 source corrected (2026-08-29 12:42 CST)
+
+`SYMBOLIC_STAGEWISE_HYPOTHESES_20260829.md` now makes the pragmatic interpretation endpoint independently readable and falsifiable. ZT-H1 tests whether the quadratic coordinate predicts an in-range derivative reversal under denser measurements; VP-H1 tests effective reference vaporization enthalpy and its temperature-correction sign against independent calorimetry; CP-H1 tests whether support-routed heat-capacity upturns persist under measurements extending toward the frozen boundary and are enriched for independent transition evidence. These are stage-wise clues, not causal or unique mechanisms.
+
+The ZT development stability file contains 80 entities under four support offsets. Its pre-existing q-distance Spearman versus offset 0 is `0.978023/0.973300/0.967875`. Direct six-pair recomputation from the 320 coefficient rows gives median/minimum Spearman `0.9017/0.8735`, `0.9739/0.9483`, and `0.9593/0.9397` for the physical intercept, slope and curvature, with curvature-sign agreement at least `0.9625`. Vapor-pressure named-coordinate median offset stability remains `0.9991/0.9762/0.7974`, and joint-coordinate median/minimum is `0.8905/0.8546`. Crystal-Cp v4 selects the inverse-square-root atom in 5/5 folds, degree 2 and delta `0.0003` in 4/5, but routes only `1/3/2/3/3` training entities per fold; it therefore remains a narrow development clue pending confirmation.
+
+The paper plan previously mapped the v4 `R2=0.859300` claim to the older `thermoml_crystal_cp_transition_structure_development_20260829/result.json`, whose actual pooled R2 is `0.839584`. This was a source-path error, not a numerical result change. The authoritative passing v4 source is now correctly mapped to `runs/thermoml_crystal_cp_router_margin_development_20260829/result.json` plus its independent `analysis/decision.json`. The stage-hypothesis audit SHA-256 is `90c69247f461c83c354d7b07bb3d3e56f913c38e11724032cb6eed304a76e4ad`; synchronized paper-plan SHA-256 is `7cef5b7da80469afa832125c360452ca7c1ab95df396bf54659b373e6c9e4497`; updated claim-gate/main-report SHA-256 values are `b16934806f7751349b8f8120d0779754a97b66815be6b95e8d1e23cec6f4d751` and `be7640870455e06696bcfc24455c3bb6fcca55c1cabcd631ac216fbcd2091803`.
+
+At 12:37 CST the formal neural/GIRD launcher remained `0 completed / 4 active / 21 pending / 0 failures`, with zero terminal `result.json` files and `confirmation_targets_opened=false`. The all-development CPU package status remained terminal for seeds 0--2. Local `nvidia-smi` and host tmux access were unavailable in this container, so no conflicting GPU/process inference was made.
+
+## 135. ICLR top-50 completion audit and portability repair (2026-08-29 12:47 CST)
+
+An independent read-only reviewer scored the current requirement coverage as theory `1/2`, unified algorithm `0.5/2`, independent real evidence `1.5/2`, operational interpretability `2/2`, strong-baseline fairness `1.5/2`, negative results/tails `1.5/2`, reproducibility `1/2`, and narrative/page feasibility `1/2`. This `10/16` subtotal is a checklist coverage score, not an acceptance probability. `ICLR_TOP50_COMPLETION_AUDIT_20260829.md` records the authoritative evidence and four hard blockers: terminal learned-method branch decision; all-development/joint-seal/single-use Crystal evidence; an actual 9-page manuscript; and final claim/citation/reproduction/adversarial audits. Its SHA-256 is `e580ec0787f513883b57f439c537af85239a24ea0997e9cd9d84b822c3ca2be0`.
+
+The latest synchronized timestamped/fixed paper-plan SHA-256 after adding this completion audit is `de82fe3947fc5b4c69148f07b943b64ee2b1f20cdad93c20f456147bdbd095c8`.
+
+The repository portability scan found exactly two non-document, non-run hard-coded machine roots: the original gauge benchmark and affine-calibration-extension shell launchers. Both now derive `project_root` from `BASH_SOURCE`, accept `PYTHON_BIN` with portable `python3` default, and fail clearly when torch/numpy/pandas are unavailable. `bash -n`, the environment dependency check and a repeated source-code scan all pass; no `/public/home/wangyg`, `/home/wangyg` or `/tmp/` path remains outside run artifacts, Markdown records or git internals. Launcher SHA-256 values are `c1f2686fc2345edf03fdaf8b10b148ec625e1a31b2e9d0701e0c5bd296704eb6` and `570fa72cd8002f8686649c17aed2689862aa3d823ee47e5bdb732272de3e8f8f`.
+
+The current branch tracks `origin/research/latent-q-stagec-20260826` at `0 ahead / 0 behind`, but the active research worktree remains dirty and new artifacts are not yet committed or remotely synchronized. Treat clean commit/reproduction/remote sync as submission blockers, not as completed merely because an earlier snapshot was pushed.
+
+At 12:45 CST the authoritative neural/GIRD launcher was still actively refreshed at `0 completed / 4 active / 21 pending / 0 failures`, with `confirmation_targets_opened=false`. No partial result was inspected.
+
+## 136. Branch-neutral ICLR Introduction drafted and legacy paper boundary repaired (2026-08-29 12:51 CST)
+
+The `research-paper-writing` workflow was used to draft `paper/sections/introduction.tex`. It has six single-purpose paragraph roles: task, latent-chart challenge, equation-discovery gap, concrete response-canonicalization pipeline, external evidence with adjacent baseline limits, and contributions. `paper/ICLR_INTRODUCTION_AUDIT_20260829.md` contains the required mini-outline, reverse outline, paragraph-level claim--evidence map, self-review and explicit citation gate. The prose survives either Branch A or B: GIRD is described as a rank-aware test and may not enter the title/abstract as a headline algorithm unless the frozen terminal gates pass. Introduction/audit SHA-256 values are `06b296b0bac38d07b4f6dd7afd01a44564d7f124da3e6ed6666eaae6f4586c7e` and `3b20b8d3270ae959ccf0c2dff751fb96ddb105e90f70607f1bacf2e1ffe68c39`.
+
+The old `paper/main.tex` is an AAAI-era historical draft rather than the current manuscript. `paper/README.md` now makes this explicit and points future agents to the ICLR claim/plan/Introduction artifacts. The previously user-excluded dataset was removed from the legacy prose, table and bibliography; a targeted scan of the manuscript, bibliography, current Introduction/audit and paper README finds zero remaining mentions. The legacy draft still compiles successfully to five pages after the removal; it must not be used as evidence for the current submission. README/main/BibTeX/PDF SHA-256 values are `37e816d61856f08416e7603d599f8d5f1632a6700a9aeedc5daef72a03137829`, `433c95d8c8c68d4e2db183947fc6abacb211a54f79d97820c9684ba7a530c586`, `b83f0bcb7f3b8dd896230c2fdf533557277d5c8fbb71cb125ddd5f95aff66d15` and `2769add796370100613017e085efe77989e72010d202be84b0641dd0616633dd`.
+
+The new Introduction citation keys are intentionally marked placeholders until primary-source BibTeX verification; this is a visible blocker rather than a silent bibliography fabrication. At 12:51 CST the neural/GIRD status remained `0 completed / 4 active / 21 pending / 0 failures`, confirmation unopened.
+
+## 137. Current ICLR prose and decision documents made versionable (2026-08-29 12:53 CST)
+
+The historical `.gitignore` ignored the entire `paper/` directory and every root Markdown file except a fixed allowlist. That made the new ICLR Introduction, paper handoff and several frozen decision/audit artifacts invisible to git and therefore unavailable on another machine. The ignore rules now expose only `paper/README.md`, `paper/ICLR_INTRODUCTION_AUDIT_20260829.md`, and `paper/sections/introduction.tex`; legacy paper sources, templates, PDFs and build products remain ignored. The root allowlist now also exposes the fixed/timestamped paper plans, manifest, closest-work matrix, result-to-narrative rule, top-50 audit and stage-hypothesis audit. No experiment output directory was broadly unignored.
+
+`git status --untracked-files=all` confirms exactly those three current paper files are visible, and the root decision documents are also visible. `.gitignore` SHA-256 is `f61d6df7be86444b3aa41d4dd3bbee4a7213e7466729ee045fa703ce7ff84bc4`; latest synchronized paper-plan SHA-256 is `c257ec7940486e2a7f250cd4422b64b7ca469366902642c96a1f0a4987f308b6`. This change makes later commit/push possible but does not itself commit or push the dirty research worktree.
+
+## 138. Common canonical-response and conditional-GIRD Method drafted (2026-08-29 12:57 CST)
+
+The `research-paper-writing` Method workflow produced `paper/sections/method.tex` plus `paper/ICLR_METHOD_AUDIT_20260829.md`. The section defines the unseen-entity support/query setting, probe-response equivalence, the fixed named canonical coordinate, quotient invariance and projection-stability bound, support structure re-q with rank/query-amplification diagnostics, the explicitly affine/full-rank stable-GN calibration scope, nested deterministic GIRD dictionary development, probe-Gram-whitened prior fusion, singular-direction risk decomposition, and the exact rank-aware fallback rule. It is valid under both paper branches: real learned-prior improvement remains a pending claim and cannot enter headline text from this draft alone.
+
+The audit provides the required mini-outline, module design/motivation/advantage table, pipeline sketch, reverse outline, claim--evidence map and self-review. A standalone two-column LaTeX check compiles with no errors, undefined references or overfull boxes and occupies two pages under a generic one-inch-margin article, leaving margin within the planned 2.70 Method pages; the isolated section-title underfull warning is formatting-only. Method/audit/check-PDF SHA-256 values are `cc4ee56cb212bcb52678ffb9cdf53226d4a4f4a8adad09e8084169ab5a5b4040`, `c1c833ff0c27ea4ca0791965deda7f0edbaa24d871031ec4372af2f8df7ffd8b` and `bc250565d9d30ceb40bcf34be9af129e8f7c929edd3792a475a59db46905a05d`.
+
+The `.gitignore` paper allowlist now includes only the current Introduction/Method sources and their audits plus the paper README; legacy templates/build products remain local. Current `.gitignore` and synchronized paper-plan SHA-256 values are `3373021f70fcf0ba9cb404e77ed2ca90c3be85d30ab8bc8c359e4c142f732261` and `db45031eaaeb3be6e3f28926090276aea5868ff41bebd90cb3b64d6c4bb5a986`. At 12:57 CST the formal matrix remained `0 completed / 4 active / 21 pending / 0 failures`, confirmation unopened, with launcher status continuously refreshed.
+
+## 139. Branch-safe ICLR Experiments section drafted (2026-08-29 13:02 CST)
+
+`paper/sections/experiments.tex` now organizes the evidence by four research questions rather than directory chronology. It defines the common unseen-entity/DOI/time protocol and information paths; reports the stable affine gauge intervention and controlled conditional-GIRD result; leads with the one-shot ZT and vapor-pressure expression confirmations; puts coefficient stability, uncertainty, tails and the strongest local baseline adjacent to the headline results; distinguishes raw-q, decoder-functional and support structure re-q evidence; and reports the complete Crystal-Cp development baseline table including the 748 negative predictions and sub-0.85 bootstrap lower bounds. The unopened Crystal section contains only the frozen Branch A/B/C replacement rule and no future metric.
+
+The section uses exactly two booktabs tables and makes no prediction-SOTA, true-q, causal-law or universal-GIRD claim. `paper/ICLR_EXPERIMENTS_AUDIT_20260829.md` contains the required mini-outline, reverse outline, claim--evidence map, fairness/negative-result review and missing-evidence gate. A standalone two-column compilation occupies two pages with no errors, undefined references or overfull boxes. Experiments/audit/check-PDF SHA-256 values are `19a0225eae249bb75f6b1bae2b68299dd876592d612efe8b408ee7397e5584c0`, `e16c2271fe35253081cf72e72770de0e5ecaed6545ab5019f1197d587ce2ea95` and `6c196138ae31d0a297712f6009aa8edc98fb0c6fc142540b3533970dc9cd6a52`.
+
+At 13:01 CST the neural/GIRD launcher remained actively refreshed at `0 completed / 4 active / 21 pending / 0 failures`, confirmation unopened. No partial cell score was inspected or used in the prose.
+
+## 140. Bounded ICLR Related Work drafted (2026-08-29 13:04 CST)
+
+`paper/sections/related_work.tex` compresses the verified closest-work matrix into four mechanism-centered paragraphs: support-conditioned/implicit function representations; latent identifiability, invariant metric structure and canonicalization; learned-coordinate/neural-to-symbolic equation discovery; and the resulting bounded positioning. It explicitly states that context adaptation, fixed basis projection, generic canonicalization, neural-to-symbolic extraction and shared equations with varying coefficients are prior art. The only claimed distinction is the combined audited interface of declared physical probe-response equivalence, support-only unseen-entity coefficients, exact chart intervention, rank/conditioning diagnostics, and sealed temporal expression evaluation. No `first`, generic latent-unidentifiability, unique-basis or universal-prior statement appears.
+
+`paper/ICLR_RELATED_WORK_AUDIT_20260829.md` provides the mini-outline, reverse outline, closest-work distinctions, claim--evidence map and citation-completion gate. The standalone two-column section compiles in one page without errors or overfull boxes; undefined citations are expected because BibTeX records remain intentionally uncreated until primary-source field verification. Related-work/audit/check-PDF SHA-256 values are `aac60cf7ac01cf393386cb760484e1d639b7e039901da97fdc108914aec053f9`, `155344093633cad53465dd69cae127e955320bbb4a1f71855c4dbe49a88bbcca` and `085823bf30fa1602a5f36a75f7640e507f976a778acb1b6cd86c1a80b44452ae`.
+
+At 13:03 CST the formal neural/GIRD matrix remained `0 completed / 4 active / 21 pending / 0 failures`, confirmation unopened. No partial result influenced the Related Work or contribution boundary.
+
+## 141. Interpretability endpoint reconfirmed and branch-safe conclusion compiled (2026-08-29 13:09 CST)
+
+The user reconfirmed that the mandatory expression endpoint is pragmatic: a compact, readable expression passes when strict unseen-entity support-to-query evaluation in physical units reaches pooled `R2 >= 0.85` and its named terms provide a credible stage-wise scientific clue. It need not recover the initially learned raw `q`, a preselected physical variable, a unique true law, or a microscopic mechanism. Decoder-functional, support/structure-recalibrated, and other response-aligned low-dimensional coordinates remain eligible. Predictive superiority over PCHIP, kNN, CNP, FPCA or no-q MLP is a separate stronger endpoint. This is an interpretation of the already frozen threshold and claim hierarchy, not a protocol, formula, branch, or numerical-gate change; the pre-result decision-rule file and its SHA-256 remain unchanged.
+
+`paper/sections/limitations_conclusion.tex` and `paper/ICLR_CONCLUSION_AUDIT_20260829.md` now complete the common Branch-A/B-safe paper prose. The three paragraphs delimit basis/probe relativity and non-causal scope, summarize the confirmed ZT and vapor-pressure equations, and end with the frozen falsifiable ZT turnover, vapor-pressure calorimetry and Crystal-Cp boundary-stage tests. A generic 10-point two-column compile occupies one page with no errors, undefined references, underfull boxes or overfull boxes. Source/audit/check-PDF SHA-256 values are `a8e5a7888b284d1ff618f4e1254ee440e6585ec1b25a11f20dcf1df7f835d9cb`, `671c58203f128c1c9cee261925c2c20964fd287acad7172a5e9e82210339fd97` and `dbc3fa8f16d4ca46849c8f9e00eb26fe4056c68099a2fa0d075f030ca1891ac5`.
+
+At 13:09 CST the authoritative Crystal-Cp neural/GIRD launcher remained actively refreshed at `0 completed / 4 active / 21 pending / 0 failures`, with `confirmation_targets_opened=false`. No partial scientific metric was inspected or used to alter the endpoint or manuscript.
+
+A generic 10-point two-column integration compile of the current Introduction, Related Work, Method, Experiments, and Limitations/Conclusion occupies six pages including a provisional title block, with no LaTeX error, overfull box, or unresolved internal reference after the second pass. Citation warnings remain intentionally unresolved until primary-source BibTeX verification, and the build has no abstract or final figures, so this is a footprint check rather than a submission PDF. Its SHA-256 is `8a340f5f3d34aa20a8dcdf05f4ffb09554a48921d0231e54bb18ccd1db40e1e3`. The synchronized fixed/timestamped paper-plan SHA-256 is `d6636e746802c4db56a1a7587e00501dbbbbf6f3de8c5103ba4ec8378ef1e2a9`.
+
+## 142. First neural/GIRD cells finish; branch-neutral hero figure and citation audit begin (2026-08-29 13:24 CST)
+
+At 13:20 CST the authoritative neural/GIRD launcher advanced to `4 completed / 4 active / 17 pending / 0 failures`; the four fold-zero seeds 0--3 were recorded complete and the controller dispatched fold-zero seed 4 plus fold-one seeds 0--2. `confirmation_targets_opened=false`. No completed-cell metric or partial aggregate was inspected.
+
+The `academic-figures` workflow produced two deterministic, pure-vector Figure 1 drafts. Variant A is a `183 x 76 mm` horizontal four-panel flow and is preferred for the nine-page paper; Variant B is a `183 x 154 mm` 2-by-2 alternative. Both show only branch-stable content: raw-q gauge ambiguity, the fixed-probe response quotient, named response coordinates with a solid support-re-q core and dashed optional rank-aware prior, and the already sealed ZT/vapor-pressure temporal expression results with the interpolation caveat. XML parsing, unique IDs, editable text attributes, Python compilation and `git diff --check` pass. Generator/Variant-A/Variant-B SHA-256 values are `4b311494c8d77717fbca93aaacbb3fd3304deb39387651346cf900c003203c59`, `5219ceeebbbaea3667c2784fd378ea08db23b4502ae4a4b62f0d00f0d1c6244a`, and `1952acb075c871d11faee819a9fa1d9e3079c9f7780a152b5a04dcf88ab6fc0f`. The local symbolic-icon rasterizer does not preserve the intended color palette, so its PNGs are QA previews only; SVG is authoritative.
+
+The `citation-audit` workflow is now running one fresh official-source web review per cited key. The first six keys are real and relevant; two citation sentences were narrowed after reviewers rated their original scope WEAK: the Introduction no longer generalizes Locatello's result to arbitrary regularization, and Related Work separates Functa's shared-prior training from partial-observation MAP inference. `paper/iclr_refs.bib` contains only the six official records already returned, while the remaining keys are still pending. Current Introduction/Related-Work/bibliography/context-ledger SHA-256 values are `8930d34bbe6cfc944f16c0a93403bc2c68f0e824ec22cf386824aebf9e346a04`, `b0e21b63671342ad00d1ffb77b7caf14dd89a89a1cec507bf5a70910745f7600`, `493b537df713d47481be47d3b2e1ce846a57ea561f79b99cc15ceb8f587eaf77`, and `2cc88872fcacb694c963b6b538635ea729566d04e2185883b7599a5d9684e8fc`.
+
+## 143. Current citation audit passes and Figure 2 is independently corrected (2026-08-29 13:49 CST)
+
+The current ICLR draft now has a terminal same-family provisional citation audit. All 15 cited keys were assigned to fresh `gpt-5.6-sol` `xhigh` reviewers with official-source web checks; every work exists, current metadata is verified, and every current use is supported after scope-tightening rewrites. The rewrites separate Functa prior learning/adaptation/MAP completion, restrict the Locatello and Khemakhem identifiability claims, describe UPINN as recovering neural representations of unknown differential-equation terms, scope parametric equations to parameterized instances, and state LaSR's LLM-induced abstract concept library concretely. `paper/CITATION_AUDIT.json` records `PASS`, `15 KEEP / 0 FIX / 0 REPLACE / 0 REMOVE`; its current SHA-256 is `4fea76450857c77a99c117af83a5f5441dc6420a665e1ca051b977c9ef89caf0`. The human report SHA-256 is `4d64c4d25ef2270e202a4250bb74af924b5b6dac196d45ecaa982b2a37396e27`, and the exact current contexts hash is `cb87e3c57862114ae295404182d7d6c2f71c40628e84b1c5dc66af9bac6ea454`. Additional dataset-source or numerical-method citations introduced later must be separately audited; this PASS applies to the 15 citations presently in the draft.
+
+`paper/iclr_draft.tex` is now the active generic two-column integration wrapper, distinct from the legacy AAAI `main.tex`. A full LaTeX → BibTeX → two-LaTeX-pass build produces eight pages with no undefined citation/reference, LaTeX error, BibTeX warning, fatal error, or overfull box. Wrapper/PDF SHA-256 values are `caf7b47deaefb6fd282c574f2a7e0b3b7e1b90aaf1a39f3eb8d45049516526a9` and `f968c5ed99db71e010bffb3cbb7b998d22aea0ed31b652803c8f0501864b4500`. This remains a footprint check rather than final ICLR styling and does not yet include the abstract or final figure/table placements.
+
+Figure 2 was regenerated directly from the sealed stable-gauge and controlled-GIRD CSVs and then reviewed by a fresh independent figure auditor. The auditor confirmed every numeric value but rejected three presentation choices: `75 independent interventions` was unsupported because the design is 3 families × 5 seeds × 5 gauges; the dashed denominator was ambiguously called direct support even though it is support-only GIRD-GN at `lambda=0`; and the bars lacked distributional uncertainty and selection-protocol detail. The final artifact now says `75 family--seed--gauge cases`, labels the denominator exactly, defines bars as ratios of medians with lower better, states the fixed entity-ID-modulo-5 outer-training validation and 1%-of-best selection rule, explains why direct-target OMP remains in the main table rather than the denominator, and adds deterministic paired entity-bootstrap 95% intervals with 10,000 resamples. The panel-b label/legend collision is fixed. PDF/value-ledger/generator/caption SHA-256 values are `4fe94201a330845e858e2d22c586867e91b304381cdc0285251980f5c5dcb477`, `8d7686b56fb169ef63cfbc5bda8fad3e1228cd6e89114509428b76ad6a371eac`, `e0fbfc1dc3b348ee2fc403a4a048c83ccfb3b63611f0a9f1d6e0b641c0e8e398`, and `07ecfbdf8f35733fc7415e38f71ac1e2dfbae5ca83cbf450833424bf7fb85f88`. Two consecutive regenerations are byte-identical; the standalone one-page LaTeX include has no errors or overfull boxes; all PDF fonts are embedded CID TrueType with no Type 3 fonts.
+
+`paper/README.md`, `MANIFEST.md`, `.gitignore`, `PAPER_PLAN.md`, and the synchronized timestamped plan now expose and describe the current draft, citation ledger/traces, and both paper figures. The two paper-plan files remain byte-identical at SHA-256 `898d147170330d9173ffd4e301d25e577975dd57d78950f1deb10e770826a632`. The citation HTML reader view was re-rendered after its first audit found collapsed metadata lines; the metadata is now a proper table and a fresh render-fidelity reviewer returns PASS with zero blockers/warnings. HTML/review-sidecar SHA-256 values are `0cc45bfdcb78074451030a4bf50a7cb1c8a9be5aae83e581cc0ff44764ef8966` and `ba12613fc1f2f6ca2cccb4d98b581fb3f7f35b641035e9e8a65916e337f72459`. The MD/JSON remain authoritative.
+
+At 13:48 CST the authoritative Crystal-Cp neural/GIRD launcher remained `4 completed / 4 active / 17 pending / 0 failures`; active cells were fold0 seed4 and fold1 seeds0--2 on GPUs 5,4,3,2 respectively, `confirmation_targets_opened=false`, and `maximum_used_mib=1024`. No partial cell metric was inspected or used. The unchanged count over this documentation interval is an observation, not a failure or hang claim.
+
+## 144. Figure 3 passes independent scientific and geometry audit (2026-08-29 14:13 CST)
+
+`paper/figures/figure3_real_transfer.pdf` is now the complete four-panel real-transfer figure. Panels a/b use a deterministic post-scoring representative rule—entity nearest the expression-family median entity NRMSE, with lexicographic tie breaking—rather than a favorable hand-picked example. The selected entities are Sc2Te3 (ZT, error rank 15/30, 9 support and 24 query rows) and N-methylethylenediamine (vapor pressure, rank 42/84, 6 support and 16 query rows). The ZT reconstruction exactly reproduces all 919 sealed query temperature/target pairs across all 30 entities under the frozen stable-temperature-sort/every-fourth-row support rule.
+
+The paired entity panel reports the exact complete comparisons: the expression beats kNN on 16/30 ZT entities and PCHIP on 37/84 vapor-pressure entities, with no missing rows or ties. The development-stability panel reports median/minimum cross-offset coefficient correlations: ZT level `0.901735/0.873511`, slope `0.973922/0.948289`, curvature `0.959283/0.939662`; vapor-pressure level `0.999050/0.998573`, enthalpy `0.976188/0.973208`, and heat-capacity term `0.797364/0.697435`. The caption explicitly separates development coefficient stability from temporal confirmation and does not claim predictive superiority.
+
+A fresh independent reviewer returned PASS with zero hard failures and zero warnings after the a/b/c legends were moved outside the axes. Legend/data, legend/axes, legend/title, and panel-c annotation/data intersections are all zero. The PDF is pure vector (`pdfimages=0`), uses embedded CID TrueType fonts with no Type 3 fonts, and has color/shape/line-style redundancy. The deterministic generator is `scripts/generate_iclr_figure3_20260829.py`; the current source ledger is `paper/figures/figure3_values.json`. Current generator/PDF/PNG/JSON SHA-256 values are `83ff6bf9f9d3e8c783203fa1ec751d463b1ac396429c68549a60caebe90d12df`, `3bae589f3df93a2479d97ca7c5ba5f883e1f3592f993ea3f333cf6db3eb67467`, `87315cc735e239f394166bfa89337a030a110bbca152b7d8bbc448fba2487769`, and `7708d013258caba205dc58b668c2b687b304f9c009c3899d91f59e81a88be1b7`. Regeneration is byte-identical within the pinned project environment; a fresh incremental review confirmed that the earlier Matplotlib 3.11.0 versus current 3.10.9 byte difference is only renderer/font-subsetting variation with identical numeric payload and geometry. Cross-environment PDF bytes are not treated as scientific evidence, so the ledger and source hashes remain the primary numerical provenance.
+
+## 145. New `/tmp` cache payload migrated; persistent-storage rule tightened (2026-08-29 14:13 CST)
+
+A new top-level `/tmp` audit found no experiment output, dataset, model, paper source, figure, log, or result attributable to this project. Two inactive project-created runtime caches were recoverably moved to `runs/_runtime_cache/legacy_tmp_migration_20260829_1415/`: a 111,804-byte Matplotlib font list and an 11,524-byte TeX bitmap font. Their source directories `/tmp/latent-mpl` and `/tmp/texfonts` are absent after the move; `MIGRATION_MANIFEST.md` records exact destinations, sizes, and SHA-256 values.
+
+`/tmp/torchinductor_wangyg` remains temporarily in place because the Crystal-Cp neural/GIRD campaign is active. It is a regenerable 45 MiB runtime cache, not research material; moving it during active CUDA work could disturb another live process. Archive or discard it only after the campaign is terminal and ownership is rechecked. System IPC, tmux sockets, Codex sandbox mounts, and unrelated paper/project files were not touched.
+
+The durable rule is now explicit in `README.md`: every new project command must place outputs, fixtures, logs, downloads, Matplotlib/XDG/TorchInductor caches, and TeX variable/config/cache trees below the public repository, normally `runs/_runtime_cache/`. Do not use `/tmp` for persistent project state.
+
+## 146. Abstract and audited Figures 2--3 integrated into the current wrapper (2026-08-29 14:20 CST)
+
+`paper/iclr_draft.tex` now includes `sections/abstract.tex`, `figures/latex_includes.tex` (Figure 2), and `figures/figure3_latex_include.tex` (Figure 3), with `graphicx` and an explicit two-column top-float fraction. The float setting is necessary because the full-width Figure 3 otherwise deferred to a page after the bibliography; the current build places Figure 2 on page 5, Figure 3 on page 6, the main expression tables on page 7, and Limitations/Conclusion before the references begin on page 8.
+
+The generic two-column BibTeX build is nine pages total, has no undefined citation/reference, LaTeX error, BibTeX warning, fatal error, or overfull box, and has wrapper/PDF SHA-256 values `b90905072a98392e3d0250449737ce00d68989cbde8ebbb058e0885d7a9aaae4` and `a2249fb7a1e49984d2d3d95e42a94b30cc8a8eef3cad6532ff88c9815136b8a8`. This is still a generic footprint build, not the official ICLR template; Figure 1 remains SVG-only and is not yet integrated.
+
+The wrapper edit introduced no new citation and changed no audited context. The exact cite set remains 15, the Introduction/Related Work/context-ledger hashes remain unchanged, and `paper/CITATION_AUDIT.{md,json}` now records the wrapper-only hash refresh explicitly rather than pretending a new semantic citation review occurred. The derived HTML was re-rendered from the refreshed MD/JSON and a fresh same-family provisional reviewer returned PASS with zero blockers and zero warnings. The current MD/JSON/HTML source hashes are `79efc930410987cfd864935729eef37de4e73f7f736386acd7eb5d1e507687de`, `dccc1a1de4eb531d6e1d791843556e151efe5f5b1923ce575fd530b64ac182fb`, and `9c1f1f8304a8fec74d377101840ef0c30befe651df9c56651bb8c6b3c2f8e5a7`; the render trace is `paper/.aris/traces/render-html/2026-08-29_run03/`.
+
+At 14:25 CST the authoritative Crystal-Cp launcher remained actively refreshed at `4 completed / 4 active / 17 pending / 0 failures`; active cells were fold0 seed4 and fold1 seeds0--2 on GPUs 5,4,3,2, `confirmation_targets_opened=false`, and `maximum_used_mib=1024`. No partial metric was inspected.
+
+## 147. Pragmatic expression endpoint clarified; Figure 1 passes independent audit (2026-08-29 14:44 CST)
+
+The user clarified that the paper's expression objective is deliberately
+pragmatic: the final compact expression is comparatively interpretable when
+strict unseen-entity support-to-query physical pooled `R2 >= 0.85` and its terms
+offer some scientifically useful stage-wise insight.  It does not have to reuse
+or recover the first learned q, a preselected physical variable, a unique law or
+a microscopic mechanism.  This is not a numerical threshold, formula or branch
+change.  `PAPER_PLAN.md`, its timestamped mirror, the canonical claim gate, the
+stage-hypothesis audit, the beginner-readable report and the Introduction now
+make the core endpoint and the stronger corroborating evidence distinct:
+coefficient/support-offset stability and falsifiable follow-up hypotheses
+strengthen paper credibility but do not make a particular raw-q chart the
+target.  The two paper plans are byte-identical at SHA-256
+`dfe5113ae4dc8d973c228fce9a0ee40febb6969f092197deadaa874e4ddff114`.
+The synchronized canonical claim gate, stage-hypothesis audit, and main report
+SHA-256 values are `28e25e8291f90b0349ff3d0aa517f8f014862b492f1deaf35c4c1ddc17655e08`,
+`4df4821275fff353481911a6681b183a1d6e6b96afe073f5ea7d9479b8e65b5d`,
+and `dc801c793abea8b2371c3d51afcdc361cc0f27e40d2c4cf1214fd098eabaca74`.
+
+Figure 1 is now integrated as a paper-ready pure-vector PDF.  A fresh independent
+review initially found Panel-a text overflow and Panel-d curve/label collisions;
+the generator was minimally corrected by unifying the SVG/PDF DejaVu font stack,
+shortening overflowing labels, separating chart boxes, increasing minimum text,
+darkening small orange/green text, making the baseline caveat domain-neutral,
+and moving the evidence curves away from their labels.  The final incremental
+review returns PASS with zero hard failures: all text is contained, no connector
+crosses an object, the ZT label has about 0.765 mm clearance, the PDF has no
+raster images or Type 3 fonts, and all fonts are embedded CID TrueType.  Two
+same-environment regenerations are byte-identical.  Generator/SVG-A/SVG-B/PDF
+SHA-256 values are `9f8574a4b340416b42405cb61a3b3a86f0b868293f048b6c975311ff27d91109`,
+`0659b19b9fdcd82dc76bce175e892e7bcca509f68a695acc51b862ff3295f963`,
+`5b8e08a2a2810a38a66ece9def1e5fdf48f50520366f4b4e29bc61cb385811f2`
+and `a6983f5a0f5e0dfd32bb831866e693806c39aea755ba377c342ab8417311f72f`.
+`paper/figures/figure1_values.json` binds the two displayed sealed R2 values to
+their exact decision files and records the non-SOTA/non-causal claim boundary.
+
+The current generic two-column paper compiles to ten pages, with main text
+through the conclusion ending on page 8 and references on pages 9--10.  There is
+no undefined citation/reference, LaTeX error, BibTeX warning, fatal error or
+overfull box.  Wrapper/Introduction/PDF SHA-256 values are
+`9fd243893391a43ff01d42dc867ad0ad23a83eac047075717ae2be409823383b`,
+`f788329d95701428e9c663da1490bbf0a198ab85dba9d0d60ee9b7773ed6a68b`
+and `3a70fa07b2cd655193726f73aa31b5190a2f9ca6d4fd5202c39e7645ca972420`.
+The citation ledger records that the Figure-1 and non-citation endpoint wording
+refresh changed no cite key or audited citation context; its HTML reader was
+regenerated and a fresh same-family provisional render-only reviewer returned
+PASS with zero blockers and zero warnings.  HTML/review-sidecar SHA-256 values
+are `dcd5f287c18f3d22dd993a88bcf0577455b3dd791bcb2db2db07abaf204d16c2`
+and `a90e69abb7be9180417af505bea5316aa1a1dad51d7d774aaa9fb1c1787f77c4`;
+the trace is `paper/.aris/traces/render-html/2026-08-29_run04/`.
+
+One generic LaTeX compile exposed that the system default `VARTEXFONTS` still
+pointed to `/tmp/texfonts`.  The newly created 11,524-byte font cache was moved
+immediately to `runs/_runtime_cache/texfonts/`, the `/tmp/texfonts` directory is
+absent, and every subsequent compile explicitly binds `TEXMFVAR`,
+`TEXMFCONFIG`, and `VARTEXFONTS` under the repository.  No research artifact was
+left in `/tmp`.
+
+At 14:43 CST the Crystal-Cp neural/GIRD launcher remained actively refreshed at
+`4 completed / 4 active / 17 pending / 0 failures`, with fold0 seed4 and fold1
+seeds0--2 active, `confirmation_targets_opened=false`, and no partial scientific
+metric inspected.
+
+## 148. Dataset/numerical provenance and all 21 current citations close cleanly (2026-08-29 15:15 CST)
+
+The pragmatic expression endpoint from Section 147 remains the controlling
+criterion: a compact final response-aligned expression is successful at strict
+unseen-entity support-to-query physical pooled `R2 >= 0.85` when its terms offer
+scientifically useful stage-wise insight. It need not recover the original
+latent `q`, a preselected physical coordinate, a unique true law, or a
+microscopic mechanism. Expression fidelity, scientific interpretation, and
+predictive comparison against strong nonparametric baselines remain separate
+claims.
+
+The draft now cites and freezes the missing dataset and numerical-method
+provenance. Official-source checks cover the Starrydata project/dataset paper,
+the NIST ThermoML archive and IUPAC schema, the PCHIP algorithm, functional data
+analysis/FPCA, and the NIST Chemistry WebBook Shomate form. The WebBook entry was
+corrected from an invalid publication-year interpretation to an edited NIST
+resource with `n.d.` publication year, a separate `Data last updated 2025`
+note, access date, editors, publisher, and DOI; a fresh post-fix reviewer marked
+it KEEP. `paper/DATA_PROVENANCE.md` binds the local Starrydata and ThermoML
+artifacts by exact path, byte count and SHA-256 rather than relying on mutable
+upstream `latest` links. Its SHA-256 is
+`b9b03f086e8f221906f4703d31dba5ee682c2a46c3c1dcae9e42199e119bea92`.
+The bibliography and Experiments-section SHA-256 values are
+`ef1e91afe1366e4f2b78ce7f716816d120bf2ba9812423f0feef1bd4fe8b5df1`
+and `f1281cb876e905c0c8937310e701665304fb8a5bb601e9e6d20a147e5b7c7323`.
+
+The terminal citation ledger is now `21 KEEP / 0 FIX / 0 REPLACE / 0 REMOVE`.
+Its canonical MD/JSON SHA-256 values are
+`d695bab18be8655f05274b6ddcacaa948bcea29774bb2d270d11e5bd9f1691ba`
+and `10c6cab4bcee88e76b9474bd7a0957199bf75db75dccae983abe340efa90ca8a`.
+The reader HTML was re-rendered with the complete JSON sidecar and a fresh
+same-family provisional render-only reviewer returned PASS with zero blockers
+and zero warnings. HTML/review SHA-256 values are
+`32a8b284f2372cf50d3e5d63bf42b22182f1e450bdf07211ab8cf222b7cdfa20`
+and `0bdfed834114d1c1276b941a5b7315e9b174e0c689f05da0cef109999f525c17`;
+the trace is `paper/.aris/traces/render-html/2026-08-29_run05/`.
+`paper/DATA_PROVENANCE.md` is explicitly unignored for remote handoff.
+
+The generic two-column draft still compiles to ten pages: the conclusion ends
+on page 8, references begin later on page 8 and continue through page 10, with
+no undefined citation/reference, LaTeX error, BibTeX warning, fatal error or
+overfull box. Its current PDF SHA-256 is
+`3af6eacbc66e38177a0dffc69521c4dcfd659d3029528310c4e891b611a9e272`.
+At 15:12 CST the authoritative Crystal-Cp neural/GIRD launcher was actively
+refreshed at `4 completed / 4 active / 17 pending / 0 failures` on GPUs 2--5,
+with `confirmation_targets_opened=false` and `maximum_used_mib=1024`. No
+partial-cell scientific metric was inspected or promoted.
+
+## 149. Theory/evidence scopes separated and official ICLR 2027 build closes the page-format blocker (2026-08-29 16:33 CST)
+
+The pragmatic expression endpoint remains unchanged: strict unseen-entity
+support-to-query physical pooled `R2 >= 0.85`, finite target-blind predictions,
+and a compact expression whose named terms offer a stage-wise scientific clue.
+It does not require recovery of the first/raw `q`, a unique law, or a
+microscopic mechanism; predictive superiority remains a separate claim.
+
+A fresh theory--experiment alignment audit found that the manuscript had
+compressed two different gauge results into one paragraph. The corrected Method
+and Experiments now separate: (1) 375 exact affine decoder counterfactuals
+(3 families x 5 seeds x 25 gauges), where raw coordinates change by as much as
+`4.9958` while prediction/fixed-basis coefficient changes are only
+`4.50e-15/2.04e-14`; and (2) 75 independent stable-GN recalibrations
+(3 families x 5 seeds x 5 gauges), where QR/SVD plus a response-loss margin
+reduces the old normal-equation response discrepancy `0.0448354` to
+`3.6567e-10` and coefficient discrepancy to `6.2327e-9`. The former supports
+the algebraic response-equivalence quotient; the latter supports numerical
+affine equivariance only under paired centroids, synchronized latent injection,
+full-rank support Jacobians, fixed response-space line search and exact-theory/
+stable-finite-precision qualifications. `paper/sections/method.tex` also makes
+the quotient claim an explicit proposition, adds the query-amplification bound,
+states GIRD's independent zero-mean directional-risk assumptions and null-space
+limitation, and scopes the complete method registry to the Crystal spread
+regime. `paper/sections/experiments.tex` now uses `c_i` for canonical expression
+coefficients, never raw neural `q_i`; lowers the controlled GIRD wording from
+universal validation to consistency with the bias--variance mechanism; and
+states the ideal-gas/negligible-liquid-volume/finite-range limitations behind
+the effective vapor-pressure coordinates. Method/Experiments SHA-256 values are
+`10380c5787a8d3da4c092963e5f8efac608034ca75b3a86c9709941f17e1f310`
+and `56b21526c644555702c5a279fdf3e1f2720c01fba90d502fbe1c56f69cf56091`.
+
+The official ICLR 2027 Author Guidelines are now published and require no more
+than nine initial-submission main-text pages; references, appendices, the
+mandatory AI-use statement, and recommended reproducibility statement do not
+count. The unmodified official style ZIP was downloaded from
+`https://media.iclr.cc/Conferences/ICLR2027/iclr-2027-style-files.zip` with
+SHA-256 `0d940dfa9398ae99a18f24a85a8a683f367204b6af6d17d2899e60a67102529e`.
+Its four required style assets are tracked under `paper/iclr2027/`.
+`paper/iclr2027_draft.tex` plus
+`paper/sections/ai_reproducibility_statements.tex` compiles under the official
+anonymous style to 12 US-Letter pages: main text ends exactly on page 9, while
+AI use, reproducibility and references begin on page 10. The settled build has
+no undefined citations/references, overfull boxes, BibTeX warnings or label
+drift. `scripts/build_iclr2027_paper.sh` resolves the repository root from its
+own location, keeps all TeX caches below `runs/_runtime_cache/`, fixes
+`SOURCE_DATE_EPOCH`, and produces byte-identical consecutive PDFs. Wrapper,
+statement, build-script and final-PDF SHA-256 values are
+`1148f851857659b7dd418cdcef98bfbd18bec9125f45cf3330d601b17dfcbf95`,
+`c9a39023b6be4cb5b48f884abd887c7e1a1e988944d6931a1220ab3520976f0c`,
+`0b854637b5e08b35688a4d2d7a662b96812d125c36be436651aec2d5a66474de`,
+and `bef9f70a1c1ed2677aa6eff04306b2a6513e00ddf332c612600382e8125c4322`.
+
+The 21-entry citation audit remains PASS after the non-citation theory/notation
+refresh. The current reader HTML has a fresh same-family provisional render-
+fidelity PASS with zero blockers/warnings; review sidecar SHA-256 is
+`4159bae450232de0a280abd3b84439707c474e5689a20e4cd97bbc50ba1fd146`
+and the trace is `paper/.aris/traces/render-html/2026-08-29_run07/`.
+The last machine-local executable path in
+`scripts/launch_no_id_symbolic_real_datasets.py` was removed in favor of
+`PYSR_PYTHON`/`LVS_PYTHON` or the active interpreter; frozen receipt-bound
+launchers retain only repository-relative `.venv-lvs-gpu` paths, documented as
+such.
+
+At 16:33 CST the authoritative Crystal-Cp neural/GIRD launcher was actively
+refreshed at `8 completed / 4 active / 13 pending / 0 failures`, with
+`confirmation_targets_opened=false` and `maximum_used_mib=1024`. No active-cell
+scientific metric was inspected. The top-50 audit now scores `11.25/16`: the
+page-format blocker is closed, but the terminal 25-cell aggregate, one-shot
+Crystal chain, final claim-to-raw/clean-clone audit, reviewed commit/push and
+post-terminal adversarial review remain open.
+
+## 150. Zero-context paper claims are numerically clean; evidence-completeness audit is being closed (2026-08-29 17:18 CST)
+
+The pragmatic expression criterion and paper narrative are unchanged. A fresh
+GPT-5.6-Sol-ultra zero-context paper-to-raw audit first found one real reporting
+error: the controlled-GIRD relaxation endpoint had been printed as `0.03436`,
+where standard five-decimal rounding of the raw
+`0.03435461077597177` is `0.03435`. This was corrected. The same audit also
+exposed several over-broad provenance/configuration sentences; the manuscript
+now says `float64 direct least squares`, scopes the lambda-zero observation to
+four-support, attributes the `0.0448` discrepancy to the original GN extension,
+narrows frozen provenance to the actual hashed cohort manifests, and removes a
+false claim that direct-target OMP appeared in the main table. The already
+frozen Crystal confirmation Markdown contract is now mirrored by
+`THERMOML_CRYSTAL_CP_SINGLE_USE_CONFIRMATION_CONTRACT_20260829.json`, which
+serializes the cohort, one-shot transaction, expression endpoint, package,
+GIRD-promotion and failure-reporting rules without changing the protocol or
+opening a target.
+
+A second fresh full audit found `0` number mismatches, `0` config mismatches,
+`0` aggregation mismatches, `0` scope overclaims and `0` unsupported claims
+across 50 deduplicated claim groups (`21` exact, `25` standard-rounding). It
+remained `FAIL` solely because four experimental-design clauses were absent
+from that audit's compact evidence boundary. The underlying structured results
+already contain three of them: all 15 exact-counterfactual cells record
+`gauge_count=25`; all 15 stable-calibration manifests record
+`stable_solver=float64_lstsq`, `gn_steps=15` and the response-loss acceptance
+tolerance; and exactly two of the 30 GIRD regime results have a failed selected
+OMP certificate. The GIRD analyzer was minimally extended to emit
+`analysis/protocol_evidence.json`, explicitly recording the modulo-5 nested
+folds, 1% smallest-finite lambda rule, identical FPCA folds, `30` certificate
+cells and the two failed thermodynamic-seed-1 regime IDs. Re-analysis retained
+the old decision, method-summary, entity-metric and audit CSV hashes byte for
+byte; only the new evidence file and regenerated analysis manifest are new.
+The targeted analyzer tests pass `5/5`. A third fresh full audit with the
+complete per-cell evidence is active; until it returns, no canonical PASS is
+claimed. Run-01 and run-02 failures are retained as forensic traces rather than
+discarded.
+
+The revised official ICLR build remains 12 US-Letter pages with main text
+ending on page 9, produces the byte-identical SHA-256
+`2b7d053741b3eccb20c7846abe3f3058918e8983d778865b25b9bb9ab09d920d`,
+and has no undefined reference/citation, overfull box, LaTeX/BibTeX error or
+label-rerun warning. At 17:17 CST the authoritative Crystal launcher was still
+actively refreshed at `8 completed / 4 active / 13 pending / 0 failures` on
+GPUs 2--5, with `confirmation_targets_opened=false`; no active-cell metric was
+read.
+
+## 151. Run05 disclosure audit repaired; official appendix and Figure 3 close QA (2026-08-29 20:51 CST)
+
+The pragmatic expression endpoint from Sections 147--150 is unchanged. A
+fresh zero-context GPT-5.6-Sol-ultra paper-claim audit (Run05) found no numeric,
+aggregation-value or unsupported-result contradiction, but returned `FAIL`
+because the manuscript did not disclose several exact protocol conventions.
+Its deduplicated ledger contained 53 claim groups: `23 exact`, `16 rounding`,
+`7 ambiguous`, `5 missing`, `1 config mismatch`, and `1 scope overclaim`.
+The missing or ambiguous material was the controlled-GIRD regime-level lambda
+selection and five-seed pointwise aggregation; the unit of the two failed OMP
+certificate audits; NRMSE, ZT temperature scaling, vapor reference temperature,
+and scaled-condition-number definitions; log-pressure PCHIP; real-domain seed
+aggregation and probes; Crystal normalized coordinate and router configuration;
+OOF versus unopened-final Crystal hyperparameters; support/rank conventions;
+and over-broad byte-count and basis-residual wording. Run05 is honestly archived
+at `paper/.aris/traces/paper-claim-audit/2026-08-29_run05/`: compaction made the
+verbatim response unavailable, so the trace identifies itself as a summary
+rather than fabricating a transcript.
+
+The manuscript now states each convention directly. In particular, Figure 2's
+tested GIRD applies the validation-selected lambda uniformly within each
+predeclared family--seed--support regime; rank is a diagnostic and no per-entity
+rank router generated the reported values. The vapor baseline is named
+log-pressure PCHIP, all reported neural medians identify their seed and
+pointwise aggregation, the exact ZT scaler is
+`mu=280.58430016384204 K`, `sigma=193.38620745002135 K`, the vapor reference is
+`T_r=362.72 K`, and the Crystal appendix separates the five OOF selections from
+the unopened final package. `paper/sections/protocol_details.tex` is the frozen
+domain-protocol appendix (SHA-256
+`a90cf35189e38ffa41530e843dfbd1b545b0a2e16dd830d5c9dba47ae3c7092f`).
+
+The official ICLR PDF is now 13 US-Letter pages, with the counted main text
+still ending on page 9. The nonfloating Appendix Table 3 title and table body
+are kept together on page 13; rendered pages 12--13 were visually inspected.
+There is no undefined citation/reference, overfull box, LaTeX/BibTeX error,
+fatal error or rerun warning. The PDF SHA-256 is
+`383945803b692a0c5be1f9316380ee77cd0222e6df39ea4b3b49ae96392d1482`.
+
+Figure 3's metric space is now explicit in both labels and prose. A fixed SVG
+hash salt makes two same-environment regenerations byte-identical. The Nature
+figure static preflight returns `12 PASS / 0 FAIL / 2 WARN`; the warnings are
+only the absent TIFF and a 300-dpi preview PNG, while ICLR consumes the editable
+vector PDF/SVG. SVG XML parsing passes, the PDF uses embedded TrueType fonts
+and no Type 3 fonts, and visual inspection finds no overlap. Generator,
+SVG/PDF/PNG/values SHA-256 values are
+`a165dc76f52cbce66f608fd4c9c1d7978d1b1739eeb2a243ad9e02a027003d5a`,
+`a19a5146cd8ea024e21b44d508ea2cbb844122d7e5c1f942b5794d07876d5595`,
+`f398046ddc013ec200cb7e4c8bd4822c12a6f1e68c8bf8650eeb0a2b7ecadafd`,
+`6436ee98c41a9d8427fe5bf5cd3b5a4655d2e0d38b12c02226a22148bb1e1ec1`,
+and `6302aade3099385a782f0819fbe4d4e8e9c471b17ae24dba32dbd2906909e6c0`.
+The targeted GIRD test file passes `9/9` in the pinned GPU environment. A
+separate general-environment `uv sync --extra dev` was stopped after a long,
+output-free dependency download; it neither touched the pinned GPU environment
+nor any running experiment.
+
+At 20:51 CST the authoritative live launcher reports
+`13 completed / 3 active / 9 pending / 0 failures`; active cells are fold2 seed4
+on GPU2, fold3 seed0 on GPU3, and fold2 seed3 on GPU4. Fold2 seed2 completed
+since the previous snapshot. `confirmation_targets_opened=false`, and no
+active-cell scientific metric was inspected. This sandbox cannot access the
+host tmux sockets or NVIDIA driver (`Operation not permitted` / NVML failure),
+so the refreshed live JSON remains the authoritative status source. A new
+zero-context Run06 claim audit is active against the repaired manuscript and a
+larger raw-evidence boundary; no canonical PASS is claimed until it finishes.
+
+At 21:00 CST fold2 seed3 reached a terminal success, so the refreshed launcher
+advanced to `14 completed / 2 active / 9 pending / 0 failures`. Fold2 seed4 and
+fold3 seed0 remain active on GPUs 2 and 3; the guard has not yet assigned a new
+cell to the released slot. `confirmation_targets_opened=false`, and no active
+or newly completed scientific metric was inspected during this status refresh.
+
+The broader claim-path unit suite then passed `46/46` in 41.63 seconds. It
+covered exact and independently recalibrated gauge experiments, their analyzers,
+controlled GIRD and protocol evidence, the frozen Crystal neural/GIRD decision
+preparer, Crystal transition-structure analysis, and the single-use confirmation
+contract. Pytest's base directory was explicitly placed under `public/qa/`.
+
+At 21:12 CST fold3 seed0 also reached a terminal success. The authoritative
+launcher therefore reports `15 completed / 1 active / 9 pending / 0 failures`;
+fold2 seed4 remains active on GPU2, and the availability guard is waiting rather
+than claiming GPUs that are no longer free. Confirmation remains unopened, and
+this refresh did not inspect any cell metric.
+
+Run06 subsequently identified one confirmed manuscript protocol blocker while
+the rest of its ledger is still being completed: the frozen vapor neural bridge
+uses `SEEDS=(0,1,2)` and aggregates three physical-pressure predictions, whereas
+`paper/sections/experiments.tex` and `paper/sections/protocol_details.tex`
+currently say five seeds. This does not change a reported numerical result, but
+it is a real aggregation-description error. Do not edit the active Run06 input
+set; after its complete blocker list is archived, change both statements from
+five to three and require a fresh zero-context Run07 audit. Also keep the early
+`thermoml_crystal_cp_transition_structure_development_20260829` configurations
+separate from the current v4 `thermoml_crystal_cp_router_margin_development_20260829`
+OOF/final configuration evidence.
+
+At 21:27 CST fold2 seed4 completed successfully. The matrix is now
+`16 completed / 0 active / 9 pending / 0 failures`; the guarded launcher remains
+in `running` state and is waiting for an eligible GPU rather than terminating or
+claiming an occupied card. Confirmation remains unopened, and no cell metric
+was inspected.
+
+## 152. Run06 isolates six disclosure errors; all are minimally repaired (2026-08-29 21:40 CST)
+
+The complete fresh Run06 review returned provisional `FAIL` over 67 deduplicated
+claims: `42 exact`, `19 rounding`, `1 ambiguous`, `3 config mismatch`,
+`1 aggregation mismatch`, and `1 scope overclaim`. It found no headline-number
+contradiction. The six remaining issues were all protocol or display-scope
+wording: a stale claim that GIRD fused only under a rank rule; a blanket direct
+`lstsq` statement that did not describe the Crystal boundary SVD fitter; failure
+to distinguish global headline ZT scaling from outer-fold neural scaling; the
+incorrect five-versus-three vapor neural seed count; failure to distinguish the
+fixed temporal vapor reference from development fold references; and calling a
+displayed cross-chart response discrepancy a displayed projection residual.
+
+All six are now minimally repaired without changing any result. Experiments now
+state that GIRD's validation-selected weight is fixed within the predeclared
+support regime and rank/conditioning only diagnose entities. Appendix A states
+that headline ZT/vapor fits use unweighted float64
+`numpy.linalg.lstsq(rcond=None)`, while the Crystal boundary fit uses
+support-column scaling and explicit float64 SVD. The ZT row separates the global
+headline scaler from outer-training-fold neural mean/SD; the vapor row separates
+the fixed temporal `T_r=362.72 K` from outer-training-fold development medians
+and correctly says three physical-pressure seed predictions. Method and
+Limitations now say the paper displays cross-chart response discrepancy and
+retains projection residuals in artifacts.
+
+The repaired official build remains 13 US-Letter pages with main text ending on
+page 9. It has no undefined citation/reference, overfull box, LaTeX/BibTeX
+error, fatal error or rerun warning; Appendix Table 3 was visually rechecked and
+remains readable. Current PDF, Experiments, protocol appendix, Method and
+Limitations SHA-256 values are
+`602ceeae1eb99bdd65a7ed6d874f19d1d402220af1ce3ef7dc8ef35b56dc1f17`,
+`41fe8d4223a1a73a6262c2285b8d25d3026646dab6a902aada298e0bbffb5e65`,
+`0ad483739d39e33475c3e977811dad6ca30922a74bc06ed2368f7817060c7abd`,
+`6eccd9b3326724cc344081431711afd2690318d51270b67e6c6fb736d741f346`,
+and `825ceb50446fd1ae5d7c8269416e8189eb56a3fe3846015099ebb0875b8da559`.
+A fresh zero-context Run07 is active against this repaired state; no canonical
+PASS is claimed before it completes.
+
+## 153. Crystal guarded matrix resumes on four released GPUs (2026-08-29 22:12 CST)
+
+At 22:12 CST the authoritative launcher advanced from its resource wait and
+started fold 3 seeds 1--4 on GPUs 2--5.  The live state is now
+`16 completed / 4 active / 5 pending / 0 failures`, with fold 3 seeds 1--4
+bound respectively to GPUs 2, 3, 4 and 5.  Host NVML reports approximately
+799 MiB used on each of those cards immediately after launch; the launcher's
+`maximum_used_mib=1024` remains only the pre-launch availability guard, not a
+training-memory cap.  `confirmation_targets_opened=false`, and no active-cell
+metric was inspected.  The terminal all-development watcher remains separate
+and cannot proceed before a clean 25/25 development state.
+
+After warm-up, host NVML at 22:42 CST showed GPUs 2--5 using approximately
+74.1/76.3/63.5/77.1 GiB-equivalent MiB readings at 99--100% utilization.  This
+directly confirms that the 1024 MiB guard does not cap training allocation.
+
+Run07 has frozen 118 semantic paper/evidence inputs plus an explicitly volatile,
+embedded launcher-status snapshot used only to prove scope and confirmation
+non-access.  Its fresh reviewer and independent figure check are still active;
+the figure check found no numerical/hash mismatch and only two maintenance or
+wording observations, which remain provisional until full Run07 reconciliation.
+
+## 154. Current citation verdict is semantically useful but hash-stale (2026-08-29 22:36 CST)
+
+The existing canonical `paper/CITATION_AUDIT.json` records a provisional PASS
+for all 21 cited entries, and the bibliography hash still matches.  It cannot be
+treated as a current strict artifact, however: its audited Introduction and
+Experiments hashes are `b78d188e...` and `56b21526...`, whereas the current
+files hash to `377b7c24...` and `41fe8d42...`; its main-entry key also names the
+earlier `iclr_draft.tex` rather than the current `iclr2027_draft.tex` entry.
+Related Work and the bibliography remain hash-matched.  This is snapshot
+staleness, not evidence that a citation is false.  Do not use the old PASS to
+erase Run07's literature/context `UNVERIFIABLE` scope.  After terminal Crystal
+integration freezes the paper, run a fresh citation existence/context audit and
+emit a new canonical artifact bound to the current recursive manuscript before
+submission-readiness or top-50 completion is claimed.
+
+## 155. Run07 closes scientific-data mismatches but remains provisional WARN (2026-08-29 22:38 CST)
+
+Run07 is fully archived at
+`paper/.aris/traces/paper-claim-audit/2026-08-29_run07/`.  The base fresh
+reviewer reported `89 PASS / 13 UNVERIFIABLE / 0 FAIL` over 102 claims.  Its
+only scientific-data non-pass, C077, resulted from overlooking the already
+frozen current-v4 `router_margin` `entity_metrics.csv`.  Evidence-only
+reconciliation against that file and the current runner/analyzer independently
+reproduced 247 entities, 238 passes, NRMSE median/p95/max
+`0.029577814373804807 / 0.21186416976145642 / 1.7449515101552815` and 748
+negative predictions, so reconciled counts are
+`90 PASS / 12 UNVERIFIABLE / 0 WARN / 0 FAIL`.  The original WARN and the
+continuation reconciliation are retained separately; the continuation is not
+misrepresented as a new independent PASS.
+
+The remaining 12 items are nine literature/context/novelty claims and three
+AI/process attestations outside the frozen raw-experiment evidence boundary.
+All six Run06 protocol repairs and all three figures pass, with no demonstrated
+scientific-data mismatch.  Assurance therefore remains overall `WARN`,
+`same-family/provisional`, not submission-ready.  The 137 semantic inputs have
+zero terminal hash drift and zero manifest mismatch; JSON/JSONL and the
+102-entry ledger validate.  Manifest, RESPONSE, ledger and event-log SHA-256
+values are `ccadaea09d7bf0cf972404543aaf542e83a3d023f4fe72d7a2aea65e6acfe05f`,
+`c73bedd9ab7b91617923557027c46d70a9a9bcb7c961ebc4800038db6e85e9aa`,
+`c7495660960c3b6382dd3adc2f50a6b9457857f437cc26554bd03ef3aeea5436`
+and `5c75daa2e1b06bf4bd73454d96eed592d5b50e9abc12d4a83bc8dd6378f4b1a2`.
+Run08 is a genuinely new zero-context audit and remains active; it, rather than
+the Run07 continuation, is the next independent paper-to-evidence gate.
+
+## 156. Crystal development reaches the final cell (2026-08-30 04:17 CST)
+
+The authoritative launcher now reports `24 completed / 1 active / 0 pending /
+0 failures`.  The sole remaining cell is fold 4 seed 4 on GPU 3; folds 0--3 and
+fold 4 seeds 0--3 are terminal successes.  `confirmation_targets_opened=false`.
+Host NVML shows only the final cell's initial approximately 799 MiB allocation
+on GPU 3 at the snapshot, while GPUs 2, 4 and 5 are idle.  The development and
+all-development watcher processes are both still alive.  Do not aggregate,
+open confirmation, or start the all-development components early: the frozen
+gate requires a clean `completed_all` 25/25 state first.  No active-cell metric
+was inspected.
+
+The Run08 worker was no longer live after the overnight continuation and had
+left no trace directory, so it was explicitly resumed with instructions to
+recover honestly or declare lost context rather than fabricate an archive.  A
+Run08 result is not claimed until its complete trace and hashes exist.
+
+## 157. Run08 independently confirms zero scientific mismatch (2026-08-30 04:27 CST)
+
+Run08 recovered honestly and is complete at
+`paper/.aris/traces/paper-claim-audit/2026-08-29_run08/`.  It independently
+audited 147 declared/current files and 79 deduplicated claims, with
+`43 exact_match / 33 rounding_ok / 3 missing_evidence` and zero material
+scientific-data, configuration, aggregation or scope mismatches.  The three
+unverified groups are literature/bibliography context, complete AI/process
+provenance, and official-template provenance; these require their separate
+integrity gates and do not negate the raw scientific reconciliation.  Run08 is
+still `WARN`, `same-family/provisional`, not submission-ready assurance.
+
+Manifest, proposed canonical JSON, claim-ledger and audited-input-map SHA-256
+values are `6e79939b35738ddb1af8f69604100c472df72b7a5f9a46aa4a0db5fe0946d87d`,
+`b0be1c53abf5cc36bbf6274b7d493d779acee2fa7d3574137a042437edb84d70`,
+`dbc04fad385b330991d24db44fba39c9a3d89c2704026e90244fa08d839faf3e`
+and `e720ab2df2eadea28d6cd04a47ca5546d4666bfa88b537bc71bdf3392955c270`.
+The proposed top-level canonical artifact must not yet be promoted: 146 hashes
+remain fresh, but the live launcher-status path changes its timestamp while the
+final cell runs.  Once the launcher reaches stable terminal status, refresh
+only this scope snapshot/hash without reading cell metrics, or rerun the final
+post-integration claim audit.  No top-level canonical, paper, code or result was
+modified by Run08.
+
+## 158. Crystal development matrix reaches a clean 25/25 terminal state (2026-08-30 04:59 CST)
+
+The authoritative
+`runs/thermoml_crystal_cp_neural_gird_development_20260829/launcher_status.json`
+reached `state=completed_all` at filesystem timestamp 04:59:42 CST.  All 25
+fold--seed cells are terminal successes, with `0 active / 0 pending / 0
+failures`; `confirmation_targets_opened=false`.  No cell-level metric was
+inspected during this transition.  The separate all-development watcher then
+started the frozen aggregate analyzer as PID 2948757.  At the latest observation
+the analyzer remained CPU-active and had not yet emitted a final decision file,
+so this clean completion is not itself evidence that either the learned bridge
+or GIRD gate passed.  Keep the one-shot confirmation sealed until the complete
+aggregate decision and subsequent all-development package satisfy the frozen
+orchestrator contract.
+
+## 159. Frozen Crystal neural/GIRD aggregate fails; all-development fairness campaign starts (2026-08-30 06:30 CST)
+
+The independent aggregate completed normally and atomically emitted
+`analysis/decision.json`, `analysis/manifest.json`, and
+`analysis/all_development_decision.json`.  All 475 declared input hashes and all
+12 declared aggregate-output hashes independently pass `sha256sum -c`; the
+aggregate decision and manifest SHA-256 values are
+`f3615b74493726fd190af55b48d774d03249226a105f231ca192f024197d6d81`
+and `c6d0159763f733437e96d1ee7b01c3cbaf0d711a2add0586e425137f87ea6e11`.
+The prepared all-development decision SHA-256 is
+`3709e9fc1838eb338d538d3ed0bfbc79f921f72e66124480de64ecdbca16ce7b`.
+Coverage is exactly 25 cells / 5 folds / 5 seeds, and
+`confirmation_targets_opened=false` throughout.
+
+The frozen scientific decision is `learned_bridge_status=FAIL`,
+`gird_status=FAIL`, and `conditional_gird_status=FAIL`.  This is not a leakage
+failure: query-target perturbation passes, function-space cross-seed geometry
+is substantially more stable than raw q (mean distance Spearman approximately
+`0.9230` versus `0.6056`), and coefficients are finite.  The failure is
+localized to transfer and identifiability.  Spread decoder-functional pooled
+physical R2 is only `0.4655798661`; projection fidelity has median
+`0.9966893` but minimum `0.0665238`; dictionary motifs recur in at most 1--2 of
+5 folds for every seed; all 300 recomputed OMP margin certificates fail; and
+the affine-gauge diagnostics fail with very large worst-case discrepancies.
+In four-support entities, conditional GIRD median entity NRMSE is `0.0874195`,
+worse than both direct-target dictionary `0.0496813` and lambda-zero/support
+OMP `0.0537437`.  In the spread regime, selected GIRD equals lambda zero at
+pooled R2 `0.6586317`, while direct support-structure re-q remains the much
+stronger compact expression at `0.8593003`.
+
+Interpret this as evidence that the learned decoder prior is not identifiable
+under this heterogeneous sparse-support setting, not as evidence against the
+response-coordinate symbolic interface or as grounds to exclude the dataset.
+The frozen narrative therefore moves to Branch B: canonical response
+coordinates and direct support structure are the main contribution; GIRD is a
+transparent negative diagnostic and must not appear as a headline improvement.
+The all-development fairness campaign nevertheless launched normally.  At the
+06:30 snapshot it has four active tasks on GPUs 2--5 (`support_cnp`, `no_q`,
+`neural_seed0`, `neural_seed1`), three pending neural seeds, zero failures, and
+confirmation still sealed.  Do not inspect partial task metrics; wait for all
+seven components and their formal seals.
+
+At the 06:36 CST refresh, `no_q` became the first successful terminal task and
+GPU 3 immediately started `neural_seed2`.  Campaign coverage is therefore
+`1/7 completed / 4 active / 2 pending / 0 failures`; support CNP and neural
+seeds 0--2 are active, neural seeds 3--4 remain pending, and confirmation is
+still sealed.  No completed-task metric was inspected before the package seal.
+
+## 160. Branch-B theory and manuscript integration requirements (2026-08-30 06:44 CST)
+
+The current title and abstract are already compatible with Branch B and do not
+headline GIRD.  Terminal integration should remain minimal and evidence-led:
+replace the pending Crystal paragraph with the complete sealed registry; state
+that `A`, `B1`, `B2`, and `H` describe response background, slope, curvature,
+and support-domain boundary enhancement without claiming microscopic
+parameters; convert the Related Work conditional GIRD sentence to the observed
+diagnostic outcome; and state in Limitations that the learned prior did not add
+value in the heterogeneous Crystal sparse-support setting.
+
+One pre-result theoretical diagnostic is implemented and frozen but currently
+under-explained in the manuscript.  The implementation clarification assigns
+cross-seed/support-offset OMP certification to the aggregate and uses the
+sufficient bound `4*||R||_F*epsilon + 2*epsilon^2` against each saved
+winner--runner score margin.  The method text should state the narrow point:
+linear response projection is continuous under the displayed singular-value
+bound, whereas hard dictionary selection is certified stable only when its
+margin clears the aggregate perturbation bound.  The observed `0/300`
+certificates and 1--2/5 maximum motif recurrence then explain why stable
+function-space geometry does not imply an identifiable learned symbolic prior.
+Do not turn the sufficient certificate into a necessity claim, and do not
+change the frozen atom library, epsilon, margin or decision threshold.
+
+## 161. Crystal expression confirmation remains eligible, but evaluator implementation must wait (2026-08-30 06:52 CST)
+
+Read-only reconciliation of
+`THERMOML_CRYSTAL_CP_SINGLE_USE_CONFIRMATION_CONTRACT_20260829.{md,json}` and
+`THERMOML_CRYSTAL_CP_JOINT_CONFIRMATION_SEAL_PLAN_20260829.md` shows that the
+spread v4 expression endpoint is independent of GIRD promotion.  The failed
+development learned-prior gate therefore forbids a GIRD headline but does not
+cancel the unchanged expression endpoint: spread confirmation still tests
+`gamma=100`, degree 2, inverse-square-root `delta=0.0003`, complete finite
+support-only coverage, exact target invariance, and physical pooled R2 at least
+0.85.  GIRD remains a controlled diagnostic regardless of any later metric.
+
+The repository currently contains the frozen scientific/transaction contract,
+joint-seal plan and synthetic transaction test, but no Crystal-specific joint
+seal assembler, real single-use evaluator, or independent confirmation
+analyzer.  This is an explicit remaining implementation step, not permission
+to improvise.  Contract section 2 and the joint-plan execution order require
+all neural/no-q/CNP/FPCA all-development component packages to be terminal
+before the evaluator may be constructed.  Therefore do not implement or run it
+while the current campaign is partial.  After the campaign seals all seven
+tasks, the legal order is: implement and focused-test the target-blind evaluator
+and analyzer without opening confirmation responses; assemble and independently
+verify the fixed joint package; derive the sole consumed root from the joint
+seal hash; write/fsync the exclusive consumed lock and started receipt before
+the first response read; evaluate exactly once; independently analyze the
+immutable outputs.  A post-receipt failure consumes the opportunity and never
+permits a retry.
+
+At the 06:58 CST campaign refresh, neural seeds 0 and 1 also reached successful
+terminal states.  GPUs 4 and 5 immediately started neural seeds 3 and 4, so the
+all-development campaign is now `3/7 completed / 4 active / 0 pending / 0
+failures`.  Completed tasks are `no_q`, `neural_seed0`, and `neural_seed1`;
+support CNP and neural seeds 2--4 are active.  All seven tasks have therefore
+been launched, confirmation remains unopened, and no per-seed metric was
+inspected before terminal component packaging.
+
+At the 07:09 CST refresh, support CNP and neural seed 2 also completed
+successfully.  Campaign coverage is now `5/7 completed / 2 active / 0 pending /
+0 failures`; only neural seeds 3 and 4 remain active on GPUs 4 and 5.
+Confirmation is still unopened and no component metric has been inspected.
+GPUs 2 and 3 are released, but there is no remaining formal pending task to
+place on them; do not introduce an unplanned experiment into the sealed chain.
+
+## 162. Crystal all-development campaign is terminal after an entrypoint-only packaging recovery (2026-08-30 08:17 CST)
+
+The authoritative campaign now reports `state=completed_all`, with all seven
+tasks (`support_cnp`, `no_q`, and neural seeds 0--4) completed, no active or
+pending tasks, no failures, and `confirmation_targets_opened=false`.  All four
+formal component packages independently verify.  Their manifest SHA-256 values
+are `6c60884ba9af2ca6a7c724de1a94ad7d2e5709253593418270d4cc513902cc93`
+for support CNP, `ca03684ce9266eacc30fdafdbd66277d6a6a50957421f0a83c34564284dff59c`
+for the no-q temperature MLP,
+`4931952be797e212e1b1e39e089219fc77837c20ab8e7ca0959c58e26436bcd7`
+for neural/GIRD, and
+`768a1cdc319b446fb8d5334f4fbaa154fa0e94d9bccd32d70cac99955417c193`
+for FPCA.
+
+The original watcher completed all training, then exited because it invoked
+the neural packager as a direct file and Python could not import `scripts`.
+This was an orchestration-entrypoint defect, not a scientific or training
+failure.  The frozen packager remained byte-identical at SHA-256
+`ed8368bcad31ef77629b61dbc89099d7157d3edf4432fe520bc50e561523d508`;
+11 focused launcher/packager tests passed, and the same source was executed via
+`python -m scripts.package_thermoml_crystal_cp_all_development_neural_gird_20260829`.
+The ledger records the failed direct entrypoint and this no-source-change
+recovery before the terminal event.  The recovered neural seal retains the
+frozen development decision SHA-256
+`3709e9fc1838eb338d538d3ed0bfbc79f921f72e66124480de64ecdbca16ce7b`,
+five seeds, 247 entities, 23,742 rows, and all three learned-prior claims as
+`FAIL`.  This terminal transition now authorizes construction—but not yet
+execution—of the target-blind single-use confirmation evaluator and analyzer
+in the exact order recorded in section 161.
+
+## 163. Crystal joint package is independently sealed; the one-shot confirmation remains unconsumed pending explicit approval (2026-08-30 09:02 CST)
+
+The Crystal-specific joint assembler, independent verifier, single-use
+evaluator and independent analyzer are now implemented at the corresponding
+`scripts/*thermoml_crystal_cp*20260830.py` paths.  The evaluator preserves
+negative heat-capacity predictions, evaluates v4 only in spread, covers all
+three frozen regimes, reruns the `+1,000,000` redacted-target twin, and exposes
+all 27 locked methods.  The independent analyzer recomputes coverage,
+five-seed medians, physical metrics, entity/DOI bootstrap intervals, NRMSE
+tails, negative counts, leakage and the expression gate.  Twenty-nine focused
+tests passed, including a real-checkpoint CPU smoke of the entire locked
+method/regime registry with calibration iterations shortened only inside the
+test.
+
+The fixed joint package is
+`runs/thermoml_crystal_cp_joint_confirmation_package_20260829/`.  It binds 244
+repository-relative files and 27 methods.  The joint manifest, inventory and
+seal SHA-256 values are
+`74130531077896feec071ced8fa100fd009a059fa2ff87a9626d61cefadca255`,
+`0100b801e5d0aa4b077ad67b7b77b6c41c4dd0fbcaefe54f4fec3074321759d0`,
+and `ed1a4f60294debad0ae927364ce03cdf32efe9a002b5345464ed99c00fe68b0f`.
+The independent verification at
+`runs/thermoml_crystal_cp_joint_confirmation_verification_20260830/` is
+`PASS`: all component verifiers and all 244 inventory hashes pass,
+`confirmation_source_members_opened=false`, and
+`confirmation_targets_opened=false`.
+
+Host NVML showed GPUs 2--5 idle at 4 MiB each.  A request to launch the sole
+attempt on physical GPU 2 was rejected by the execution safety reviewer
+because this specific irreversible, non-retryable confirmation consumption
+needs explicit user approval even though general GPU experiments were already
+authorized.  No workaround was attempted.  Read-only checks prove there is no
+consumed output root, no launch log, no tmux session and no receipt; the sole
+confirmation opportunity remains intact.  The next authorized action must be
+an explicit user instruction acknowledging and approving consumption of the
+single Crystal-Cp confirmation attempt.  Until then, do not launch, rename,
+replace or rebuild the sealed package.
+
+## 164. Branch-B terminal Crystal evidence is integrated into the 9-page ICLR draft (2026-08-30)
+
+The manuscript now reports the completed Crystal development registry rather
+than future-tense plans.  The main text gives the stage-level meanings of the
+frozen expression coefficients (`A`: reference/background, `B1`: normalized
+slope, `B2`: smooth curvature, `H`: support-diagnosed boundary enhancement)
+without assigning microscopic or critical-parameter semantics.  It reports the
+terminal 5-fold x 5-seed contrast: leakage passes and function-space geometry is
+more reproducible than raw q (mean distance Spearman `0.9230` vs `0.6056`), but
+the learned bridge and GIRD gates fail; spread decoder-functional physical R2 is
+`0.4656`; on the consensus prior-eligible four-support subset,
+conditional-GIRD median entity NRMSE is `0.0874`, worse than direct-target
+dictionary `0.0497` and lambda-zero support OMP `0.0537` on the same subset.
+The main narrative therefore treats GIRD as a falsifiable negative diagnostic
+and keeps the independently selected response-coordinate expression
+(`R2=0.8593`) as the Crystal contribution.
+
+The predeclared OMP stability audit is now explained narrowly: failure of the
+sufficient margin condition is not treated as necessary evidence of
+instability.  Detailed terminal evidence is in the protocol appendix: median /
+minimum projection R2 `0.9967/0.0665`, motif recurrence at most 1--2/5 folds per
+seed, `0/300` certificate passes, and failed affine-gauge diagnostics.  The
+Related Work and Limitations sections explicitly avoid promoting the failed
+learned prior.
+
+`scripts/build_iclr2027_paper.sh` completes successfully.  The resulting
+`paper/iclr2027_draft.pdf` has 13 total pages; the main body now ends with the
+Conclusion on page 9, while AI/reproducibility statements, references and the
+appendix begin on page 10.  There are no undefined references/citations or
+overfull boxes, and all PDF fonts are embedded.  The only remaining scientific
+transition is the still-unconsumed single-use Crystal confirmation described in
+section 163; manuscript edits did not touch the sealed evaluator, tests or joint
+package.
+
+Run09 zero-context paper-claim audit is archived at
+`paper/.aris/traces/paper-claim-audit/2026-08-30_run09/`.  It audited 48 claims
+against 329 hash-frozen permitted inputs without reading any Crystal
+confirmation response/source member.  It found one material scope defect in an
+intermediate draft: the four-support `0.0874/0.0497/0.0537` medians were
+computed on the consensus prior-eligible subset, but the prose originally
+omitted that population.  The final prose now names the subset twice; the fresh
+reviewer reclassified the claim as `rounding_ok`.  No material blocker remains.
+The follow-up wording fixes also replace ambiguous "learned rows" with
+`CNP/no-q MLP use pointwise five-seed medians; other rows are deterministic`,
+and replace an unsupported future "reports all tails" statement with the
+seal-supported `One evaluation is authorized`.  Two nonblocking evidence
+limits remain by design: the audit's permitted set did not include the delegated
+v3 fitter for a direct explicit-SVD implementation check, and confirmation-era
+/ InChIKey-disjointness claims cannot be reverified without crossing the
+unopened-confirmation boundary.  Final post-wording hashes are
+`f6fb9fa5480a31ce6df949ca0a24d91f8d893f055bd18f4fb6a698579d073437`
+for `paper/sections/experiments.tex` and
+`758c0fa766157700c659f265a58d3bf613dc96c20949e05d21769f05f5a4e14b`
+for `paper/iclr2027_draft.pdf`; the main body still ends on page 9.
+
+## 165. ICLR top-half gate and anonymous-supplement evidence close (2026-08-30 10:26 CST)
+
+The final manuscript narrative was narrowed from a universal/canonical latent
+variable claim to auditable, basis-relative response coordinates under a frozen
+basis and probe specification.  A fresh same-family provisional reviewer now
+judges the manuscript reasonably within the top half of the ICLR submission
+pool, assigning a subjective probability of `55%` with interval `45--65%`.
+The remaining rejection risk is novelty/impact rather than a demonstrated
+scientific mismatch.  This assessment is archived in
+`paper/ICLR_TOP50_FRESH_REVIEW_20260830.md`; it is not an acceptance forecast.
+
+The official paper is `paper/iclr2027_draft.pdf`, SHA-256
+`69b29b6d04375fd683482f7533bf3352ac74b3382551e9f713b5accfdde6ecfc`.
+It has 13 pages, the main body ends on page 9, AI/reproducibility material starts
+on page 10, all fonts are embedded, and the build has no undefined references,
+undefined citations, or overfull boxes.  Citation freshness is recorded in
+`paper/CITATION_AUDIT_FRESHNESS_20260830.{md,json}`: the same 21 keys and
+semantically unchanged contexts remain covered by the prior citation audit.
+
+The anonymous supplement is
+`public/iclr2027_anonymous_supplement_20260830.tar.gz`, SHA-256
+`484a5bf625e7d20e431b1f4f1a74512d8e63017f870c3cd4588dffdd5bc565ca`.
+Its `SHA256SUMS` SHA-256 is
+`656127bb533736ac0208bee14ff13437ed605f6cbbadd5f90163738d62817090`.
+The persistent clean-room verifier extracted the archive under
+`public/qa/iclr2027_supplement_cleanroom_20260830`, passed all 100 declared
+file hashes, deleted the bundled PDF, rebuilt from that root, and reproduced
+the official PDF byte-for-byte.  The receipt is
+`public/qa/iclr2027_supplement_verification_20260830.json`, SHA-256
+`73a4a5f6f137cac144bfde103c3306bb70933255696651536805753fce7ca157`.
+Archive members use a deterministic noon timestamp that was about 97 minutes
+ahead of the host clock during extraction; GNU tar emitted nonfatal future-time
+warnings, while checksum verification and the causal rebuild still exited zero.
+
+The narrow final claim re-review is `PASS (same-family provisional)`: all four
+previously unsupported process claims are now `exact_match` (ZT a-priori
+endpoint, verification from the supplement root, every bundled hash passing,
+and byte-identical causal rebuild), with `0 unsupported / 0 mismatch`.
+Previously audited scientific data, configuration and aggregation remain at
+zero mismatch.  The record is
+`paper/FINAL_INCREMENTAL_CLAIM_AUDIT_20260830.md`.
+
+The sealed Crystal joint package is unchanged at manifest/inventory/seal hashes
+`74130531077896feec071ced8fa100fd009a059fa2ff87a9626d61cefadca255`,
+`0100b801e5d0aa4b077ad67b7b77b6c41c4dd0fbcaefe54f4fec3074321759d0`,
+and `ed1a4f60294debad0ae927364ce03cdf32efe9a002b5345464ed99c00fe68b0f`.
+No Crystal confirmation output root or receipt was created.  The one-shot
+opportunity remains optional and unconsumed; do not launch it without the
+user's explicit acknowledgement of that irreversible consumption.

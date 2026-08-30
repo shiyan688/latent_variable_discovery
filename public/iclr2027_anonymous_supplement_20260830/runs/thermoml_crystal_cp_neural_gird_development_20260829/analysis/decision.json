@@ -1,0 +1,50 @@
+{
+  "cells_verified": 25,
+  "confirmation_targets_opened": false,
+  "gird": {
+    "conditional_four_support": {
+      "gates": {
+        "beats_direct_target_dictionary": false,
+        "dictionary_and_certificate": false,
+        "five_percent_gain_over_lambda0": false,
+        "gauge": false,
+        "leakage": true,
+        "support_identified_equals_lambda0": true
+      },
+      "median_entity_nrmse": {
+        "conditional_gird": 0.08741945736311157,
+        "decoder_functional": 0.07558730027793688,
+        "decoder_only_dictionary": 0.13137503626764668,
+        "direct_target_dictionary": 0.04968127998275457,
+        "gird_lambda_0": 0.05374366728589958,
+        "gird_lambda_0.0001": 0.08741945736311157,
+        "gird_lambda_0.001": 0.08734765983922596,
+        "gird_lambda_0.01": 0.08618209688159263,
+        "gird_lambda_0.1": 0.08586023605725693,
+        "gird_lambda_1": 0.11166247238439944,
+        "gird_lambda_10": 0.12560217391667128,
+        "gird_lambda_100": 0.13030001156538404,
+        "gird_lambda_inf": 0.13137503626764668,
+        "raw_decoder_adam": 0.07953613868860934,
+        "support_omp": 0.05374366728589958,
+        "support_structure_re_q": 0.07715620004967262
+      },
+      "status": "FAIL"
+    },
+    "dictionary_passed": false,
+    "dictionary_recurrence_passed": false,
+    "gauge_passed": false,
+    "leakage_passed": true,
+    "omp_margin_certificates_all_passed": false,
+    "primary_spread_no_more_than_five_percent_worse": false
+  },
+  "gird_status": "FAIL",
+  "learned_bridge_gates": {
+    "decoder_functional_pooled_r2_at_least_0_85": false,
+    "finite_functional_coefficients": true,
+    "function_geometry_at_least_raw_q": true,
+    "minimum_projection_r2_at_least_0_95": false
+  },
+  "learned_bridge_status": "FAIL",
+  "scope": "independent 25-cell ThermoML crystal-Cp neural/GIRD aggregate"
+}

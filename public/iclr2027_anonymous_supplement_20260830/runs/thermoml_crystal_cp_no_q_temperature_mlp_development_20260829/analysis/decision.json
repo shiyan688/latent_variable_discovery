@@ -1,0 +1,119 @@
+{
+  "scope": "crystal-Cp no_q_temperature_mlp development-only OOF",
+  "gates": {
+    "exact_entity_coverage_each_regime": true,
+    "exact_query_coverage_each_regime": true,
+    "five_seed_pointwise_median_by_regime_and_source_row": true,
+    "finite_predictions": true,
+    "query_target_perturbation_invariant_each_regime": true,
+    "all_cells_terminal": true
+  },
+  "passed": true,
+  "device": "cuda",
+  "query_rows_by_regime": {
+    "four_support": 22754,
+    "prefix": 17897,
+    "spread": 17704
+  },
+  "metrics_by_regime": {
+    "spread": {
+      "query_rows": 17704,
+      "pooled_physical_r2": 0.09571319637579179,
+      "pooled_rmse": 903.9166411376704,
+      "pooled_mae": 251.90303266053323,
+      "median_entity_physical_r2": -11.844500486551091,
+      "median_entity_physical_nrmse": 3.583922500076012,
+      "p90_entity_physical_nrmse": 26.4199150761713,
+      "p95_entity_physical_nrmse": 39.64946595668904,
+      "maximum_entity_physical_nrmse": 175.5439881584642,
+      "negative_prediction_count": 826,
+      "entity_bootstrap_physical_r2": {
+        "unit": "entity_id",
+        "seed": 20260829,
+        "draws": 10000,
+        "valid_draws": 10000,
+        "invalid_draws": 0,
+        "percentile_2_5": 0.042832782977299366,
+        "percentile_97_5": 0.28280259329434937
+      },
+      "doi_bootstrap_physical_r2": {
+        "unit": "doi",
+        "seed": 20260830,
+        "draws": 10000,
+        "valid_draws": 10000,
+        "invalid_draws": 0,
+        "percentile_2_5": -0.019460340750384744,
+        "percentile_97_5": 0.307397330044501
+      }
+    },
+    "prefix": {
+      "query_rows": 17897,
+      "pooled_physical_r2": 0.09659771772430148,
+      "pooled_rmse": 963.6333843809233,
+      "pooled_mae": 280.335353974256,
+      "median_entity_physical_r2": -25.931597535040673,
+      "median_entity_physical_nrmse": 5.1895662183886495,
+      "p90_entity_physical_nrmse": 36.489248014762,
+      "p95_entity_physical_nrmse": 53.47882781221472,
+      "maximum_entity_physical_nrmse": 220.43207034113652,
+      "negative_prediction_count": 185,
+      "entity_bootstrap_physical_r2": {
+        "unit": "entity_id",
+        "seed": 20260839,
+        "draws": 10000,
+        "valid_draws": 10000,
+        "invalid_draws": 0,
+        "percentile_2_5": 0.04164267063318074,
+        "percentile_97_5": 0.2994169665260838
+      },
+      "doi_bootstrap_physical_r2": {
+        "unit": "doi",
+        "seed": 20260840,
+        "draws": 10000,
+        "valid_draws": 10000,
+        "invalid_draws": 0,
+        "percentile_2_5": -0.031603801426830794,
+        "percentile_97_5": 0.32234935573920065
+      }
+    },
+    "four_support": {
+      "query_rows": 22754,
+      "pooled_physical_r2": 0.12200888805296972,
+      "pooled_rmse": 769.3772760670385,
+      "pooled_mae": 243.09922756357216,
+      "median_entity_physical_r2": -11.814343754107679,
+      "median_entity_physical_nrmse": 3.579712803299683,
+      "p90_entity_physical_nrmse": 25.56589405782856,
+      "p95_entity_physical_nrmse": 40.58616496761912,
+      "maximum_entity_physical_nrmse": 175.47178436084792,
+      "negative_prediction_count": 1069,
+      "entity_bootstrap_physical_r2": {
+        "unit": "entity_id",
+        "seed": 20260849,
+        "draws": 10000,
+        "valid_draws": 10000,
+        "invalid_draws": 0,
+        "percentile_2_5": 0.052785732419368514,
+        "percentile_97_5": 0.30141519390741645
+      },
+      "doi_bootstrap_physical_r2": {
+        "unit": "doi",
+        "seed": 20260850,
+        "draws": 10000,
+        "valid_draws": 10000,
+        "invalid_draws": 0,
+        "percentile_2_5": -0.026358181065998,
+        "percentile_97_5": 0.3238782781604423
+      }
+    }
+  },
+  "maximum_checkpoint_prediction_abs_difference": 0.0034303539007396466,
+  "maximum_checkpoint_standardized_prediction_abs_difference": 3.5762786865234375e-06,
+  "checkpoint_recompute_tolerance": {
+    "standardized_rtol": 1e-06,
+    "standardized_atol": 5e-06,
+    "comparison": "outer-train-standardized CUDA-saved float32 predictions versus CPU checkpoint replay"
+  },
+  "raw_q_metrics_applicable": false,
+  "confirmation_targets_opened": false
+}

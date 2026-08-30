@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg"
+     xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+     width="183.0mm" height="154.0mm"
+     viewBox="0 0 183.0 154.0" version="1.1">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5"
+            markerWidth="4" markerHeight="4" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#333333"/>
+    </marker>
+  </defs>
+  <rect id="canvas-background" x="0.0" y="0.0" width="183.0" height="154.0" fill="#FAF8F4"/>
+
+<g id="variant-b-panel-a" inkscape:groupmode="layer" inkscape:label="Panel a">
+<text x="5.0" y="7.5" font-family="DejaVu Sans, Helvetica, Arial, sans-serif" font-size="3.5" font-weight="bold" fill="#000000" text-anchor="start">a</text>
+<rect x="5.0" y="10.0" width="75.0" height="58.0" fill="#FFFFFF" stroke="#C5CBD1" stroke-width="0.35" rx="1.8" ry="1.8"/>
+<g id="variant-b-latent-content">
+<text x="42.5" y="15.0" font-family="DejaVu Sans, Helvetica, Arial, sans-serif" font-size="2.3" font-weight="bold" fill="#333333" text-anchor="middle">Raw-q ambiguity</text>
+<g id="variant-b-chart-1">
+<rect x="7.5" y="19.0" width="11.0" height="12.0" fill="#FFFFFF" stroke="#0072B2" stroke-width="0.45" rx="0.8" ry="0.8"/>
+<line x1="8.5" y1="29.0" x2="17.5" y2="21.0" stroke="#0072B2" stroke-width="0.25"/>
+<line x1="8.5" y1="21.0" x2="17.5" y2="29.0" stroke="#0072B2" stroke-width="0.25"/>
+<circle cx="13.0" cy="24.5" r="1.1" fill="#0072B2"/>
+<text x="13.0" y="34.5" font-family="DejaVu Sans, Helvetica, Arial, sans-serif" font-size="1.9" font-weight="normal" fill="#0072B2" text-anchor="middle">q chart 1</text>
+</g>
+<g id="variant-b-chart-2">
+<rect x="66.5" y="19.0" width="11.0" height="12.0" fill="#FFFFFF" stroke="#A65E00" stroke-width="0.45" rx="0.8" ry="0.8"/>
+<line x1="67.5" y1="29.0" x2="76.5" y2="21.0" stroke="#A65E00" stroke-width="0.25"/>
+<line x1="67.5" y1="21.0" x2="76.5" y2="29.0" stroke="#A65E00" stroke-width="0.25"/>
+<circle cx="72.0" cy="24.5" r="1.1" fill="#A65E00"/>
+<text x="72.0" y="34.5" font-family="DejaVu Sans, Helvetica, Arial, sans-serif" font-size="1.9" font-weight="normal" fill="#A65E00" text-anchor="middle">q chart 2</text>
+</g>
+<path d="M 10.0 44.0 C 15.0 35.0, 23.0 52.0, 75.0 40.0" fill="none" stroke="#0072B2" stroke-width="0.60"/>
+<path d="M 10.0 44.0 C 15.0 35.0, 23.0 52.0, 75.0 40.0" fill="none" stroke="#A65E00" stroke-width="0.25" stroke-dasharray="1.4,1.0"/>
+<text x="42.5" y="62.0" font-family="DejaVu Sans, Helvetica, Arial, sans-serif" font-size="2.0" font-weight="normal" fill="#666666" text-anchor="middle">identical physical curve</text>
+<text x="42.5" y="65.5" font-family="DejaVu Sans, Helvetica, Arial, sans-serif" font-size="2.1" font-weight="bold" fill="#D55E00" text-anchor="middle">q depends on chart</text>
+</g>
+</g>
+<g id="variant-b-panel-b" inkscape:groupmode="layer" inkscape:label="Panel b">
+<text x="103.0" y="7.5" font-family="DejaVu Sans, Helvetica, Arial, sans-serif" font-size="3.5" font-weight="bold" fill="#000000" text-anchor="start">b</text>
+<rect x="103.0" y="10.0" width="75.0" height="58.0" fill="#EFF8F4" stroke="#C5CBD1" stroke-width="0.35" rx="1.8" ry="1.8"/>
+<g id="variant-b-quotient-content">
+<text x="140.5" y="15.0" font-family="DejaVu Sans, Helvetica, Arial, sans-serif" font-size="2.3" font-weight="bold" fill="#333333" text-anchor="middle">Response quotient</text>
+<line x1="108.0" y1="23.0" x2="108.0" y2="35.0" stroke="#B5BCC3" stroke-width="0.25" stroke-dasharray="0.8,0.8"/>
+<circle cx="108.0" cy="32.0" r="0.8" fill="#007A5A"/>
+<line x1="124.2" y1="23.0" x2="124.2" y2="35.0" stroke="#B5BCC3" stroke-width="0.25" stroke-dasharray="0.8,0.8"/>
+<circle cx="124.2" cy="32.0" r="0.8" fill="#007A5A"/>
+<line x1="140.5" y1="23.0" x2="140.5" y2="35.0" stroke="#B5BCC3" stroke-width="0.25" stroke-dasharray="0.8,0.8"/>
+<circle cx="140.5" cy="32.0" r="0.8" fill="#007A5A"/>
+<line x1="156.8" y1="23.0" x2="156.8" y2="35.0" stroke="#B5BCC3" stroke-width="0.25" stroke-dasharray="0.8,0.8"/>
+<circle cx="156.8" cy="32.0" r="0.8" fill="#007A5A"/>
+<line x1="173.0" y1="23.0" x2="173.0" y2="35.0" stroke="#B5BCC3" stroke-width="0.25" stroke-dasharray="0.8,0.8"/>
+<circle cx="173.0" cy="32.0" r="0.8" fill="#007A5A"/>
+<path d="M 107.0 32.0 C 112.0 23.0, 168.0 40.0, 174.0 27.0" fill="none" stroke="#007A5A" stroke-width="0.65"/>
+<text x="140.5" y="40.0" font-family="DejaVu Sans, Helvetica, Arial, sans-serif" font-size="2.0" font-weight="normal" fill="#007A5A" text-anchor="middle">fixed physical probes P</text>
+<rect x="108.0" y="44.0" width="65.0" height="10.0" fill="#E7F5EF" stroke="#007A5A" stroke-width="0.40" rx="3.0" ry="3.0"/>
+<text x="140.5" y="50.2" font-family="DejaVu Sans, Helvetica, Arial, sans-serif" font-size="3.0" font-weight="bold" fill="#007A5A" text-anchor="middle">[f(P)]</text>
+<text x="140.5" y="65.5" font-family="DejaVu Sans, Helvetica, Arial, sans-serif" font-size="2.0" font-weight="normal" fill="#666666" text-anchor="middle">one response object</text>
+</g>
+</g>
+<g id="variant-b-panel-c" inkscape:groupmode="layer" inkscape:label="Panel c">
+<text x="5.0" y="85.5" font-family="DejaVu Sans, Helvetica, Arial, sans-serif" font-size="3.5" font-weight="bold" fill="#000000" text-anchor="start">c</text>
+<rect x="5.0" y="88.0" width="75.0" height="58.0" fill="#EEF5F9" stroke="#C5CBD1" stroke-width="0.35" rx="1.8" ry="1.8"/>
+<g id="variant-b-coordinates-content">
+<text x="42.5" y="93.0" font-family="DejaVu Sans, Helvetica, Arial, sans-serif" font-size="2.3" font-weight="bold" fill="#333333" text-anchor="middle">Named coordinates</text>
+<rect x="9.0" y="98.0" width="21.3" height="14.0" fill="#FFFFFF" stroke="#0072B2" stroke-width="0.40" rx="1.0" ry="1.0"/>
+<line x1="11.0" y1="106.0" x2="28.3" y2="106.0" stroke="#0072B2" stroke-width="0.55"/>
+<text x="19.7" y="116.5" font-family="DejaVu Sans, Helvetica, Arial, sans-serif" font-size="1.8" font-weight="normal" fill="#0072B2" text-anchor="middle">level</text>
+<rect x="31.3" y="98.0" width="21.3" height="14.0" fill="#FFFFFF" stroke="#A65E00" stroke-width="0.40" rx="1.0" ry="1.0"/>
+<line x1="33.3" y1="109.0" x2="50.7" y2="101.0" stroke="#A65E00" stroke-width="0.55"/>
+<text x="42.0" y="116.5" font-family="DejaVu Sans, Helvetica, Arial, sans-serif" font-size="1.8" font-weight="normal" fill="#A65E00" text-anchor="middle">slope</text>
+<rect x="53.7" y="98.0" width="21.3" height="14.0" fill="#FFFFFF" stroke="#007A5A" stroke-width="0.40" rx="1.0" ry="1.0"/>
+<path d="M 55.7 108.0 Q 64.3 99.0 73.0 108.0" fill="none" stroke="#007A5A" stroke-width="0.55"/>
+<text x="64.3" y="116.5" font-family="DejaVu Sans, Helvetica, Arial, sans-serif" font-size="1.8" font-weight="normal" fill="#007A5A" text-anchor="middle">curve</text>
+<rect x="9.0" y="121.0" width="67.0" height="8.5" fill="#EAF3F8" stroke="#0072B2" stroke-width="0.35" rx="1.5" ry="1.5"/>
+<text x="42.5" y="126.5" font-family="DejaVu Sans, Helvetica, Arial, sans-serif" font-size="1.9" font-weight="bold" fill="#0072B2" text-anchor="middle">support-only re-q</text>
+<rect x="9.0" y="132.5" width="67.0" height="8.5" fill="#FFF4DA" stroke="#A65E00" stroke-width="0.35" rx="1.5" ry="1.5" stroke-dasharray="1.2,0.8"/>
+<text x="42.5" y="138.0" font-family="DejaVu Sans, Helvetica, Arial, sans-serif" font-size="1.7" font-weight="normal" fill="#A65E00" text-anchor="middle">rank-poor: decoder prior</text>
+<text x="42.5" y="143.5" font-family="DejaVu Sans, Helvetica, Arial, sans-serif" font-size="1.8" font-weight="normal" fill="#666666" text-anchor="middle">c = (level, slope, curve)</text>
+</g>
+</g>
+<g id="variant-b-panel-d" inkscape:groupmode="layer" inkscape:label="Panel d">
+<text x="103.0" y="85.5" font-family="DejaVu Sans, Helvetica, Arial, sans-serif" font-size="3.5" font-weight="bold" fill="#000000" text-anchor="start">d</text>
+<rect x="103.0" y="88.0" width="75.0" height="58.0" fill="#FFFFFF" stroke="#C5CBD1" stroke-width="0.35" rx="1.8" ry="1.8"/>
+<g id="variant-b-evidence-content">
+<text x="140.5" y="93.0" font-family="DejaVu Sans, Helvetica, Arial, sans-serif" font-size="2.3" font-weight="bold" fill="#333333" text-anchor="middle">Temporal transfer</text>
+<rect x="106.0" y="97.0" width="69.0" height="16.0" fill="#F3F5F7" stroke="#A6AFB8" stroke-width="0.30" rx="1.0" ry="1.0" stroke-dasharray="1.6,1.0"/>
+<path d="M 109.0 109.5 C 113.0 100.5, 116.5 112.0, 120.0 103.0" fill="none" stroke="#0072B2" stroke-width="0.65"/>
+<circle cx="111.0" cy="107.0" r="0.8" fill="#A65E00"/>
+<circle cx="117.0" cy="105.0" r="0.8" fill="#A65E00"/>
+<text x="174.0" y="103.5" font-family="DejaVu Sans, Helvetica, Arial, sans-serif" font-size="1.8" font-weight="bold" fill="#333333" text-anchor="end">ZT · quadratic</text>
+<text x="174.0" y="109.0" font-family="DejaVu Sans, Helvetica, Arial, sans-serif" font-size="2.1" font-weight="bold" fill="#0072B2" text-anchor="end">R² = 0.9888</text>
+<text x="174.0" y="112.0" font-family="DejaVu Sans, Helvetica, Arial, sans-serif" font-size="1.6" font-weight="normal" fill="#666666" text-anchor="end">support → hidden query</text>
+<rect x="106.0" y="118.0" width="69.0" height="16.0" fill="#F3F5F7" stroke="#A6AFB8" stroke-width="0.30" rx="1.0" ry="1.0" stroke-dasharray="1.6,1.0"/>
+<path d="M 109.0 130.5 C 113.0 121.5, 116.5 133.0, 120.0 124.0" fill="none" stroke="#007A5A" stroke-width="0.65"/>
+<circle cx="111.0" cy="128.0" r="0.8" fill="#A65E00"/>
+<circle cx="117.0" cy="126.0" r="0.8" fill="#A65E00"/>
+<text x="174.0" y="124.5" font-family="DejaVu Sans, Helvetica, Arial, sans-serif" font-size="1.8" font-weight="bold" fill="#333333" text-anchor="end">Vapor P · thermo</text>
+<text x="174.0" y="130.0" font-family="DejaVu Sans, Helvetica, Arial, sans-serif" font-size="2.1" font-weight="bold" fill="#007A5A" text-anchor="end">P-space R² = 0.9996</text>
+<text x="174.0" y="133.0" font-family="DejaVu Sans, Helvetica, Arial, sans-serif" font-size="1.6" font-weight="normal" fill="#666666" text-anchor="end">support → hidden query</text>
+<rect x="106.0" y="135.0" width="69.0" height="7.0" fill="#F0F0F0" stroke="#B5BCC3" stroke-width="0.30" rx="1.0" ry="1.0"/>
+<text x="140.5" y="138.5" font-family="DejaVu Sans, Helvetica, Arial, sans-serif" font-size="1.6" font-weight="normal" fill="#666666" text-anchor="middle">accuracy is baseline-dependent</text>
+<text x="140.5" y="141.0" font-family="DejaVu Sans, Helvetica, Arial, sans-serif" font-size="1.6" font-weight="normal" fill="#666666" text-anchor="middle">expression is compact and named</text>
+</g>
+</g>
+<g id="variant-b-arrows" inkscape:groupmode="layer" inkscape:label="Flow arrows">
+<line x1="83.0" y1="37.3" x2="100.0" y2="37.3" stroke="#333333" stroke-width="0.55" marker-end="url(#arrow)"/>
+<path d="M 140.5 71.0 Q 91.5 78.0 42.5 85.0" fill="none" stroke="#333333" stroke-width="0.55" marker-end="url(#arrow)"/>
+<line x1="83.0" y1="125.7" x2="100.0" y2="125.7" stroke="#333333" stroke-width="0.55" marker-end="url(#arrow)"/>
+</g>
+</svg>

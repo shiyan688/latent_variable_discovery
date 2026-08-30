@@ -1,0 +1,73 @@
+{
+  "code": {
+    "paper/figures/paper_plot_style.py": "86939951953f1a0ee30d016f312dbbf6944639e932e8b96f4e36d78da61e75f8",
+    "scripts/generate_iclr_figure3_20260829.py": "a165dc76f52cbce66f608fd4c9c1d7978d1b1739eeb2a243ad9e02a027003d5a"
+  },
+  "outputs": {
+    "figure3_real_transfer.pdf": "f398046ddc013ec200cb7e4c8bd4822c12a6f1e68c8bf8650eeb0a2b7ecadafd",
+    "figure3_real_transfer.png": "6436ee98c41a9d8427fe5bf5cd3b5a4655d2e0d38b12c02226a22148bb1e1ec1",
+    "figure3_real_transfer.svg": "a19a5146cd8ea024e21b44d508ea2cbb844122d7e5c1f942b5794d07876d5595"
+  },
+  "paired_entity_wins": {
+    "starry_zt_expression_vs_knn": 16,
+    "vapor_expression_vs_pchip": 37
+  },
+  "representative_selection": "entity nearest the expression-family median entity NRMSE; lexicographic ID tie-break",
+  "representatives": {
+    "starry_zt": {
+      "composition": "Sc2Te3",
+      "entity_id": "89500",
+      "family_median_nrmse": 0.240950808465202,
+      "query_rows": 24,
+      "support_rows": 9
+    },
+    "vapor_pressure": {
+      "common_name": "N-methylethylenediamine",
+      "entity_id": "KFIGICHILYTCJF-UHFFFAOYSA-N",
+      "family_median_nrmse": 0.02000687455387275,
+      "query_rows": 16,
+      "support_rows": 6
+    }
+  },
+  "scope": "Figure 3: sealed temporal transfer, paired tails, and development support-offset stability",
+  "sources": {
+    "runs/starry_zt_interpretable_req_20260829/q_support_offset_stability.csv": "eee3715d41ff19626e43409e48f5b6b6807811850d0efbe640a35b60c758b78c",
+    "runs/starry_zt_temporal_confirmation_20260829/evaluation/confirmation_data_used.csv": "5ae133f28a5cf1c9bfacdc9168bd0f07518cdb269a8643b99f2f401f13633d23",
+    "runs/starry_zt_temporal_confirmation_20260829/evaluation/per_entity_metrics.csv": "1db1261bf434c4be7049128c59509e27f06a932a386078e5440d026cf6333799",
+    "runs/starry_zt_temporal_confirmation_20260829/evaluation/query_predictions.csv": "888f0156dcac18dc07beee5ab1dc4092d1892149e081bed1740e90ae69d62962",
+    "runs/thermoml_q_stability_development_20260829/offset_q_stability.csv": "8587b064f80c1b3184c1dbd5cc267b782cfd787b2c3a8d646136d578e9cb72fd",
+    "runs/thermoml_single_use_confirmation_20260829/c947fbd6cc82bf8d880a1449f16f859ede8e05b58f6c3e11504cdf24d05c38c4/aggregate_query_predictions.csv": "7e87fed694e0ef9a976ff6a4ed27bc8e6f1d214089d6ce31d05b37002c50ba18",
+    "runs/thermoml_single_use_confirmation_20260829/c947fbd6cc82bf8d880a1449f16f859ede8e05b58f6c3e11504cdf24d05c38c4/analysis/per_entity_metrics.csv": "cdd0161373e281df73f470bc71a084943fb7879ba24f5a1a5eba92fdc5255432",
+    "runs/thermoml_single_use_confirmation_20260829/c947fbd6cc82bf8d880a1449f16f859ede8e05b58f6c3e11504cdf24d05c38c4/confirmation_data_used.csv": "84802d41674dbc0ce1b6b36ba63f8ad0ce28604a2af20b1115423ab175f2f100"
+  },
+  "support_offset_stability": {
+    "starry_zt": {
+      "physical_intercept": {
+        "median": 0.9017346460384436,
+        "minimum": 0.873511486169714
+      },
+      "physical_linear_temperature": {
+        "median": 0.9739217065166432,
+        "minimum": 0.9482887951242382
+      },
+      "physical_quadratic_temperature": {
+        "median": 0.9592827004219409,
+        "minimum": 0.9396624472573839
+      }
+    },
+    "vapor_pressure": {
+      "effective_delta_cp_j_mol_k_spearman": {
+        "median": 0.7973643373519764,
+        "minimum": 0.697434703738783
+      },
+      "effective_delta_hvap_kj_mol_spearman": {
+        "median": 0.9761880682152624,
+        "minimum": 0.9732083326644514
+      },
+      "q0_log_pressure_at_reference_spearman": {
+        "median": 0.9990504551073155,
+        "minimum": 0.998572873356557
+      }
+    }
+  }
+}

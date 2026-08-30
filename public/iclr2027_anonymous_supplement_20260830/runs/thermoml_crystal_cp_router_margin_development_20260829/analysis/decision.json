@@ -1,0 +1,39 @@
+{
+  "passed": true,
+  "gates": {
+    "exact_entity_coverage": true,
+    "exact_query_coverage": true,
+    "finite_coefficients_and_predictions": true,
+    "pooled_physical_r2_at_least_0_85": true,
+    "median_nrmse_within_10_percent_v2": true,
+    "p95_nrmse_within_1_5x_v2": true,
+    "entity_r2_pass_count_at_least_v2_minus_2": true,
+    "negative_prediction_count_no_greater_v2": true,
+    "recurring_atom_and_degree_at_least_3_of_5": true,
+    "query_target_perturbation_invariant": true
+  },
+  "pooled_physical_r2": 0.8593003362013868,
+  "negative_prediction_count": 748,
+  "v4_declared_reproduction_passed": true,
+  "bootstrap": {
+    "entity": {
+      "unit": "entity_id",
+      "seed": 20260829,
+      "draws": 10000,
+      "valid_draws": 10000,
+      "invalid_draws": 0,
+      "percentile_2_5": 0.8252575926831499,
+      "percentile_97_5": 0.9997578619347633
+    },
+    "doi": {
+      "unit": "doi",
+      "seed": 20260830,
+      "draws": 10000,
+      "valid_draws": 10000,
+      "invalid_draws": 0,
+      "percentile_2_5": 0.8164050128297246,
+      "percentile_97_5": 0.9997614158253848
+    }
+  },
+  "confirmation_targets_opened": false
+}

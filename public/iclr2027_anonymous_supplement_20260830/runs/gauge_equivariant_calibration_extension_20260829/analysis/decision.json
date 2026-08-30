@@ -1,0 +1,49 @@
+{
+  "amendment_sha256": "b274f1abaee71990c5a78152d92070262caa6c37572367c60167c7bbe8fbc91f",
+  "basis_primary_max_errors": {
+    "coordinate": 2.8782531913407183e-14,
+    "fitted_response": 2.1210422606717405e-13,
+    "pair_response": 1.8829382497642652e-13
+  },
+  "benchmark_passed": false,
+  "covariant_raw_readout_diagnostic_passed_gn": false,
+  "extension_runner_sha256": "13f9d21d1525582a2bb874add150bf5679f41642486b62dbbf8c63a2e3286024",
+  "gn_original_chart_functional_pooled_physical_r2": {
+    "polynomial": 0.9999392726467005,
+    "relaxation": 0.9998066804058807,
+    "thermodynamic_chart": 0.9999512130796294
+  },
+  "gn_original_chart_raw_pooled_physical_r2": {
+    "polynomial": 0.9997434773175846,
+    "relaxation": 0.9994190654815863,
+    "thermodynamic_chart": 0.9999157363528193
+  },
+  "maximum_covariant_raw_readout_response_change_adam": 0.5684178633477588,
+  "maximum_covariant_raw_readout_response_change_gn": 0.1374671476956686,
+  "maximum_projection_bound_violation": -0.0013256442641826,
+  "maximum_query_bound_violation": -0.0506172098174919,
+  "maximum_recalibrated_gn_functional_coordinate_difference": 0.1504709407100358,
+  "maximum_recalibrated_gn_functional_prediction_difference": 0.045042550221957356,
+  "maximum_recalibrated_gn_query_response_difference": 0.04483535069086719,
+  "maximum_unaligned_raw_readout_response_change_adam": 26.804607133443792,
+  "maximum_unaligned_raw_readout_response_change_gn": 49.123025589342646,
+  "narrow_support_veto": false,
+  "predictive_superiority_inferred": false,
+  "primary_gates": {
+    "all_15_cells_formal_hash_and_eligibility_verified": true,
+    "all_family_gn_functional_expression_pooled_physical_r2_at_least_0_85": true,
+    "all_response_metric_gn_jacobians_full_rank": true,
+    "basis_coordinate_error_at_most_1e_8": true,
+    "basis_fitted_response_error_at_most_1e_8": true,
+    "basis_pair_response_error_at_most_1e_8": true,
+    "both_deterministic_bound_audits_have_zero_violations": true,
+    "exact_query_target_invariance": true,
+    "maximum_recalibrated_gn_functional_coordinate_difference_at_most_1e_6": false,
+    "maximum_recalibrated_gn_query_response_difference_at_most_1e_6": false
+  },
+  "scope": "independent gauge-equivariant calibration extension",
+  "source_analysis_manifest_sha256": "2d77ffae6d2dfd9960310c48f2e90cfa0ce5e42706d420366556d14bf5d43a3e",
+  "source_plan_sha256": "ba2a587bd6f7a2945b118c2316ae8f52e0dce9663abfb2fe03f81a084720ada6",
+  "unaligned_raw_readout_failure_observed_gn": true,
+  "unique_or_causal_latent_recovery_inferred": false
+}

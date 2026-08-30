@@ -1,0 +1,8 @@
+{
+  "status": "success",
+  "scope": "independent development-only crystal-Cp FPCA audit",
+  "spread_physical_r2": 0.6321885368324308,
+  "fpca_reaches_expression_accuracy_threshold": false,
+  "interpretation": "train-only low-rank functional baseline; not a symbolic expression",
+  "confirmation_targets_opened": false
+}

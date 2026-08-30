@@ -1,0 +1,90 @@
+{
+  "scope": "ThermoML development-only DOI-grouped unseen-entity support-query structure selection",
+  "selected_family": "v_log",
+  "selected_expression": "ln(P/1 kPa)=q0+q1*(1/T-1/T_ref)+q2*v_log",
+  "stage_wise_interpretation": "Clausius--Clapeyron plus a logarithmic-temperature curvature term consistent with an integrated heat-capacity correction",
+  "selection_metric": "lowest median entity physical NRMSE; within 1% use frozen order v_log, v_T, v_inv2",
+  "selected_pooled_physical_r2": 0.9998666485822892,
+  "selected_pooled_log_r2": 0.9999766070107129,
+  "selected_median_entity_physical_r2": 0.9998779623174006,
+  "selected_fraction_entities_physical_r2_at_least_0_85": 1.0,
+  "query_target_input_max_difference": 0.0,
+  "expression_endpoint_passed_on_development": true,
+  "robustness_battery_complete": false,
+  "pending_robustness_items": [
+    "support PCHIP tail comparison",
+    "support Antoine baseline"
+  ],
+  "confirmation_targets_opened": false,
+  "predictive_superiority_inferred": false,
+  "family_summary": [
+    {
+      "family": "coarse_cc",
+      "pooled_physical_r2": 0.9987068406363478,
+      "pooled_log_r2": 0.9992077803630952,
+      "median_entity_physical_r2": 0.9981086293363781,
+      "fraction_entities_physical_r2_at_least_0_85": 0.8439716312056738,
+      "median_entity_physical_nrmse": 0.043489886155578125,
+      "maximum_entity_physical_nrmse": 2.7945597983066857,
+      "entity_bootstrap_physical_r2_95_interval": [
+        0.9968004198576738,
+        0.9996426050999299
+      ],
+      "doi_bootstrap_physical_r2_95_interval": [
+        0.9967475209120561,
+        0.999778581256469
+      ]
+    },
+    {
+      "family": "v_T",
+      "pooled_physical_r2": 0.9998567886760226,
+      "pooled_log_r2": 0.9999701664693617,
+      "median_entity_physical_r2": 0.9997983316053078,
+      "fraction_entities_physical_r2_at_least_0_85": 1.0,
+      "median_entity_physical_nrmse": 0.014200996604727165,
+      "maximum_entity_physical_nrmse": 0.29368326111697074,
+      "entity_bootstrap_physical_r2_95_interval": [
+        0.9997035637488901,
+        0.9999358638398662
+      ],
+      "doi_bootstrap_physical_r2_95_interval": [
+        0.999655801251147,
+        0.9999605889898131
+      ]
+    },
+    {
+      "family": "v_inv2",
+      "pooled_physical_r2": 0.999846608171227,
+      "pooled_log_r2": 0.9999711821678341,
+      "median_entity_physical_r2": 0.999841815536731,
+      "fraction_entities_physical_r2_at_least_0_85": 1.0,
+      "median_entity_physical_nrmse": 0.012577101867454445,
+      "maximum_entity_physical_nrmse": 0.2575902225352714,
+      "entity_bootstrap_physical_r2_95_interval": [
+        0.9996417220378607,
+        0.9999484900089085
+      ],
+      "doi_bootstrap_physical_r2_95_interval": [
+        0.9996325368200911,
+        0.9999645045547338
+      ]
+    },
+    {
+      "family": "v_log",
+      "pooled_physical_r2": 0.9998666485822892,
+      "pooled_log_r2": 0.9999766070107129,
+      "median_entity_physical_r2": 0.9998779623174006,
+      "fraction_entities_physical_r2_at_least_0_85": 1.0,
+      "median_entity_physical_nrmse": 0.011046976722313674,
+      "maximum_entity_physical_nrmse": 0.27110744981840573,
+      "entity_bootstrap_physical_r2_95_interval": [
+        0.9997200907893675,
+        0.9999383972106307
+      ],
+      "doi_bootstrap_physical_r2_95_interval": [
+        0.9996869834865322,
+        0.9999598639030349
+      ]
+    }
+  ]
+}

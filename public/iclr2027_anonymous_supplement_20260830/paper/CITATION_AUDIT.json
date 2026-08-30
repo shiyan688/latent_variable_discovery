@@ -1,0 +1,239 @@
+{
+  "audit_skill": "citation-audit",
+  "verdict": "PASS",
+  "reason_code": "all_entries_keep",
+  "summary": "All 21 cited entries exist, have verified metadata, and support every current manuscript use after scope or metadata corrections.",
+  "audited_input_hashes": {
+    "iclr_draft.tex": "sha256:9fd243893391a43ff01d42dc867ad0ad23a83eac047075717ae2be409823383b",
+    "iclr_refs.bib": "sha256:ef1e91afe1366e4f2b78ce7f716816d120bf2ba9812423f0feef1bd4fe8b5df1",
+    "sections/introduction.tex": "sha256:b78d188e2b4e066648dab7309f87cdd90589a83e6b532529c253da17dfc02bea",
+    "sections/related_work.tex": "sha256:9c550f37c703d1762c54e551bed7d1e5f12a4cea8255dab424ec12d9efc14e05",
+    "sections/experiments.tex": "sha256:56b21526c644555702c5a279fdf3e1f2720c01fba90d502fbe1c56f69cf56091",
+    ".aris/citation-audit/contexts.txt": "sha256:cb87e3c57862114ae295404182d7d6c2f71c40628e84b1c5dc66af9bac6ea454",
+    ".aris/citation-audit/contexts_new6_20260829.txt": "sha256:be09ee55583504a7fe92c04f96c1fe8454f8c122ee9c38575e25297b9725c569"
+  },
+  "trace_path": ".aris/traces/citation-audit/2026-08-29_run06/",
+  "thread_id": "codex-team-2026-08-29-citation-run06-consolidated",
+  "executor_model": "codex-gpt-5.6-sol",
+  "executor_family": "openai",
+  "reviewer_model": "gpt-5.6-sol",
+  "reviewer_family": "openai",
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "reviewer_reasoning": "xhigh",
+  "generated_at": "2026-08-29T07:09:21Z",
+  "extension_audit": {
+    "original_trace_path": ".aris/traces/citation-audit/2026-08-29_run01/",
+    "new_entry_trace_path": ".aris/traces/citation-audit/2026-08-29_run05/",
+    "original_entries": 15,
+    "new_entries": 6,
+    "new_entry_initial_fixes": 1,
+    "new_entry_postfix_keep": 6,
+    "note": "The NIST WebBook publication-year/editor model was corrected and accepted by a fresh post-fix reviewer."
+  },
+  "details": {
+    "total_entries": 21,
+    "counts": {
+      "KEEP": 21,
+      "FIX": 0,
+      "REPLACE": 0,
+      "REMOVE": 0
+    },
+    "per_entry": [
+      {
+        "key": "garnelo2018conditional",
+        "verdict": "KEEP",
+        "axis_failures": [],
+        "uses": [
+          {"file": "sections/introduction.tex", "line": 20, "verdict": "SUPPORTS"},
+          {"file": "sections/related_work.tex", "line": 9, "verdict": "SUPPORTS"}
+        ]
+      },
+      {
+        "key": "xu2020metafun",
+        "verdict": "KEEP",
+        "axis_failures": [],
+        "uses": [
+          {"file": "sections/introduction.tex", "line": 20, "verdict": "SUPPORTS"},
+          {"file": "sections/related_work.tex", "line": 9, "verdict": "SUPPORTS"}
+        ]
+      },
+      {
+        "key": "gondal2021function",
+        "verdict": "KEEP",
+        "axis_failures": [],
+        "uses": [
+          {"file": "sections/introduction.tex", "line": 20, "verdict": "SUPPORTS"},
+          {"file": "sections/related_work.tex", "line": 9, "verdict": "SUPPORTS"}
+        ]
+      },
+      {
+        "key": "dupont2022functa",
+        "verdict": "KEEP",
+        "axis_failures": [],
+        "note": "The related-work sentence now separates shared-prior learning, instance adaptation, and MAP completion.",
+        "uses": [
+          {"file": "sections/introduction.tex", "line": 20, "verdict": "SUPPORTS"},
+          {"file": "sections/related_work.tex", "line": 13, "verdict": "SUPPORTS"}
+        ]
+      },
+      {
+        "key": "sitzmann2020metasdf",
+        "verdict": "KEEP",
+        "axis_failures": [],
+        "uses": [
+          {"file": "sections/related_work.tex", "line": 13, "verdict": "SUPPORTS"}
+        ]
+      },
+      {
+        "key": "locatello2019challenging",
+        "verdict": "KEEP",
+        "axis_failures": [],
+        "note": "The introduction was narrowed to the need for assumptions or inductive biases.",
+        "uses": [
+          {"file": "sections/introduction.tex", "line": 28, "verdict": "SUPPORTS"},
+          {"file": "sections/related_work.tex", "line": 26, "verdict": "SUPPORTS"}
+        ]
+      },
+      {
+        "key": "khemakhem2020variational",
+        "verdict": "KEEP",
+        "axis_failures": [],
+        "note": "The claim is explicitly limited to specified equivalence classes under assumptions.",
+        "uses": [
+          {"file": "sections/introduction.tex", "line": 28, "verdict": "SUPPORTS"},
+          {"file": "sections/related_work.tex", "line": 26, "verdict": "SUPPORTS"}
+        ]
+      },
+      {
+        "key": "syrota2025metric",
+        "verdict": "KEEP",
+        "axis_failures": [],
+        "uses": [
+          {"file": "sections/related_work.tex", "line": 30, "verdict": "SUPPORTS"}
+        ]
+      },
+      {
+        "key": "ma2024canonicalization",
+        "verdict": "KEEP",
+        "axis_failures": [],
+        "uses": [
+          {"file": "sections/introduction.tex", "line": 30, "verdict": "SUPPORTS"},
+          {"file": "sections/related_work.tex", "line": 30, "verdict": "SUPPORTS"}
+        ]
+      },
+      {
+        "key": "dym2024equivariant",
+        "verdict": "KEEP",
+        "axis_failures": [],
+        "note": "The continuity statement remains scoped to common group actions and relevant dimensional regimes.",
+        "uses": [
+          {"file": "sections/introduction.tex", "line": 30, "verdict": "SUPPORTS"},
+          {"file": "sections/related_work.tex", "line": 32, "verdict": "SUPPORTS"}
+        ]
+      },
+      {
+        "key": "champion2019data",
+        "verdict": "KEEP",
+        "axis_failures": [],
+        "uses": [
+          {"file": "sections/introduction.tex", "line": 38, "verdict": "SUPPORTS"},
+          {"file": "sections/related_work.tex", "line": 43, "verdict": "SUPPORTS"}
+        ]
+      },
+      {
+        "key": "cranmer2020discovering",
+        "verdict": "KEEP",
+        "axis_failures": [],
+        "note": "The manuscript retains the qualifiers suitable coordinates and structured learned components.",
+        "uses": [
+          {"file": "sections/introduction.tex", "line": 38, "verdict": "SUPPORTS"},
+          {"file": "sections/related_work.tex", "line": 43, "verdict": "SUPPORTS"}
+        ]
+      },
+      {
+        "key": "zhang2022parametric",
+        "verdict": "KEEP",
+        "axis_failures": [],
+        "note": "The cite key keeps preprint chronology; the entry uses the final 2024 IEEE TNNLS record.",
+        "uses": [
+          {"file": "sections/introduction.tex", "line": 38, "verdict": "SUPPORTS"},
+          {"file": "sections/related_work.tex", "line": 48, "verdict": "SUPPORTS"}
+        ]
+      },
+      {
+        "key": "podina2023universal",
+        "verdict": "KEEP",
+        "axis_failures": [],
+        "note": "The claim is scoped to neural representations of unknown differential-equation terms.",
+        "uses": [
+          {"file": "sections/introduction.tex", "line": 38, "verdict": "SUPPORTS"},
+          {"file": "sections/related_work.tex", "line": 48, "verdict": "SUPPORTS"}
+        ]
+      },
+      {
+        "key": "grayeli2024lasr",
+        "verdict": "KEEP",
+        "axis_failures": [],
+        "note": "The sentence now states the LLM-induced abstract textual concept library and evolutionary SR role concretely.",
+        "uses": [
+          {"file": "sections/related_work.tex", "line": 50, "verdict": "SUPPORTS"}
+        ]
+      },
+      {
+        "key": "katsura2025starrydata",
+        "verdict": "KEEP",
+        "axis_failures": [],
+        "note": "Official publisher and Starrydata project records verify the complete 17-author record and article number.",
+        "uses": [
+          {"file": "sections/experiments.tex", "line": 19, "verdict": "SUPPORTS"}
+        ]
+      },
+      {
+        "key": "riccardi2021thermoml",
+        "verdict": "KEEP",
+        "axis_failures": [],
+        "note": "The NIST canonical dataset record verifies all eight authors, version 1.2, and DOI.",
+        "uses": [
+          {"file": "sections/experiments.tex", "line": 20, "verdict": "SUPPORTS"}
+        ]
+      },
+      {
+        "key": "frenkel2006thermoml",
+        "verdict": "KEEP",
+        "axis_failures": [],
+        "note": "The IUPAC record verifies the complete ten-author standard and its scope.",
+        "uses": [
+          {"file": "sections/experiments.tex", "line": 20, "verdict": "SUPPORTS"}
+        ]
+      },
+      {
+        "key": "ramsay2005functional",
+        "verdict": "KEEP",
+        "axis_failures": [],
+        "note": "The official Springer record includes functional principal-components analysis.",
+        "uses": [
+          {"file": "sections/experiments.tex", "line": 29, "verdict": "SUPPORTS"}
+        ]
+      },
+      {
+        "key": "fritsch1984pchip",
+        "verdict": "KEEP",
+        "axis_failures": [],
+        "note": "The SIAM article is the algorithm reference cited by SciPy PchipInterpolator.",
+        "uses": [
+          {"file": "sections/experiments.tex", "line": 31, "verdict": "SUPPORTS"}
+        ]
+      },
+      {
+        "key": "nist2025webbook",
+        "verdict": "KEEP",
+        "axis_failures": [],
+        "note": "An initial metadata-only FIX moved 2025 from publication year to data-update note, used the NIST editor model, and added the access date; a fresh post-fix reviewer returned KEEP. The official solid-phase page gives exactly the five-term Shomate form.",
+        "uses": [
+          {"file": "sections/experiments.tex", "line": 144, "verdict": "SUPPORTS"}
+        ]
+      }
+    ]
+  }
+}

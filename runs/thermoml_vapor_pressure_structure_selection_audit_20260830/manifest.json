@@ -1,0 +1,8 @@
+{
+  "auditor_sha256": "5e9913bd2c4d2dab14b1f87cde9d3ab3d9c804f356aab21129c35a5ccbc30ab7",
+  "files": {
+    "audit.json": "2f04b47c85e02d617a19caef7000a31a03e06131753374defba7fc4eb8e91007",
+    "fold_reference_temperatures.csv": "7235a25ebb41005a7888821257832b02aa3e51454c6ece0d77b876c99cdcea76",
+    "per_fold_candidate_nrmse.csv": "0c98f21a05df39f685f9479e81390d4ad107b9af9a93ceae53c4ec5f6788342a"
+  }
+}
