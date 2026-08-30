@@ -1,7 +1,7 @@
 ---
 document_type: agent_handoff_memory
 project: latent_variable_search
-last_updated: 2026-08-30 10:26 CST
+last_updated: 2026-08-30 10:31 CST
 current_branch: research/latent-q-stagec-20260826
 base_commit: 2b13869
 live_status_source: runs/thermoml_crystal_cp_neural_gird_development_20260829/launcher_status.json
@@ -2783,3 +2783,12 @@ and `ed1a4f60294debad0ae927364ce03cdf32efe9a002b5345464ed99c00fe68b0f`.
 No Crystal confirmation output root or receipt was created.  The one-shot
 opportunity remains optional and unconsumed; do not launch it without the
 user's explicit acknowledgement of that irreversible consumption.
+
+The portable paper checkpoint was committed as `e0e8e87`
+(`finalize auditable response-coordinate paper package`) and pushed to
+`origin/research/latent-q-stagec-20260826` at 10:30 CST.  It contains the
+official editable paper/PDF, citation and claim audits, vapor-selection audit,
+deterministic anonymous supplement directory and tarball, clean-room receipt,
+build/verifier scripts, and this handoff record.  It deliberately excludes
+unrelated dirty-worktree changes, generated Python caches, local TeX logs, and
+the still-unconsumed Crystal confirmation outputs.
